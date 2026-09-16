@@ -1,0 +1,2191 @@
+/* ============================================================================
+   Beeviro — portfolio design system
+   Brand: Yellow #FFC202 · Black #0A0909 · White #F5F5F5 · Aclonica headings.
+   Structural motif is the honeycomb, taken from the Beeviro mark itself.
+   No build step, no external requests. Everything here is self-hosted.
+   ========================================================================= */
+
+@font-face {
+  font-family: 'Aclonica';
+  src: url('../assets/fonts/Aclonica-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --ink:        #0a0909;
+  --ink-1:      #121110;
+  --ink-2:      #1a1817;
+  --line:       rgba(245, 245, 245, .10);
+  --line-2:     rgba(245, 245, 245, .18);
+  --paper:      #f5f5f5;
+  --fog:        #8c8781;
+  --fog-2:      #b8b3ac;
+  --honey:      #ffc202;
+  --honey-deep: #fec601;
+  --honey-dim:  rgba(255, 194, 2, .16);
+
+  --display: 'Aclonica', 'Arial Black', system-ui, sans-serif;
+  --body: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'JetBrains Mono', 'Cascadia Mono', Consolas, 'SF Mono', ui-monospace, monospace;
+
+  --hex: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  --pad: clamp(20px, 5vw, 76px);
+  --r: 22px;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+* { box-sizing: border-box; }
+
+/* ---------- touch platform ------------------------------------------------
+   The four things that separate "a native app" from "a desktop page that
+   happens to be narrow". None of them have a desktop effect.
+
+   text-size-adjust: iOS Safari inflates body text when a phone is rotated to
+   landscape, using its own guess at a readable size. On a page built out of
+   display type at clamp() sizes that guess is always wrong, and the headline
+   reflows on rotate. 100% means "the size I asked for".
+
+   tap-highlight-color: the grey-blue rectangle Android and iOS paint over
+   whatever you touched. It flashes on scroll-starts as well as taps and it is
+   the single most obviously not-native thing on a touch website. Removing it
+   removes ALL press feedback, so every control gets a real :active state
+   further down — otherwise this is a downgrade, not an upgrade.
+
+   touch-action: manipulation drops the ~300ms wait a browser holds before
+   dispatching a click, in case the tap turns out to be a double-tap zoom. It
+   is the cheapest perceived-performance win available on a touch device.
+   Deliberately NOT set on the draggable strips, which need their own
+   gesture handling, or on the body, which must keep pinch-zoom: taking that
+   away from a portfolio full of client artwork would be an accessibility
+   regression, not a polish win. */
+html {
+  -webkit-text-size-adjust: 100%;
+          text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+a, button, [role="button"], input, label, summary,
+.bv-cell, .bv-cellx, .bv-m, .bv-card {
+  touch-action: manipulation;
+}
+/* NOT the strips. `manipulation` is `pan-x pan-y pinch-zoom`, so the browser
+   claims BOTH pan directions and cancels the pointer stream the drag handler
+   is listening to — a tile carrying it made the carousels undraggable on
+   touch, which the horizontal-drag assertion caught immediately.
+   `pan-y` is the correct setting for a horizontally-dragged strip: the browser
+   keeps vertical scrolling, so a thumb travelling down the page over a
+   carousel still scrolls it, and everything sideways is left to the JS. */
+.bv-marquee, .bv-reel, .bv-gal__view,
+.bv-marquee__track, .bv-reel__track, .bv-gal__track, .bv-tile, .bv-gal__t {
+  touch-action: pan-y;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--honey); outline-offset: 3px; border-radius: 4px; }
+
+/* ---------- type ---------------------------------------------------------- */
+
+.bv-mega,
+.bv-h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: .92;
+  letter-spacing: -.02em;
+  margin: 0;
+}
+.bv-mega { font-size: clamp(2.15rem, 6.6vw, 5.4rem); }
+.bv-h2   { font-size: clamp(1.62rem, 3.9vw, 2.95rem); }
+.bv-h3   { font-family: var(--display); font-weight: 400; font-size: clamp(1.05rem, 1.7vw, 1.35rem); line-height: 1.16; margin: 0; }
+
+.bv-eyebrow {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--honey);
+  margin: 0 0 1.1rem;
+  display: block;
+}
+.bv-eyebrow::before { content: '( '; opacity: .5; }
+.bv-eyebrow::after  { content: ' )'; opacity: .5; }
+
+.bv-lede { font-size: clamp(.94rem, 1.05vw, 1.06rem); color: var(--fog-2); max-width: 62ch; line-height: 1.62; }
+.bv-dim  { color: var(--fog); }
+.bv-amber { color: var(--honey); }
+
+/* ---------- layout -------------------------------------------------------- */
+
+.bv-section { padding: clamp(64px, 10vw, 150px) var(--pad); position: relative; scroll-margin-top: 84px; }
+.bv-wrap { max-width: 1320px; margin-inline: auto; }
+.bv-head { max-width: 900px; margin-bottom: clamp(36px, 5vw, 68px); }
+
+/* ONE LEFT GRID LINE DOWN THE WHOLE PAGE.
+   A section pads by --pad and caps its content at 1320px, so every eyebrow and
+   every heading starts on the same inline edge at every width. Two sections
+   opted out of that by hand and each landed somewhere else — at 1440px the
+   page stepped 72 → 132 → 200 on the way down, which reads as drift rather
+   than composition.
+
+   --bleed (the creative carousel) moves the padding OFF the section so the
+   reels can run edge to edge, and puts it on the wrap instead. But the wrap is
+   also where the 1320 cap lives, so the padding was charged twice: the wrap
+   took the full 1320 and then indented inside it. The cap has to grow by
+   exactly the padding it now contains.
+
+   --measure (voices, contact) narrowed the WRAP to a comfortable reading
+   width and left margin-inline:auto on it, which centres that narrow box
+   inside the wide one and pushes its leading edge 128px in. A measure belongs
+   on the text, not on the box that establishes the grid line. */
+.bv-wrap--bleed { padding-inline: var(--pad); max-width: calc(1320px + 2 * var(--pad)); }
+/* :where() so this weighs NOTHING. Written as `.bv-wrap--measure > *` it ties
+   with `.bv-lede` on specificity and wins on document order, which quietly
+   widened the contact lede from its 62ch measure to the full 1040 and left one
+   very long line under the display type. This is a ceiling for children that
+   have no measure of their own; anything that sets a tighter one keeps it. */
+:where(.bv-wrap--measure) > * { max-width: 1040px; }
+.bv-rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+/* ---------- honeycomb device ---------------------------------------------- */
+
+.bv-hex {
+  clip-path: var(--hex);
+  -webkit-clip-path: var(--hex);
+  background: var(--honey);
+  aspect-ratio: 1 / 1.1547;
+}
+
+/* Faint comb wash used behind dark sections.
+
+   THIS USED TO BE `.bv-comb::before`, and `.bv-comb` is also the honeycomb
+   STRIP — a flex row of six cells. Two unrelated jobs on one class, so the two
+   sections that only wanted the wallpaper (#count, #work) were silently turned
+   into flex containers. Their single `.bv-wrap` child then became a flex item,
+   sized to its own content instead of to the row, and `margin-inline: auto`
+   centred it in whatever was left over.
+
+   In English the cards made that content wider than the row, so it filled and
+   nobody saw anything. In Arabic the prose is shorter, the wrap shrank to
+   ~1114px inside a 1296px row, and the whole Work section — eyebrow, headline,
+   lede and card grid — sat 91px inside the left edge every other section
+   shares. Same markup, same CSS, visible in one language only.
+
+   The wash is now its own class and carries no layout.
+
+   IT DOES NOT SET `position` EITHER, AND THAT IS ON PURPOSE. `inset: 0` on the
+   pseudo-element resolves against the nearest POSITIONED ancestor, so the wash
+   covers a different box depending on where you put the class:
+     #count, #work — `.bv-section` is `position: relative`, so it fills the
+                     section, which is what those two want.
+     #hive        — `.bv-comb` sets no position, so it resolves against
+                     `.bv-pin__stage` (sticky) and washes the whole pinned
+                     method stage rather than the six-cell strip. That is the
+                     look this had as `.bv-comb::before` and it is kept.
+   Adding `position: relative` here would be a no-op for the sections and would
+   silently shrink the method wash to the strip. If that is ever wanted, move
+   `bv-wash` onto `.bv-pin__stage` instead so the markup says so. */
+.bv-wash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .5;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 194, 2, .05) 0 1.5px, transparent 2px);
+  background-size: 34px 59px;
+  background-position: 0 0, 17px 29px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* ---------- masthead ------------------------------------------------------ */
+
+/* SAFE AREAS. viewport-fit=cover hands the whole screen to the page, which
+   means the page is now responsible for keeping its chrome out from under the
+   notch, the rounded corners and the home indicator. max() rather than a bare
+   env(): on every device with no notch these resolve to 0, and the design's own
+   padding has to survive that. Left and right matter too — a phone held
+   sideways puts the notch on a long edge, so a masthead padded only at the top
+   ends up with its brand mark behind the camera. */
+.bv-mast {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: max(14px, env(safe-area-inset-top)) max(var(--pad), env(safe-area-inset-right))
+           14px max(var(--pad), env(safe-area-inset-left));
+  /* backdrop-filter is NOT in this list, and must not be: it fired on every
+     scroll past the top of the page, re-blurring the strip of page behind the
+     masthead at a changing radius for 400ms. Constant radius, and only the
+     background colour and border fade. */
+  transition: background .4s var(--ease), border-color .4s var(--ease);
+  border-bottom: 1px solid transparent;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.bv-mast.is-stuck {
+  background: rgba(10, 9, 9, .82);
+  border-bottom-color: var(--line);
+}
+.bv-brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 1.16rem; letter-spacing: -.01em; }
+.bv-brand img { width: 34px; height: 34px; object-fit: contain; }
+.bv-nav { display: flex; gap: 26px; margin-left: auto; font-size: .85rem; }
+.bv-nav a { color: var(--fog-2); position: relative; padding: 4px 0; transition: color .25s; }
+.bv-nav a:hover, .bv-nav a.is-here { color: var(--paper); }
+.bv-nav a::after {
+  content: ''; position: absolute; left: 50%; bottom: 0; height: 2px; width: 0;
+  background: var(--honey); transform: translateX(-50%); transition: width .3s var(--ease);
+}
+.bv-nav a:hover::after, .bv-nav a.is-here::after { width: 100%; }
+@media (max-width: 900px) { .bv-nav { display: none; } }
+
+.bv-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 22px; border-radius: 999px;
+  background: var(--honey); color: var(--ink);
+  font-weight: 700; font-size: .86rem;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.bv-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 194, 2, .28); }
+.bv-cta--ghost { background: transparent; color: var(--paper); border: 1px solid var(--line-2); }
+.bv-cta--ghost:hover { background: rgba(245, 245, 245, .06); box-shadow: none; }
+
+/* ---------- skip link ------------------------------------------------------ */
+/* Off-screen until focused. Without it the first Tab lands in the masthead and
+   a keyboard reader has to walk the nav, the CTA and the whole hero before
+   reaching anything. */
+.bv-skip {
+  position: fixed; top: 10px; left: 10px; z-index: 9970;
+  padding: 11px 18px; border-radius: 999px;
+  background: var(--honey); color: var(--ink); font-weight: 700; font-size: .86rem;
+  transform: translateY(-160%);
+  transition: transform .3s var(--ease);
+}
+.bv-skip:focus-visible { transform: none; }
+
+/* ---------- mobile menu ---------------------------------------------------- */
+/* The desktop nav is hidden under 900px and there was no other way to reach a
+   section — this is it. The sections read as a comb, matching the method. */
+
+.bv-burger {
+  display: none; margin-left: auto; order: 3;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line-2);
+  align-items: center; justify-content: center; flex-direction: column; gap: 5px;
+  background: rgba(10, 9, 9, .5);
+  transition: background .3s var(--ease), border-color .3s var(--ease);
+}
+.bv-burger span {
+  display: block; width: 17px; height: 2px; border-radius: 2px; background: var(--paper);
+  transition: transform .38s var(--ease), width .38s var(--ease), background .3s;
+}
+.bv-burger[aria-expanded="true"] { background: var(--honey); border-color: var(--honey); }
+.bv-burger[aria-expanded="true"] span { background: var(--ink); }
+.bv-burger[aria-expanded="true"] span:first-child { transform: translateY(3.5px) rotate(45deg); }
+.bv-burger[aria-expanded="true"] span:last-child  { transform: translateY(-3.5px) rotate(-45deg); }
+
+.bv-menu {
+  position: fixed; inset: 0; z-index: 890;
+  background: var(--ink);
+  display: flex; flex-direction: column; justify-content: center; gap: 30px;
+  padding: max(96px, calc(env(safe-area-inset-top) + 82px))
+           max(var(--pad), env(safe-area-inset-right))
+           max(36px, calc(env(safe-area-inset-bottom) + 20px))
+           max(var(--pad), env(safe-area-inset-left));
+  /* It covers the screen, so a swipe that runs past its ends must not start
+     scrolling the page underneath it. */
+  overscroll-behavior: contain;
+  overflow-y: auto;
+  opacity: 0; transition: opacity .38s var(--ease);
+}
+.bv-menu[hidden] { display: none; }
+.bv-menu.is-shown { opacity: 1; }
+/* the same faint comb wash the dark sections carry */
+.bv-menu::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .6;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 194, 2, .06) 0 1.5px, transparent 2px);
+  background-size: 34px 59px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 10%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 10%, transparent 78%);
+}
+
+.bv-menu__cells { position: relative; display: grid; gap: 4px; }
+.bv-menu__cells a {
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 13px 16px; border-radius: 12px;
+  border: 1px solid transparent;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .5s var(--ease), transform .5s var(--ease),
+              background .25s var(--ease), border-color .25s var(--ease);
+}
+.bv-menu.is-shown .bv-menu__cells a { opacity: 1; transform: none; }
+.bv-menu__cells a:nth-child(1) { transition-delay: .06s; }
+.bv-menu__cells a:nth-child(2) { transition-delay: .11s; }
+.bv-menu__cells a:nth-child(3) { transition-delay: .16s; }
+.bv-menu__cells a:nth-child(4) { transition-delay: .21s; }
+.bv-menu__cells a:nth-child(5) { transition-delay: .26s; }
+.bv-menu__cells a:nth-child(6) { transition-delay: .31s; }
+.bv-menu__cells a:active,
+.bv-menu__cells a.is-here { background: rgba(255, 194, 2, .08); border-color: rgba(255, 194, 2, .3); }
+.bv-menu__cells i { font-family: var(--mono); font-style: normal; font-size: .72rem; letter-spacing: .12em; color: var(--honey); }
+.bv-menu__cells b { font-family: var(--display); font-weight: 400; font-size: clamp(1.35rem, 6vw, 2rem); line-height: 1; }
+
+.bv-menu__foot {
+  position: relative; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding-top: 26px; border-top: 1px solid var(--line); font-size: .84rem;
+  opacity: 0; transition: opacity .5s var(--ease) .34s;
+}
+.bv-menu.is-shown .bv-menu__foot { opacity: 1; }
+
+@media (max-width: 900px) {
+  .bv-burger { display: flex; }
+  /* the CTA duplicates "Contact" in the menu and crowds a 360px masthead */
+  .bv-mast__cta { display: none; }
+}
+@media (min-width: 901px) { .bv-menu { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .bv-menu__cells a { transform: none !important; }
+}
+
+/* ---------- scroll progress rail ------------------------------------------ */
+
+.bv-prog {
+  position: fixed; inset: 0 0 auto; height: 2px; z-index: 950;
+  background: linear-gradient(90deg, var(--honey), #ffe27a 55%, var(--honey));
+  transform: scaleX(0); transform-origin: 0 50%;
+  will-change: transform; pointer-events: none;
+}
+
+/* ---------- boot sequence -------------------------------------------------- */
+
+.bv-boot {
+  position: fixed; inset: 0; z-index: 9990;
+  background: var(--ink);
+  display: grid; place-items: center; gap: 26px; align-content: center;
+  transition: opacity .5s var(--ease), visibility .5s;
+}
+.bv-boot.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+.bv-boot__mark { width: 78px; height: 90px; }
+.bv-boot__mark path { stroke-dasharray: 400; stroke-dashoffset: 400; }
+.bv-boot.is-drawing path { transition: stroke-dashoffset 1.15s var(--ease); stroke-dashoffset: 0; }
+.bv-boot.is-drawing path + path { transition-delay: .18s; }
+.bv-boot__n {
+  font-family: var(--display); font-size: 2.1rem; color: var(--paper);
+  display: flex; align-items: baseline; gap: 2px;
+}
+.bv-boot__n i { font-style: normal; font-size: .9rem; color: var(--honey); }
+.bv-boot__bar { width: min(210px, 44vw); height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bv-boot__bar span {
+  display: block; height: 100%; width: 100%;
+  background: linear-gradient(90deg, var(--honey), #ffe27a);
+  transform: scaleX(0); transform-origin: 0 50%;
+}
+/* nothing behind the boot screen moves until it lifts */
+body.bv-booting { overflow: hidden; }
+
+/* ---------- pointer companion --------------------------------------------- */
+
+.bv-cursor { position: fixed; left: 0; top: 0; z-index: 9995; pointer-events: none; opacity: 0; transition: opacity .3s; }
+.bv-cursor.is-live { opacity: 1; }
+.bv-cursor__dot {
+  position: absolute; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%; background: var(--honey);
+}
+.bv-cursor__ring {
+  position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px;
+  border-radius: 50%; border: 1px solid rgba(255, 194, 2, .55);
+  transition: width .3s var(--ease), height .3s var(--ease), margin .3s var(--ease),
+              background .3s var(--ease), border-color .3s var(--ease);
+}
+.bv-cursor.is-hot .bv-cursor__ring {
+  width: 72px; height: 72px; margin: -36px 0 0 -36px;
+  background: rgba(255, 194, 2, .14); border-color: var(--honey);
+}
+.bv-cursor__label {
+  position: absolute; left: 0; top: 0;
+  font-family: var(--mono); font-size: .58rem; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--honey); opacity: 0; transition: opacity .25s var(--ease);
+  white-space: nowrap;
+}
+.bv-cursor.is-hot .bv-cursor__label { opacity: 1; }
+.bv-cursor.is-down .bv-cursor__ring { width: 26px; height: 26px; margin: -13px 0 0 -13px; background: rgba(255,194,2,.3); }
+/* the strips advertise that they can be thrown */
+.bv-reel, .bv-gal__view { cursor: grab; }
+.bv-reel.is-dragging, .bv-gal.is-dragging .bv-gal__view { cursor: grabbing; }
+.bv-gal.is-dragging .bv-gal__t, .bv-reel.is-dragging .bv-tile { pointer-events: none; }
+@media (hover: none), (max-width: 900px) { .bv-cursor { display: none; } }
+
+/* strips hold still while a picture is open */
+body.bv-lb-open .bv-gal__track,
+body.bv-lb-open .bv-marquee__track,
+body.bv-lb-open .bv-reel__track { animation-play-state: paused !important; }
+
+/* ---------- honey drip rail ----------------------------------------------- */
+
+.bv-drip {
+  position: fixed; left: max(14px, 2vw); top: 96px; bottom: 40px; width: 2px;
+  z-index: 880; pointer-events: none;
+  background: linear-gradient(var(--line), rgba(245,245,245,.03));
+  border-radius: 2px;
+}
+.bv-drip__fill {
+  position: absolute; inset: 0; transform-origin: 50% 0; transform: scaleY(0);
+  background: linear-gradient(180deg, rgba(255,194,2,.25), var(--honey) 45%, var(--honey-deep));
+  border-radius: 2px;
+}
+.bv-drip__bead {
+  position: absolute; left: 50%; top: 0; width: 11px; height: 13px;
+  margin-left: -5.5px;
+  background: var(--honey);
+  /* a hanging droplet: round below, drawn to a point above */
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  box-shadow: 0 0 16px 3px rgba(255, 194, 2, .45);
+  transform: translateY(0) scaleY(1);
+}
+@media (max-width: 1180px) { .bv-drip { display: none; } }
+@media (prefers-reduced-motion: reduce) { .bv-drip__bead { display: none; } }
+
+/* ---------- hero ---------------------------------------------------------- */
+
+.bv-hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 130px var(--pad) 60px;
+  position: relative; overflow: hidden;
+}
+/* Layer order in the hero: video → canvas comb → scrim → copy. */
+.bv-hero__video,
+.bv-hero__comb {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+.bv-hero__video { object-fit: cover; opacity: .5; }
+
+/* Photographic comb, in two stacked copies. Both share the parallax transform
+   written by motion.js; only the lit copy carries the pointer torch mask. */
+.bv-hero__photo {
+  position: absolute; inset: -8% -4%; z-index: 0; pointer-events: none;
+  /* NO url() fallback here, deliberately. The stylesheet is parsed long before
+     beeviro.js defines --hero-wide, so a fallback is FETCHED — and then the CDN
+     copy is fetched too when the property lands. Measured: 191 KB of hero
+     photograph downloaded twice on every cold load. JS owns this image now, and
+     the <noscript> rule below covers the reader who has none. */
+  background-image: var(--hero-wide);
+  background-size: cover;
+  background-position: 62% 50%;
+  will-change: transform;
+}
+.bv-hero__photo--base { opacity: .20; filter: saturate(.7) brightness(.75); }
+.bv-hero__photo--lit {
+  opacity: .92; filter: saturate(1.15) contrast(1.05);
+  --mx: 70%; --my: 45%; --torch: 30vmax;
+  -webkit-mask-image: radial-gradient(circle var(--torch) at var(--mx) var(--my), #000 0%, rgba(0,0,0,.55) 42%, transparent 72%);
+          mask-image: radial-gradient(circle var(--torch) at var(--mx) var(--my), #000 0%, rgba(0,0,0,.55) 42%, transparent 72%);
+}
+@media (max-width: 760px) {
+  .bv-hero__photo { background-image: var(--hero-tall); background-position: 50% 18%; }
+  .bv-hero__photo--lit { --torch: 42vmax; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bv-hero__photo--lit { -webkit-mask-image: none; mask-image: none; opacity: .3; }
+}
+.bv-hero__scrim {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--ink) 4%, rgba(10,9,9,.72) 42%, rgba(10,9,9,.25) 74%),
+    linear-gradient(to top, var(--ink) 1%, transparent 34%);
+}
+.bv-hero__glow {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 78vw; height: 78vw; max-width: 900px; max-height: 900px;
+  right: -14vw; top: 50%; transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(255, 194, 2, .14) 0%, transparent 62%);
+}
+.bv-hero__inner { position: relative; z-index: 1; max-width: 1320px; margin-inline: auto; width: 100%; }
+.bv-hero__lede { margin: 26px 0 34px; }
+.bv-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Per-letter hero reveal. */
+.bv-ltr { display: inline-block; opacity: 0; transform: translateY(.5em) rotate(3deg); }
+.is-lit .bv-ltr { animation: bv-rise .7s var(--ease) forwards; }
+@keyframes bv-rise { to { opacity: 1; transform: none; } }
+
+.bv-scrollcue {
+  margin-top: clamp(34px, 6vw, 70px);
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .2em;
+  color: var(--fog); display: flex; align-items: center; gap: 12px;
+}
+.bv-scrollcue span { width: 54px; height: 1px; background: var(--honey); transform-origin: left; animation: bv-cue 2.2s ease-in-out infinite; }
+@keyframes bv-cue { 0%, 100% { transform: scaleX(.35); opacity: .5; } 50% { transform: scaleX(1); opacity: 1; } }
+
+/* ---------- marquee ------------------------------------------------------- */
+
+.bv-marquee { overflow: hidden; border-block: 1px solid var(--line); padding: 20px 0; display: flex; }
+.bv-marquee__track { display: flex; flex-shrink: 0; gap: 40px; padding-right: 40px; align-items: center; animation: bv-slide var(--dur, 34s) linear infinite; }
+.bv-marquee:hover .bv-marquee__track { animation-play-state: paused; }
+@keyframes bv-slide { to { transform: translateX(-100%); } }
+/* motion.js takes these over so their direction can flip with the reader; the
+   CSS animation stays as the no-JS fallback and is disabled once it does. */
+.js-strips .bv-marquee__track,
+.js-strips .bv-reel__track,
+.js-strips .bv-gal__track { animation: none !important; }
+
+.bv-marquee { --skew: 0deg; }
+.bv-marquee__item, .bv-marquee__dot {
+  transform: skewX(var(--skew));
+  transition: transform .18s linear;
+}
+.bv-marquee__item { font-family: var(--display); font-size: clamp(.95rem, 1.6vw, 1.45rem); white-space: nowrap; color: var(--paper); }
+.bv-marquee__dot { color: var(--honey); font-size: 1.1rem; }
+.bv-marquee--rev .bv-marquee__track { animation-direction: reverse; }
+
+/* ---------- stats --------------------------------------------------------- */
+
+.bv-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.bv-stat { background: var(--ink); padding: clamp(22px, 3.2vw, 40px); }
+.bv-stat__v { font-family: var(--display); font-size: clamp(1.5rem, 3vw, 2.45rem); line-height: 1; color: var(--honey); }
+.bv-stat__l { font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fog); margin-top: 10px; }
+.bv-stat__n { font-size: .82rem; color: var(--fog-2); margin-top: 12px; line-height: 1.45; }
+@media (max-width: 860px) { .bv-stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---------- the comb (method) --------------------------------------------- */
+
+.bv-comb {
+  display: flex; align-items: flex-start; justify-content: flex-start;
+  gap: clamp(6px, 1.1vw, 16px);
+  margin-top: clamp(30px, 4vw, 54px);
+}
+.bv-cell {
+  position: relative; flex: 1 1 0; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  /* every other cell drops, so the row reads as a honeycomb strip */
+  transform: translateY(var(--drop, 0px)) scale(1);
+  transition: transform .55s var(--ease);
+}
+.bv-cell:nth-child(even) { --drop: clamp(22px, 3vw, 44px); }
+.bv-cell.is-on { transform: translateY(var(--drop, 0px)) scale(1.1); }
+
+.bv-cell__hex {
+  position: relative; width: 100%; max-width: 108px;
+  aspect-ratio: 1 / 1.1547;
+  clip-path: var(--hex); -webkit-clip-path: var(--hex);
+  background: var(--ink-2);
+  display: grid; place-items: center;
+  transition: background .4s var(--ease), box-shadow .4s var(--ease);
+}
+/* honey rising inside the cell */
+.bv-cell__fill {
+  position: absolute; inset: 0; transform-origin: 50% 100%;
+  transform: scaleY(var(--f, 0));
+  background: linear-gradient(180deg, #ffe27a 0%, var(--honey) 42%, var(--honey-deep) 100%);
+  transition: transform .6s var(--ease);
+}
+.bv-cell__n {
+  position: relative; z-index: 1;
+  font-family: var(--display); font-size: clamp(.9rem, 1.5vw, 1.25rem);
+  color: var(--fog); transition: color .35s var(--ease);
+}
+/* Contrast follows the HONEY, not the active state — a filled cell is gold, so
+   its number has to go dark whether or not it is the one being scrubbed. */
+.bv-cell.is-filled .bv-cell__n { color: var(--ink); }
+.bv-cell.is-on .bv-cell__hex { box-shadow: 0 0 0 1px rgba(255,194,2,.5), 0 14px 40px rgba(255,194,2,.22); }
+.bv-cell__t {
+  font-family: var(--display); font-size: clamp(.68rem, .95vw, .92rem);
+  text-align: center; color: var(--fog); line-height: 1.2;
+  transition: color .35s var(--ease);
+}
+.bv-cell.is-filled .bv-cell__t,
+.bv-cell.is-on .bv-cell__t,
+.bv-cell:hover .bv-cell__t { color: var(--paper); }
+.bv-cell:hover .bv-cell__hex { background: var(--ink-2); box-shadow: 0 0 0 1px var(--line-2); }
+
+/* the one detail panel the comb drives */
+.bv-stage {
+  display: grid; grid-template-columns: auto 1fr; gap: clamp(16px, 2.4vw, 34px);
+  align-items: start;
+  margin-top: clamp(46px, 6vw, 84px);
+  padding-top: clamp(22px, 3vw, 34px);
+  border-top: 1px solid var(--line);
+  min-height: 108px;
+}
+.bv-stage__no {
+  font-family: var(--display); font-size: clamp(2.2rem, 6vw, 4.4rem);
+  line-height: .8; color: var(--honey);
+}
+.bv-stage__t { font-family: var(--display); font-size: clamp(1.1rem, 2.2vw, 1.7rem); margin-bottom: 8px; }
+.bv-stage__d { color: var(--fog-2); font-size: clamp(.9rem, 1.3vw, 1.05rem); max-width: 62ch; line-height: 1.55; }
+.bv-stage__no, .bv-stage__t, .bv-stage__d { transition: opacity .3s var(--ease), transform .3s var(--ease); }
+.bv-stage.is-swapping .bv-stage__no,
+.bv-stage.is-swapping .bv-stage__t,
+.bv-stage.is-swapping .bv-stage__d { opacity: 0; transform: translateY(9px); }
+
+@media (max-width: 760px) {
+  .bv-comb { flex-wrap: wrap; justify-content: center; gap: 14px 10px; }
+  .bv-cell { flex: 0 0 28%; }
+  .bv-cell:nth-child(even) { --drop: 0px; }
+  .bv-stage { grid-template-columns: 1fr; }
+}
+
+/* ---------- pinned, scroll-scrubbed section ------------------------------- */
+
+/* The masthead is fixed, so an anchor jump has to stop short of it or the
+   section's eyebrow lands underneath. .bv-section carries this already; the
+   pinned method section is not one, and on mobile (where it un-pins) that
+   showed as a heading half-hidden behind the bar. */
+.bv-pin { position: relative; scroll-margin-top: 84px; }
+.bv-pin__rail { height: 300vh; }                      /* the scroll budget */
+.bv-pin__stage {
+  position: sticky; top: 0; min-height: 100svh;
+  display: flex; align-items: center;
+  padding: 110px var(--pad) 70px;
+}
+/* The wrap is a flex ITEM here, so it was sizing to its content — 652px of a
+   1440px viewport, with the whole right half of the section left empty and the
+   comb crushed into a third of the width it was designed for. Flex items do
+   not inherit the block-level full width that the same .bv-wrap gets in every
+   other section, so it has to be asked for. */
+.bv-pin__stage > .bv-wrap { width: 100%; }
+
+/* With the full width back, stack the heading BESIDE the comb rather than
+   above it. The reader then watches the detail panel change directly next to
+   the cell being scrubbed, instead of a screen apart. */
+@media (min-width: 1180px) {
+  .bv-pin__stage > .bv-wrap {
+    display: grid;
+    grid-template-columns: minmax(320px, .92fr) minmax(0, 1.08fr);
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: start;
+  }
+  #method .bv-head { grid-column: 1; grid-row: 1 / span 3; align-self: center; margin-bottom: 0; max-width: none; }
+  #hive            { grid-column: 2; grid-row: 1; margin-top: 0; }
+  #stagePanel      { grid-column: 2; grid-row: 2; }
+  #method .bv-pin__meter { grid-column: 2; grid-row: 3; }
+}
+.bv-pin__meter {
+  margin-top: clamp(28px, 4vw, 46px);
+  height: 2px; background: var(--line); border-radius: 2px; overflow: hidden;
+}
+.bv-pin__meter span {
+  display: block; height: 100%; width: 100%;
+  background: linear-gradient(90deg, var(--honey), #ffe27a);
+  transform: scaleX(0); transform-origin: 0 50%;
+}
+/* Under 900px there is not enough height to pin comfortably — fall back to
+   ordinary flow and let the cells reveal on their own observers. */
+@media (max-width: 900px) {
+  .bv-pin__rail { height: auto; }
+  .bv-pin__stage { position: static; min-height: 0; padding: clamp(64px, 10vw, 120px) var(--pad); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bv-pin__rail { height: auto; }
+  .bv-pin__stage { position: static; min-height: 0; }
+}
+
+/* ---------- services ------------------------------------------------------ */
+
+.bv-svc { border-top: 1px solid var(--line); }
+.bv-svc__row {
+  display: grid; grid-template-columns: 78px 1fr 1.3fr; gap: 20px; align-items: baseline;
+  padding: clamp(20px, 2.6vw, 32px) 0; border-bottom: 1px solid var(--line);
+  transition: background .35s var(--ease), padding-inline .35s var(--ease);
+}
+.bv-svc__row:hover { background: rgba(255, 194, 2, .04); padding-inline: 16px; }
+.bv-svc__n { font-family: var(--mono); font-size: .78rem; color: var(--honey); }
+.bv-svc__t { font-family: var(--display); font-size: clamp(1rem, 1.45vw, 1.25rem); }
+.bv-svc__d { color: var(--fog); font-size: .92rem; }
+@media (max-width: 760px) { .bv-svc__row { grid-template-columns: 46px 1fr; } .bv-svc__d { grid-column: 2; } }
+
+/* ---------- work grid ----------------------------------------------------- */
+
+.bv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 1080px) { .bv-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .bv-grid { grid-template-columns: 1fr; } }
+
+.bv-card {
+  position: relative; display: block; width: 100%; text-align: left;
+  border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;
+  background: var(--ink-1);
+  transition: transform .45s var(--ease), border-color .45s var(--ease);
+}
+.bv-card:hover { transform: translateY(-6px); border-color: var(--a, var(--honey)); }
+.bv-card__img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--ink-2); }
+.bv-card__img img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s var(--ease), filter .5s; filter: grayscale(.35); }
+.bv-card:hover .bv-card__img img { transform: scale(1.06); filter: grayscale(0); }
+.bv-card__veil { position: absolute; inset: 0; background: linear-gradient(to top, var(--ink) 2%, rgba(10,9,9,.35) 42%, transparent 72%); }
+/* Logo plate — used when a client delivered identity work but no gallery. */
+.bv-card__plate {
+  position: absolute; inset: 0; display: grid; place-items: center; padding: 8%;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 194, 2, .10), transparent 65%),
+    var(--ink-2);
+}
+.bv-card__plate img {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  /* Only a light desaturation. These logos are the client's ONLY visual on the
+     card, so full greyscale reads as broken rather than as restraint. */
+  filter: saturate(.55); opacity: .88;
+  transition: filter .5s var(--ease), opacity .5s var(--ease), transform .6s var(--ease);
+}
+.bv-card:hover .bv-card__plate img { filter: none; opacity: 1; transform: scale(1.05); }
+
+/* Stand-in lead art for clients whose deliverables were video or logo only. */
+.bv-card__mark {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 194, 2, .07), transparent 62%);
+}
+.bv-card__mark .bv-hex {
+  width: 92px; background: var(--a, var(--honey)); opacity: .16;
+  transition: opacity .5s var(--ease), transform .6s var(--ease);
+}
+.bv-card:hover .bv-card__mark .bv-hex { opacity: .3; transform: rotate(30deg) scale(1.06); }
+.bv-card__mark b {
+  position: absolute; font-family: var(--display); font-weight: 400;
+  font-size: 2.4rem; color: var(--a, var(--honey));
+}
+.bv-card__tag {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+  padding: 5px 11px; border-radius: 999px;
+  background: rgba(10, 9, 9, .7); border: 1px solid var(--line-2); color: var(--a, var(--honey));
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.bv-card__body { padding: 20px 22px 24px; }
+.bv-card__meta { font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fog); margin-bottom: 9px; }
+.bv-card__t { font-family: var(--display); font-size: 1.1rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.bv-card__t svg { flex: none; transition: transform .4s var(--ease); color: var(--a, var(--honey)); }
+.bv-card:hover .bv-card__t svg { transform: rotate(45deg); }
+.bv-card__o { margin-top: 12px; font-size: .86rem; color: var(--fog-2); line-height: 1.5; }
+.bv-card__kind {
+  display: inline-block; margin-top: 14px;
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .13em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 5px;
+}
+.bv-kind--result { background: var(--honey); color: var(--ink); }
+.bv-kind--goal   { background: transparent; color: var(--fog); border: 1px solid var(--line-2); }
+
+/* ---------- infinite creative carousel ------------------------------------ */
+
+/* The strips run edge to edge, so both ends were a hard vertical cut through
+   whatever tile happened to be there. Fading them out reads as a strip that
+   continues past the frame rather than one that was chopped.
+   Applied to the SCROLLPORT, never the track — the track is what moves, and a
+   mask on it would travel with the tiles instead of staying at the frame. */
+.bv-reel,
+.bv-marquee,
+.bv-gal:not([data-mode="grid"]) .bv-gal__view {
+  --fade: clamp(24px, 6vw, 120px);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade), #000 calc(100% - var(--fade)), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade), #000 calc(100% - var(--fade)), transparent 100%);
+}
+/* the dossier shelf is inset, so it needs a much shorter fade than a
+   full-bleed reel or the first tile is half-ghosted before it is even seen */
+.bv-gal:not([data-mode="grid"]) .bv-gal__view { --fade: clamp(16px, 2vw, 40px); }
+
+/* NO gap on this flex container, deliberately — and this is the whole reason
+   the picture carousel used to hiccup while the marquee band above it did not.
+   The seamless loop is two identical tracks side by side, wrapped at exactly
+   one track width. The track already carries  to space
+   its last tile from the first tile of the next copy, and that padding is
+   INSIDE the width the driver wraps on. A gap here adds another 14px that the
+   wrap does not know about, so the second copy starts 14px late and a hole
+   opens in the strip on every single loop.
+   .bv-marquee has never had one, which is why it always looked right. */
+.bv-reel { overflow: hidden; display: flex; margin-bottom: 14px; }
+.bv-reel__track { display: flex; flex-shrink: 0; gap: 14px; padding-right: 14px; animation: bv-slide var(--dur, 64s) linear infinite; }
+.bv-reel:hover .bv-reel__track { animation-play-state: paused; }
+.bv-reel--rev .bv-reel__track { animation-direction: reverse; }
+.bv-tile {
+  width: clamp(150px, 17vw, 232px); flex: none;
+  aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--line); background: var(--ink-2);
+  position: relative; cursor: zoom-in;
+}
+.bv-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+
+/* ---------- loading skeleton ---------------------------------------------- */
+/* Lazy tiles used to sit as flat grey rectangles until their image decoded —
+   several are always visible at once in a running strip, and a dead grey block
+   reads as a broken image. The shimmer lives on the CONTAINER and is simply
+   covered up when the picture arrives, so it needs no load event to stop. */
+.bv-tile, .bv-gal__t, .bv-card__img {
+  background-image: linear-gradient(100deg,
+    var(--ink-2) 0 38%, rgba(255, 194, 2, .07) 50%, var(--ink-2) 62% 100%);
+  background-size: 260% 100%;
+  animation: bv-shimmer 2.4s ease-in-out infinite;
+}
+@keyframes bv-shimmer { from { background-position: 130% 0; } to { background-position: -130% 0; } }
+/* once the picture is in, the shimmer underneath is wasted work */
+.bv-tile.is-loaded, .bv-gal__t.is-loaded, .bv-card__img.is-loaded { animation: none; background-image: none; }
+
+/* And the picture itself arrives instead of snapping in. Gated on the class
+   motion.js sets, so a reader with no JS still gets every image at full
+   opacity rather than a page of invisible tiles. */
+html.bv-js .bv-tile img { opacity: 0; transition: opacity .55s var(--ease), transform .6s var(--ease); }
+html.bv-js .bv-tile img.is-loaded { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bv-tile, .bv-gal__t, .bv-card__img { animation: none; }
+  html.bv-js .bv-tile img { opacity: 1 !important; }
+}
+.bv-tile:hover img { transform: scale(1.07); }
+.bv-tile::after {
+  content: attr(data-c); position: absolute; inset: auto 0 0; padding: 22px 12px 10px;
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--paper); background: linear-gradient(to top, rgba(10,9,9,.92), transparent);
+  opacity: 0; transition: opacity .35s;
+}
+.bv-tile:hover::after { opacity: 1; }
+
+/* ---------- testimonials -------------------------------------------------- */
+
+.bv-quote { font-family: var(--display); font-size: clamp(1.2rem, 2.5vw, 2.05rem); line-height: 1.28; letter-spacing: -.015em; }
+.bv-quote__who { font-family: var(--mono); font-size: .74rem; letter-spacing: .13em; text-transform: uppercase; color: var(--fog); margin-top: 26px; }
+
+/* ---------- footer -------------------------------------------------------- */
+
+.bv-foot { padding: clamp(48px, 6vw, 80px) var(--pad) 40px; border-top: 1px solid var(--line); position: relative; overflow: hidden; }
+.bv-foot__grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 40px; max-width: 1320px; margin-inline: auto; position: relative; z-index: 1; }
+.bv-foot h3 { font-family: var(--mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: var(--fog); margin: 0 0 16px; }
+.bv-foot ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 3px; font-size: .9rem; }
+/* The link, not the line, is the target. As bare inline text these were 20px
+   tall — under the 24px minimum, and a genuinely fiddly thing to hit on a
+   phone. 3px of padding takes the hit area to 26px and 3px comes back off the
+   row gap, so the pitch is 29px exactly as it was and the footer does not move
+   by a pixel. */
+.bv-foot li a { display: inline-block; padding-block: 3px; }
+.bv-foot a:hover { color: var(--honey); }
+.bv-foot__mark { position: absolute; right: -60px; bottom: -80px; width: 340px; opacity: .05; pointer-events: none; }
+.bv-foot__base { max-width: 1320px; margin: 46px auto 0; padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: .78rem; color: var(--fog); position: relative; z-index: 1; }
+@media (max-width: 820px) { .bv-foot__grid { grid-template-columns: 1fr; gap: 32px; } .bv-foot__mark { display: none; } }
+
+/* ---------- case dossier overlay ------------------------------------------ */
+
+/* The dossier grows out of the card that opened it — JS sets the origin to the
+   card's centre so it expands from where the reader clicked. */
+.bv-case {
+  position: fixed; inset: 0; z-index: 9500;
+  background: var(--ink); display: none;
+  opacity: 0; transform: scale(.93);
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+  transition: opacity .34s var(--ease), transform .52s var(--ease);
+}
+.bv-case.is-open { display: block; }
+.bv-case.is-shown { opacity: 1; transform: none; }
+
+/* contents arrive in sequence rather than all at once */
+.bv-case__mast, .bv-case__sec {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .55s var(--ease), transform .6s var(--ease);
+}
+/* A dossier is four to six screens tall and every one of its sections was
+   getting style, layout and paint the instant the panel's innerHTML landed —
+   in the same frame as the open transition. content-visibility lets the browser
+   skip all of that for the sections below the fold until they are scrolled to,
+   which is most of them.
+   contain-intrinsic-size is not optional here: without it each skipped section
+   collapses to nothing, the panel's scrollHeight is wrong, and the journey rail
+   — which reads scroll position against section offsets — would light the wrong
+   stage. `auto` keeps the LAST rendered size once a section has been seen, so
+   scrolling back up is exact rather than an estimate. */
+.bv-case__sec {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 520px;
+}
+/* Never the first one: it is on screen at open, and skipping then un-skipping it
+   inside the transition is the jitter this is meant to remove. */
+.bv-case__sec:first-of-type { content-visibility: visible; }
+.bv-case.is-ready .bv-case__mast,
+.bv-case.is-ready .bv-case__sec { opacity: 1; transform: none; }
+
+.bv-case__rail > * { opacity: 0; transform: translateX(-14px); transition: opacity .45s var(--ease), transform .5s var(--ease); }
+.bv-case.is-ready .bv-case__rail > * { opacity: 1; transform: none; }
+.bv-case.is-ready .bv-case__rail > *:nth-child(1) { transition-delay: .06s; }
+.bv-case.is-ready .bv-case__rail > *:nth-child(2) { transition-delay: .12s; }
+.bv-case.is-ready .bv-case__rail > *:nth-child(3) { transition-delay: .18s; }
+
+/* switching client: the panel leaves before the next one is built */
+.bv-case__panel { transition: opacity .24s var(--ease), transform .24s var(--ease); }
+.bv-case.is-swapping .bv-case__panel { opacity: 0; transform: translateY(var(--swap, 16px)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bv-case, .bv-case__mast, .bv-case__sec, .bv-case__rail > * { transform: none !important; }
+}
+
+.bv-case__shell { display: grid; grid-template-columns: 268px 1fr; height: 100svh; }
+.bv-case__rail {
+  border-right: 1px solid var(--line); padding: 26px 24px;
+  display: flex; flex-direction: column; gap: 22px; overflow: hidden;
+  background: var(--ink-1);
+}
+.bv-case__no { font-family: var(--mono); font-size: .68rem; letter-spacing: .16em; color: var(--honey); text-transform: uppercase; }
+.bv-case__name { font-family: var(--display); font-size: 1.22rem; line-height: 1.16; }
+.bv-case__steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
+.bv-case__steps button {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 9px 10px; border-radius: 9px; font-size: .86rem; color: var(--fog);
+  transition: background .25s, color .25s;
+}
+.bv-case__steps button:hover { background: rgba(245,245,245,.05); color: var(--paper); }
+.bv-case__steps button.is-on { color: var(--paper); background: rgba(255,194,2,.09); }
+.bv-case__pip { width: 15px; aspect-ratio: 1/1.1547; clip-path: var(--hex); -webkit-clip-path: var(--hex); background: var(--line-2); flex: none; transition: background .25s; }
+.bv-case__steps button.is-on .bv-case__pip,
+.bv-case__steps button:hover .bv-case__pip { background: var(--honey); }
+/* The standing facts, under the step list */
+.bv-case__facts {
+  margin: 4px 0 0; padding-top: 18px; border-top: 1px solid var(--line);
+  display: grid; gap: 12px;
+}
+.bv-case__facts div { display: grid; gap: 3px; }
+.bv-case__facts dt {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--fog);
+}
+.bv-case__facts dd { margin: 0; font-size: .84rem; color: var(--fog-2); line-height: 1.35; }
+
+.bv-case__railfoot { margin-top: auto; display: grid; gap: 10px; }
+/* the rail deals its children in one after another; the facts block is new */
+.bv-case.is-ready .bv-case__rail > *:nth-child(4) { transition-delay: .24s; }
+
+.bv-case__panel { overflow-y: auto; overscroll-behavior: contain; padding: 0 0 90px; }
+.bv-case__x {
+  position: fixed;
+  top: max(18px, calc(env(safe-area-inset-top) + 6px));
+  right: max(20px, calc(env(safe-area-inset-right) + 8px));
+  z-index: 3;
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--line-2); background: rgba(10,9,9,.75);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: grid; place-items: center; transition: background .25s, transform .25s;
+}
+.bv-case__x:hover { background: var(--honey); color: var(--ink); transform: rotate(90deg); }
+
+.bv-case__mast { padding: clamp(40px, 6vw, 76px) clamp(24px, 5vw, 68px) 34px; border-bottom: 1px solid var(--line); }
+.bv-case__meta { font-family: var(--mono); font-size: .7rem; letter-spacing: .13em; text-transform: uppercase; color: var(--fog); margin-bottom: 18px; }
+.bv-case__tagline { font-family: var(--display); font-size: clamp(1.3rem, 2.6vw, 2.1rem); line-height: 1.14; letter-spacing: -.02em; margin: 0 0 20px; }
+.bv-case__chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
+.bv-chip { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--fog-2); }
+
+.bv-case__sec { padding: clamp(38px, 5vw, 62px) clamp(24px, 5vw, 68px); border-bottom: 1px solid var(--line); }
+.bv-case__sec h3 { font-family: var(--mono); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--honey); margin: 0 0 26px; font-weight: 400; }
+
+/* Journey: a comb the reader walks down. */
+.bv-journey { display: grid; gap: 0; max-width: 900px; }
+.bv-step { display: grid; grid-template-columns: 76px 1fr; gap: 22px; padding-bottom: 32px; position: relative; }
+/* the connector is a real element now (.bv-step__line) so it can draw itself */
+.bv-step__hex {
+  width: 62px; aspect-ratio: 1/1.1547; clip-path: var(--hex); -webkit-clip-path: var(--hex);
+  background: var(--ink-2); display: grid; place-items: center;
+  font-family: var(--mono); font-size: .72rem; color: var(--fog);
+  transition: background .4s var(--ease), color .4s var(--ease);
+}
+.bv-step.is-in .bv-step__hex { background: var(--honey); color: var(--ink); }
+.bv-step__t { font-family: var(--display); font-size: 1.02rem; margin: 12px 0 8px; }
+.bv-step__b { color: var(--fog-2); font-size: .96rem; line-height: 1.62; max-width: 68ch; }
+
+/* Metrics: flip to reveal the receipt. */
+.bv-mx { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 980px) { .bv-mx { grid-template-columns: repeat(2, 1fr); } }
+.bv-m { perspective: 1000px; background: none; border: 0; padding: 0; min-height: 168px; }
+/* display:block matters — these are <span>s, and an inline box gives the
+   absolutely-positioned faces below no containing block to fill. */
+.bv-m__in { display: block; position: relative; width: 100%; min-height: 168px; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform .58s var(--ease); }
+.bv-m.is-flipped .bv-m__in { transform: rotateY(180deg); }
+.bv-m__f, .bv-m__b {
+  position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border: 1px solid var(--line); border-radius: 16px; padding: 20px; text-align: left;
+  display: flex; flex-direction: column; justify-content: flex-end; background: var(--ink-1);
+  transition: opacity 0s linear .29s;
+}
+.bv-m__b { transform: rotateY(180deg); justify-content: center; background: var(--ink-2); }
+.bv-m.is-flipped .bv-m__f { opacity: 0; }
+.bv-m:not(.is-flipped) .bv-m__b { opacity: 0; }
+.bv-m__v { font-family: var(--display); font-size: clamp(1.12rem, 1.9vw, 1.6rem); line-height: 1; color: var(--honey); }
+.bv-m__l { font-family: var(--mono); font-size: .64rem; letter-spacing: .13em; text-transform: uppercase; color: var(--fog); margin-top: 9px; }
+.bv-m__n { font-size: .82rem; color: var(--fog-2); line-height: 1.5; }
+.bv-m__hint { position: absolute; top: 14px; right: 16px; font-family: var(--mono); font-size: .58rem; color: var(--fog); opacity: .6; }
+
+/* Campaign readout */
+.bv-camp { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; max-width: 760px; }
+.bv-camp__h { padding: 16px 20px; background: var(--ink-1); border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--honey); }
+.bv-camp__rows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); }
+.bv-camp__c { background: var(--ink); padding: 18px 20px; }
+.bv-camp__v { font-family: var(--display); font-size: 1.12rem; }
+.bv-camp__k { font-family: var(--mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fog); margin-top: 6px; }
+.bv-camp__f { padding: 14px 20px; background: var(--ink-1); border-top: 1px solid var(--line); font-size: .82rem; color: var(--fog-2); }
+@media (max-width: 640px) { .bv-camp__rows { grid-template-columns: repeat(2, 1fr); } }
+
+.bv-redact {
+  display: inline-flex; align-items: center; gap: 9px; margin-top: 18px;
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .08em;
+  color: var(--fog); border: 1px dashed var(--line-2); border-radius: 8px; padding: 8px 13px;
+}
+.bv-redact b { background: var(--fog); color: var(--fog); border-radius: 2px; user-select: none; }
+
+/* Case gallery — a running shelf that spreads into a grid */
+.bv-gal { position: relative; }
+/* The shelf runs at a fixed HEIGHT and every tile takes its natural width, so
+   each piece is shown whole and uncropped rather than squared off. */
+.bv-gal__view {
+  /* No gap here either, for the same reason as .bv-reel above: the track's
+     padding-right spaces the two copies and is already inside the width the
+     driver wraps on, so a gap here opens a hole at every loop. */
+  display: flex; overflow: hidden;
+  padding: 30px 0 34px;
+  height: clamp(320px, 52vh, 560px);
+}
+.bv-gal__track {
+  display: flex; gap: 14px; flex: none; padding-right: 14px; height: 100%;
+  /* The same --dur the JS driver uses, so the lite tier and the no-JS fallback
+     run the shelf at the pace the full tier does instead of a third of it.
+     buildCase writes --dur per shelf; the calc() is only the standalone
+     fallback for markup that never reached the JS. */
+  animation: bv-slide var(--dur, calc(var(--n, 8) * 2.4s)) linear infinite;
+}
+.bv-gal.is-held .bv-gal__track { animation-play-state: paused; }
+
+.bv-gal__t {
+  flex: 0 0 auto; height: 100%; width: auto;
+  /* guard against a zero-width collapse in the moment before an image decodes */
+  min-width: clamp(140px, 17vw, 240px);
+  border-radius: 14px; overflow: hidden; border: 1px solid var(--line);
+  background: var(--ink-2); cursor: zoom-in; padding: 0;
+  transition: transform .42s var(--ease), box-shadow .42s var(--ease), border-color .42s var(--ease);
+}
+.bv-gal__t img { height: 100%; width: auto; max-width: none; display: block; object-fit: contain; }
+
+/* the pop */
+.bv-gal__t:hover {
+  transform: translateY(-16px) scale(1.045);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .65);
+  border-color: var(--honey);
+  z-index: 3;
+}
+
+.bv-gal__toggle {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 17px; border-radius: 999px;
+  border: 1px solid var(--line-2); color: var(--fog-2);
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+}
+.bv-gal__toggle:hover { background: var(--honey); color: var(--ink); border-color: var(--honey); }
+.bv-gal__toggle svg { transition: transform .4s var(--ease); }
+.bv-gal[data-mode="grid"] .bv-gal__toggle svg { transform: rotate(45deg); }
+
+/* spread — still whole images, laid out in columns */
+.bv-gal[data-mode="grid"] .bv-gal__view { overflow: visible; height: auto; }
+.bv-gal[data-mode="grid"] .bv-gal__track {
+  display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; height: auto;
+  align-items: start; animation: none; padding-right: 0;
+}
+.bv-gal[data-mode="grid"] .bv-gal__track--ghost { display: none; }
+.bv-gal[data-mode="grid"] .bv-gal__t { width: 100%; height: auto; min-width: 0; }
+.bv-gal[data-mode="grid"] .bv-gal__t img { width: 100%; height: auto; }
+@media (max-width: 900px) {
+  .bv-gal[data-mode="grid"] .bv-gal__track { grid-template-columns: repeat(2, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bv-gal__track { animation: none; }
+  .bv-gal__view { overflow-x: auto; }
+}
+
+@media (max-width: 900px) {
+  .bv-case__shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  /* the close button is fixed top-right, so keep the title out from under it */
+  .bv-case__rail { grid-row: 1; border-right: 0; border-bottom: 1px solid var(--line); padding: 18px 76px 18px 20px; gap: 14px; }
+  .bv-case__name { font-size: 1.22rem; }
+  /* six steps do not fit a phone, so this scrolls — the fade on the trailing
+     edge is the only thing telling the reader there is more of it */
+  .bv-case__steps {
+    display: flex; overflow-x: auto; gap: 6px; scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, #000 0 82%, transparent 100%);
+            mask-image: linear-gradient(90deg, #000 0 82%, transparent 100%);
+  }
+  .bv-case__steps::-webkit-scrollbar { display: none; }
+  .bv-case__steps button { white-space: nowrap; }
+  /* the rail is a shallow horizontal bar here — the same facts are already in
+     the masthead a thumb-flick below, so they would only cost height */
+  .bv-case__facts { display: none; }
+  .bv-case__railfoot { display: none; }
+  .bv-case__panel { grid-row: 2; }
+}
+
+/* ---------- lightbox ------------------------------------------------------ */
+
+.bv-lb {
+  position: fixed; inset: 0; z-index: 9800; display: none; place-items: center;
+  padding: max(4vmin, env(safe-area-inset-top)) max(4vmin, env(safe-area-inset-right))
+           max(4vmin, env(safe-area-inset-bottom)) max(4vmin, env(safe-area-inset-left));
+  /* Full-screen and above everything: a swipe past the edge of the picture
+     must not scroll the page it is covering. */
+  overscroll-behavior: contain;
+}
+.bv-lb.is-open { display: grid; }
+/* Same rule as the dossier veil: no blur while the picture is growing out of
+   its thumbnail, blur once it has arrived. */
+.bv-lb__bg {
+  position: absolute; inset: 0; background: rgba(6, 5, 5, .94);
+  opacity: 0; transition: opacity .36s var(--ease);
+}
+.bv-lb.is-shown .bv-lb__bg { opacity: 1; }
+.bv-lb.is-settled .bv-lb__bg {
+  backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);
+}
+
+.bv-lb img {
+  position: relative; z-index: 1;
+  max-width: 94vw; max-height: 88vh; object-fit: contain; border-radius: 10px;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, .7);
+  will-change: transform, opacity;
+}
+
+/* chrome fades in after the picture has arrived */
+.bv-lb__x, .bv-lb__nav, .bv-lb__count {
+  opacity: 0; transition: opacity .3s var(--ease) .16s, background .25s, color .25s, transform .3s var(--ease);
+}
+.bv-lb.is-shown .bv-lb__x,
+.bv-lb.is-shown .bv-lb__nav,
+.bv-lb.is-shown .bv-lb__count { opacity: 1; }
+
+.bv-lb__x { position: absolute; top: 20px; right: 22px; z-index: 2; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; background: rgba(10,9,9,.5); }
+.bv-lb__x:hover { background: var(--honey); color: var(--ink); transform: rotate(90deg); }
+.bv-lb__nav { position: absolute; top: 50%; z-index: 2; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line-2); background: rgba(10,9,9,.6); display: grid; place-items: center; margin-top: -23px; }
+.bv-lb__nav:hover { background: var(--honey); color: var(--ink); }
+.bv-lb__nav--p { left: 18px; }
+.bv-lb__nav--n { right: 18px; }
+.bv-lb__nav--p:hover { transform: translateX(-3px); }
+.bv-lb__nav--n:hover { transform: translateX(3px); }
+.bv-lb__count {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 2;
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; color: var(--fog);
+  background: rgba(10,9,9,.6); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px;
+  display: flex; align-items: center; gap: 10px; max-width: 88vw;
+}
+/* the client's name, so an enlarged piece still says whose it is */
+.bv-lb__count b {
+  font-weight: 400; color: var(--paper); letter-spacing: .1em; text-transform: uppercase;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.bv-lb__count b + span { padding-left: 10px; border-left: 1px solid var(--line-2); flex: none; }
+
+/* ---------- reveal on scroll ---------------------------------------------- */
+
+.bv-rise { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.bv-rise.is-in { opacity: 1; transform: none; }
+
+/* Word-by-word heading reveal, driven by motion.js */
+.bv-w {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(.42em) rotate(1.6deg);
+  transition: opacity .62s var(--ease), transform .62s var(--ease);
+  will-change: transform, opacity;
+}
+.is-lit .bv-w { opacity: 1; transform: none; }
+
+/* Comb cells fade in; the drop/scale transform is owned by .bv-cell itself, so
+   the entrance only touches opacity or the two would fight. */
+.bv-comb .bv-cell { opacity: 0; transition: transform .55s var(--ease), opacity .5s var(--ease); }
+.bv-comb .bv-cell.is-in { opacity: 1; }
+
+/* Service rows slide in from the left behind a drawn rule */
+.bv-svc__row { opacity: 0; transform: translateX(-26px); }
+.bv-svc__row.is-in { opacity: 1; transform: none; transition: opacity .6s var(--ease), transform .6s var(--ease), background .35s var(--ease), padding-inline .35s var(--ease); }
+
+/* Cards carry the tilt transform from JS, so keep the base transition cheap */
+.bv-card { will-change: transform; }
+
+/* Hex wipe: card art irises open through a hexagon as it enters view */
+.bv-card__img > img,
+.bv-card__plate,
+.bv-card__mark {
+  clip-path: polygon(50% 40%, 50% 40%, 50% 40%, 50% 40%, 50% 40%, 50% 40%);
+  transition: clip-path .9s var(--ease), transform .8s var(--ease), filter .5s;
+}
+.bv-card.is-in .bv-card__img > img,
+.bv-card.is-in .bv-card__plate,
+.bv-card.is-in .bv-card__mark {
+  clip-path: polygon(50% -60%, 160% 20%, 160% 80%, 50% 160%, -60% 80%, -60% 20%);
+}
+
+/* Decode scramble: eyebrows land as mono noise then resolve */
+.bv-eyebrow { --dec: 0; }
+.bv-eyebrow.is-scrambling { color: var(--fog); }
+
+/* Magnetic buttons — JS writes the offset, CSS eases it back */
+.bv-cta { will-change: transform; }
+.bv-cta.is-mag { transition: transform .18s cubic-bezier(.2,.7,.3,1), box-shadow .3s var(--ease); }
+
+/* Case gallery images arrive out of focus and sharpen */
+.bv-gal img { filter: blur(14px) saturate(.5); opacity: 0; transition: filter .8s var(--ease), opacity .6s var(--ease), transform .5s var(--ease); }
+.bv-gal img.is-sharp { filter: none; opacity: 1; }
+
+/* Reel tiles lean AND smear with scroll velocity — the faster you move, the
+   more the strip blurs, like film pulled past a gate. */
+.bv-reel { --lean: 0deg; --smear: 0px; }
+.bv-tile {
+  transform: skewY(var(--lean));
+  filter: blur(var(--smear));
+  transition: transform .2s linear, filter .25s linear;
+}
+
+/* Work cards arrive in 3D, tipped away from the reader */
+.bv-grid { perspective: 1400px; }
+.bv-card {
+  opacity: 0;
+  transform: translateY(46px) rotateX(14deg) scale(.94);
+  transform-origin: 50% 100%;
+  transition: opacity .7s var(--ease), transform .85s var(--ease), border-color .45s var(--ease);
+}
+.bv-card.is-in { opacity: 1; transform: none; }
+/* must be restated here: this block sits after the original :hover rule, so an
+   equal-specificity .is-in would otherwise win and the lift would never show */
+.bv-card.is-in:hover { transform: translateY(-6px); }
+
+/* Big contact heading fills with honey as it crosses the viewport */
+.bv-fill {
+  --fill: 0%;
+  background-image: linear-gradient(90deg, var(--honey) 0%, #ffe27a var(--fill), var(--fog) calc(var(--fill) + 1%));
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+
+/* Footer mark turns with the page */
+.bv-foot__mark { transform: rotate(var(--spin, 0deg)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bv-card { opacity: 1 !important; transform: none !important; }
+  .bv-fill { color: var(--paper); -webkit-text-fill-color: var(--paper); background-image: none; }
+}
+
+/* Journey connector draws itself as you scroll the dossier */
+.bv-step__line { position: absolute; left: 37px; top: 74px; bottom: 6px; width: 1px; overflow: hidden; }
+.bv-step__line i {
+  display: block; height: 100%; width: 100%;
+  background: linear-gradient(var(--honey), transparent);
+  transform: scaleY(0); transform-origin: 50% 0;
+  transition: transform .7s var(--ease);
+}
+.bv-step.is-in .bv-step__line i { transform: scaleY(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bv-w, .bv-comb .bv-cell, .bv-svc__row { opacity: 1 !important; }
+  .bv-svc__row { transform: none !important; }
+  .bv-hero__comb { display: none; }
+  .bv-card__img > img, .bv-card__plate, .bv-card__mark { clip-path: none !important; }
+  .bv-gal img { filter: none !important; opacity: 1 !important; }
+  .bv-tile { transform: none !important; }
+}
+
+body.bv-locked { overflow: hidden; }
+
+/* ---------- the revolving comb (hero) -------------------------------------- */
+/* A honeycomb cluster of real client work that slowly turns. It lives on the
+   RIGHT of the hero — the left third stays clear so the headline can breathe. */
+
+.bv-hive3d {
+  position: absolute; inset: 0; z-index: 0;
+  perspective: 1400px;
+  perspective-origin: 68% 50%;
+  pointer-events: none;                 /* only the cells take the pointer */
+  /* fade the cluster out toward the headline instead of cutting it off */
+  -webkit-mask-image: linear-gradient(90deg, transparent 26%, #000 52%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 26%, #000 52%, #000 100%);
+}
+
+/* The tilt wrapper is the POSITIONED layer and carries the pointer lean written
+   by hive.js. The lattice inside it carries the endless revolve. They have to be
+   separate elements: a running CSS animation beats an inline transform, so a
+   lean written onto the animated element never appears. */
+.bv-hive3d__tilt {
+  position: absolute; left: 62%; top: 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform .9s var(--ease);
+}
+.bv-hive3d__lattice {
+  position: absolute; left: 0; top: 0;
+  transform-style: preserve-3d;
+  animation: bv-revolve 34s ease-in-out infinite alternate;
+  will-change: transform;
+}
+/* Oscillates rather than spinning a full turn: a complete rotation puts every
+   cell edge-on for half the cycle, and the hero goes empty. */
+@keyframes bv-revolve {
+  from { transform: rotateY(-19deg) rotateX(7deg) rotateZ(-2.5deg); }
+  to   { transform: rotateY(19deg)  rotateX(-5deg) rotateZ(2.5deg); }
+}
+
+.bv-cellx {
+  position: absolute; padding: 0; border: 0; background: none;
+  pointer-events: auto; cursor: pointer;
+  clip-path: var(--hex); -webkit-clip-path: var(--hex);
+  background-color: var(--ink-2);
+  /* --px/--py are the neighbour push written by hive.js on hover */
+  transform:
+    translate(calc(-50% + var(--px, 0px)), calc(-50% + var(--py, 0px)))
+    translateZ(var(--z, 0px));
+  transition: transform .5s var(--ease), filter .5s var(--ease), opacity .6s var(--ease);
+  opacity: 0;
+  overflow: hidden;
+  /* the idle bob uses the independent `translate` property, NOT `transform`, so
+     it composes with the push above instead of overwriting it */
+  animation: bv-cellfloat var(--float, 9s) ease-in-out infinite alternate;
+  animation-delay: var(--fdelay, 0s);
+}
+.bv-hive3d.is-in .bv-cellx { opacity: 1; }
+
+@keyframes bv-cellfloat {
+  from { translate: 0 0; }
+  to   { translate: 0 var(--floaty, -7px); }
+}
+
+.bv-cellx img, .bv-cellx video {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.72) contrast(1.06) brightness(.72);
+  transition: filter .55s var(--ease), transform .7s var(--ease);
+}
+/* the two stacked faces used to cross-fade a cell to new work */
+.bv-cellx__b { position: absolute; inset: 0; opacity: 0; transition: opacity .9s var(--ease); }
+.bv-cellx.is-turning .bv-cellx__b { opacity: 1; }
+.bv-cellx.is-turning .bv-cellx__a { opacity: 0; }
+.bv-cellx__a { position: absolute; inset: 0; opacity: 1; transition: opacity .9s var(--ease); }
+
+/* `.is-hot` is written by hive.js; `:hover` is kept as the no-JS fallback. */
+.bv-cellx:hover,
+.bv-cellx.is-hot {
+  transform: translate(-50%, -50%) translateZ(calc(var(--z, 0px) + 78px)) scale(1.07);
+  z-index: 5;
+}
+.bv-cellx:hover img, .bv-cellx:hover video,
+.bv-cellx.is-hot img, .bv-cellx.is-hot video { filter: none; transform: scale(1.05); }
+
+/* The ring around the hot cell is nudged out of the way and held back, so the
+   one being pointed at reads as lifted OUT of the sheet rather than merely
+   scaled up in place. */
+.bv-cellx.is-near { z-index: 1; }
+.bv-cellx.is-near img, .bv-cellx.is-near video {
+  filter: saturate(.45) contrast(1.02) brightness(.42);
+}
+
+/* Idle pulse: honey travels cell to cell when nobody is pointing, which is what
+   tells a reader the comb is touchable before they ever try it. */
+.bv-cellx.is-pulse::after {
+  box-shadow: inset 0 0 0 2px var(--honey), inset 0 0 26px rgba(255, 194, 2, .3);
+}
+.bv-cellx.is-pulse img, .bv-cellx.is-pulse video { filter: saturate(1) brightness(.92); }
+
+/* the beat of honey on click, before the dossier grows out of the cell */
+.bv-cellx.is-firing::after {
+  box-shadow: inset 0 0 0 3px var(--honey), inset 0 0 40px rgba(255, 194, 2, .55);
+}
+.bv-cellx.is-firing { transition: transform .18s var(--ease); }
+
+/* ---------- the comb readout ----------------------------------------------- */
+/* This used to be a caption INSIDE each hexagon. A pointy-top hex tapers to a
+   single point at the bottom — exactly where a bottom-anchored caption sits —
+   so the clip-path ate it on every cell, and anything longer than one short
+   word ("SpeakUp English Training") lost whole lines. One shared panel, fixed
+   to the viewport and outside the 3D context, has room for any name and is
+   never sheared by the revolve. hive.js writes its position. */
+.bv-hive__read {
+  position: fixed; left: 0; top: 0; z-index: 6;
+  width: 246px; padding: 15px 17px 14px;
+  border-radius: 15px;
+  background: rgba(14, 12, 11, .93);
+  border: 1px solid var(--line-2);
+  border-left: 2px solid var(--a, var(--honey));
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .6);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .26s var(--ease), transform .34s var(--ease);
+  display: grid; gap: 5px;
+}
+.bv-hive__read.is-on { opacity: 1; }
+.bv-hive__read-s {
+  font-family: var(--mono); font-size: .55rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--a, var(--honey));
+}
+.bv-hive__read-n {
+  font-family: var(--display); font-weight: 400; font-size: 1.02rem;
+  line-height: 1.14; color: var(--paper);
+  /* the whole point of moving out of the hexagon: names wrap, never truncate */
+  overflow-wrap: anywhere;
+}
+.bv-hive__read-o { font-size: .76rem; line-height: 1.42; color: var(--fog-2); }
+.bv-hive__read-go {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 4px;
+  font-family: var(--mono); font-size: .55rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--fog);
+}
+/* Beeviro's own showreel is in the comb too, and it has no dossier to open —
+   it sends the reader to the work instead, so it must not promise a case. */
+.bv-hive__read.is-self .bv-hive__read-go { font-size: 0; }
+.bv-hive__read.is-self .bv-hive__read-go::before {
+  content: 'See the work'; font-size: .55rem;
+}
+@media (hover: none), (max-width: 1099.98px) { .bv-hive__read { display: none; } }
+@media (prefers-reduced-motion: reduce) { .bv-hive__read { transition: opacity .01s; } }
+
+/* a hairline so the comb reads as structure even where the art is dark */
+.bv-cellx::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 194, 2, .16);
+  transition: box-shadow .42s var(--ease);
+}
+.bv-cellx:hover::after,
+.bv-cellx.is-hot::after { box-shadow: inset 0 0 0 2px var(--honey); }
+
+@media (max-width: 1099.98px) {
+  /* On a narrow screen the copy needs the whole width, so the comb moves ABOVE
+     it and fades out before the type starts — behind the headline it was
+     bright enough to fight the eyebrow. */
+  .bv-hive3d {
+    perspective-origin: 50% 26%;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26%, transparent 52%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 26%, transparent 52%);
+    opacity: .38;
+  }
+  .bv-hive3d__tilt { left: 50%; top: 20%; }
+  .bv-cellx { pointer-events: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bv-hive3d__lattice { animation: none; }
+  .bv-cellx { animation: none; }
+}
+
+/* ---------- hero: copy column vs comb column ------------------------------- */
+/* The comb is real work, so it has to be legible — and so does the headline.
+   They get separate columns rather than fighting over the same pixels. */
+@media (min-width: 1100px) {
+  .bv-hero__inner { max-width: 1320px; }
+  .bv-hero .bv-mega {
+    /* Was 8vw / 6.4rem — 102px of headline on a 1440px screen, which is what
+       "the text is still quite big for the screen" was about. */
+    font-size: clamp(2.2rem, 4.6vw, 4.3rem);
+    max-width: 11ch;                /* wraps in the left column, clear of the comb */
+  }
+  .bv-hero__lede { max-width: 46ch; }
+  /* push the cluster into the right third */
+  .bv-hive3d__tilt { left: 76%; }
+  .bv-hive3d {
+    perspective-origin: 76% 50%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 40%, #000 62%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 40%, #000 62%, #000 100%);
+  }
+  /* and hold the left side down so white type always has ground under it */
+  .bv-hero__scrim {
+    background:
+      linear-gradient(90deg, var(--ink) 12%, rgba(10, 9, 9, .88) 40%, rgba(10, 9, 9, .30) 66%, transparent 84%),
+      linear-gradient(to top, var(--ink) 1%, transparent 34%);
+  }
+}
+
+/* ---------- hero: let clicks reach the comb -------------------------------- */
+/* The copy column sits above the cells (z-index 1) and, being a full-width
+   block, was swallowing every click aimed at a cell — only the ones past its
+   right edge were reachable. The CONTAINER goes click-transparent; its children
+   keep pointer events, so text is still selectable and the CTAs still work,
+   and each only blocks over its own box. */
+.bv-hero__inner { pointer-events: none; }
+.bv-hero__inner > * { pointer-events: auto; }
+
+/* These are full-width blocks by default, which would re-create the problem
+   across the whole row. Shrink them to their content. */
+.bv-hero .bv-eyebrow,
+.bv-hero__actions,
+.bv-hero .bv-scrollcue { width: max-content; max-width: 100%; }
+
+/* The hero headline is display type — nobody selects it, but it IS a big opaque
+   box sitting over the comb, and it overlaps the cells by up to 147px between
+   1100 and 1600px. Let clicks straight through it. This is the durable fix:
+   geometry alone cannot separate a 730px headline from a 650px comb at 1280.
+   The lede and the CTAs keep their pointer events, so real content is still
+   selectable and clickable. */
+.bv-hero .bv-mega { pointer-events: none; }
+
+/* ---------- hide the OS cursor once ours is live --------------------------- */
+/* The class is added by motion.js on the first pointermove, i.e. only once the
+   honey cursor is genuinely on screen. Hiding from CSS alone would leave a
+   reader with NO cursor if the script failed, on a touch device, or under
+   reduced motion — all cases where our cursor never appears.
+   The universal selector and !important are deliberate: buttons, links, the
+   drag strips and the zoom tiles all set their own cursor, and each would
+   otherwise bring the OS pointer straight back. */
+/* `:not(.bv-lite-boot)` is a safety catch, not decoration. This rule hides the
+   OPERATING SYSTEM's pointer, and the only thing standing in for it is the
+   custom cursor. If the class is ever set while that element is not being
+   drawn, the reader has no pointer at all and no way to work out why — which is
+   exactly what happened when the FPS watchdog demoted the tier mid-session. Any
+   state that hides the custom cursor must also stop hiding the real one. */
+html.bv-cursor-on:not(.bv-lite-boot),
+html.bv-cursor-on:not(.bv-lite-boot) *,
+html.bv-cursor-on:not(.bv-lite-boot) *::before,
+html.bv-cursor-on:not(.bv-lite-boot) *::after { cursor: none !important; }
+
+/* Keyboard users still need to see focus, and a caret is not a cursor —
+   if a text field is ever added, give it its pointer back. */
+html.bv-cursor-on input,
+html.bv-cursor-on textarea,
+html.bv-cursor-on [contenteditable="true"] { cursor: text !important; }
+
+/* ==========================================================================
+   REVISION PASS — supervisor feedback
+   Everything below this line answers a specific note and is kept together so it
+   reads as a set of answers rather than having to be hunted for.
+   ========================================================================== */
+
+/* ---------- 1. the two switches in the masthead ---------------------------- */
+
+.bv-tools { display: flex; align-items: center; gap: 8px; margin-inline-start: 22px; }
+.bv-tool {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 32px; min-width: 32px; padding: 0 11px;
+  border: 1px solid var(--line-2); border-radius: 999px;
+  color: var(--fog-2); font-size: .74rem; line-height: 1;
+  transition: color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+}
+.bv-tool:hover { color: var(--paper); border-color: var(--honey); background: rgba(255, 194, 2, .08); }
+.bv-tool--lang { font-family: var(--mono); letter-spacing: .06em; }
+/* Pressed = full motion. Lite is the notable state, so lite is what changes
+   colour — an unlit bolt reads as "effects are off" without needing a legend. */
+.bv-tool--perf { color: var(--honey); border-color: rgba(255, 194, 2, .35); }
+.bv-tool--perf.is-lite { color: var(--fog); border-color: var(--line); background: none; }
+.bv-tool--wide { width: auto; padding: 0 14px; height: 36px; font-size: .78rem; }
+@media (max-width: 900px) { .bv-tools { display: none; } }
+
+.bv-menu__switches {
+  position: relative; display: flex; gap: 10px; flex-wrap: wrap;
+  opacity: 0; transition: opacity .5s var(--ease) .3s;
+}
+.bv-menu.is-shown .bv-menu__switches { opacity: 1; }
+
+/* ---------- 2. services now have something to look at ---------------------- */
+/* NOTE: "Lack of visuals in the SERVICES section". It was eight rows of text
+   sitting between a comb that fills with honey and a wall of client art, so it
+   read as a gap in the page. Each row now leads with a drawn glyph inside a
+   real hexagon — vector, so it weighs nothing and scales to any screen. */
+
+.bv-svc__row {
+  /* The title column is sized to the longest label rather than to a share of
+     the row, so the descriptions start at a consistent left edge close to the
+     titles instead of being flung across a 1440px screen. */
+  grid-template-columns: 60px 40px minmax(0, 15em) minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(12px, 1.4vw, 22px);
+  padding: clamp(16px, 1.9vw, 24px) 0;
+}
+.bv-svc__art {
+  grid-column: 1; position: relative; width: 56px; aspect-ratio: 1 / 1.1547;
+  display: grid; place-items: center; color: var(--honey);
+}
+.bv-svc__hex {
+  position: absolute; inset: 0;
+  clip-path: var(--hex); -webkit-clip-path: var(--hex);
+  background: rgba(255, 194, 2, .10);
+  transition: background .4s var(--ease), transform .5s var(--ease);
+}
+.bv-svc__art svg {
+  position: relative; z-index: 1; width: 24px; height: 24px;
+  transition: color .4s var(--ease), transform .5s var(--ease);
+}
+.bv-svc__row:hover .bv-svc__hex { background: var(--honey); transform: rotate(-8deg) scale(1.04); }
+.bv-svc__row:hover .bv-svc__art svg { color: var(--ink); transform: scale(1.06); }
+.bv-svc__n { grid-column: 2; align-self: center; }
+/* A grid item's automatic minimum size is its CONTENT, not its track, so a
+   long unbreakable run — "استراتيجية وتحليل SWOT" on a 390px phone — pushes the
+   whole row past the viewport. Measured as 6px of horizontal overflow in the
+   Arabic build; nothing reported a box outside the viewport because the page
+   had already shifted to absorb it. */
+.bv-svc__t { grid-column: 3; min-width: 0; overflow-wrap: anywhere; }
+.bv-svc__d { grid-column: 4; font-size: .86rem; line-height: 1.55; min-width: 0; overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+  .bv-svc__row { grid-template-columns: 48px minmax(0, 1fr); row-gap: 4px; }
+  .bv-svc__art { width: 44px; grid-row: 1 / span 3; align-self: start; }
+  .bv-svc__n { grid-column: 2; grid-row: 1; }
+  .bv-svc__t { grid-column: 2; grid-row: 2; }
+  .bv-svc__d { grid-column: 2; grid-row: 3; }
+}
+
+/* Service rows wait at translateX(-26px) until they are revealed, which puts
+   them 26px past the section's leading edge. In an LTR document `overflow-x:
+   hidden` on <body> clips that; in RTL it is overflow past the START edge, and
+   Chrome does not clip it — it turned into 6px of horizontal scroll on the
+   whole Arabic page, from a section eight screens down that nobody had reached.
+   Two fixes, because either alone is a coincidence: the slide now enters from
+   the reader's own leading edge, and the strip clips its own children.
+   `overflow-x: clip` rather than `hidden` — clip does not make a scroll
+   container, so it cannot swallow a future sticky child. */
+.bv-svc { overflow-x: clip; }
+html[dir="rtl"] .bv-svc__row { transform: translateX(26px); }
+html[dir="rtl"] .bv-svc__row.is-in { transform: none; }
+
+/* ---------- 3. six cards, then the rest on request ------------------------- */
+/* NOTE: "The WORK/PROJECTS section is very crowded, it must only show 6 max and
+   put a SHOW MORE button." */
+
+.bv-more {
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+  flex-wrap: wrap; margin-top: clamp(26px, 3.4vw, 44px);
+}
+.bv-more__count {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--fog);
+}
+/* A market list can run to two lines ("Saudi Arabia · UAE · Qatar · Egypt") and
+   that pushed one card's title a line lower than its neighbours'. Reserve the
+   second line on every card so the row of titles stays level. */
+.bv-card__meta { min-height: 3.2em; }
+
+.bv-more__btn svg { transition: transform .4s var(--ease); }
+.bv-more__btn.is-open svg { transform: rotate(180deg); }
+/* A card that is not shown must be out of the tab order too, not merely out of
+   sight — `hidden` does both, and this beats the grid display it would
+   otherwise inherit. */
+.bv-card[hidden] { display: none; }
+
+/* ---------- 4. the dossier is inset, and less dense ------------------------ */
+/* NOTE: "the modal for the projects is very crowded and it has to have margins
+   from the sides to show the main website from behind."
+   So: the page stays visible around the dossier, dimmed; the dossier is a panel
+   on top of the site rather than a replacement for it; clicking the margin
+   closes it. The growth transform moved from the overlay to the SHELL, so the
+   dim layer covers the whole viewport for the entire animation instead of
+   shrinking along with the panel and flashing an undimmed border. */
+
+.bv-case { background: transparent; transform: none; transition: opacity .34s var(--ease); }
+/* NEVER TRANSITION backdrop-filter. This is the single most expensive thing the
+   page was doing, and it took a CPU profile to see it: our own JavaScript for a
+   case open totals about 150ms, while `(program)` — the browser's own style,
+   layout, paint and compositing — was 2.7 SECONDS.
+
+   Animating the blur RADIUS means the browser re-samples the entire viewport
+   behind the layer and re-blurs it at a new radius on every one of the ~24
+   frames of the transition, while the shell is scaling on top of it. Holding
+   the radius CONSTANT and animating only opacity lets the blurred backdrop be
+   produced once and then composited — which is what the compositor is for.
+
+   The blur is declared on the veil itself rather than on .is-shown for the same
+   reason: a value that never changes is a value that never re-renders. The
+   whole overlay is display:none until it opens, so an idle page pays nothing
+   for it. */
+.bv-case__veil {
+  position: absolute; inset: 0;
+  background: rgba(5, 4, 4, .62);
+  opacity: 0;
+  transition: opacity .34s var(--ease);
+}
+.bv-case.is-shown .bv-case__veil { opacity: 1; }
+/* THE BLUR IS APPLIED AT REST, NEVER DURING MOTION — and this is the fix the
+   whole jitter hunt came down to.
+
+   A backdrop-filter has to re-read and re-blur everything behind it whenever
+   that scene changes. The shell scales over the veil for 520ms, so the scene
+   changed on every single frame of the open and the blur was recomputed every
+   time. Holding the radius constant did NOT help, because the radius was never
+   the problem; the moving content above it was.
+
+   The frame timeline is what showed it. Aggregates were too noisy to attribute
+   anything — the sustained tail of the transition ran 83-117ms a frame with the
+   blur and 33-67ms without it, while removing the shell scale or the staggered
+   section reveal changed nothing.
+
+   So the dossier dims instantly, animates against a cheap translucent layer,
+   and gains its blur once it has landed. The reader sees a focus pull rather
+   than a hitch, and it costs one composite instead of thirty. */
+.bv-case.is-settled .bv-case__veil {
+  /* blur(4px), and NO saturate(). Measured, at 4x CPU, scrolling an open
+     dossier: blur+saturate 31 stalled frames, blur alone 25, blur(3px) alone
+     25 with a lower peak. saturate() is a whole second filter pass over the
+     viewport for an effect the 62%-opacity dim above it is already doing, and
+     the radius is the rest. 4px keeps the backdrop clearly soft at roughly half
+     the cost of where this started. */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.bv-case__shell {
+  position: relative;
+  width: min(1280px, calc(100% - 2 * clamp(12px, 4.5vw, 84px)));
+  height: calc(100svh - 2 * clamp(12px, 3.4vh, 44px));
+  margin: clamp(12px, 3.4vh, 44px) auto;
+  grid-template-columns: 244px minmax(0, 1fr);
+  border: 1px solid var(--line-2);
+  border-radius: clamp(14px, 1.4vw, 24px);
+  background: var(--ink);
+  overflow: hidden;
+  box-shadow: 0 44px 130px rgba(0, 0, 0, .72);
+  transform: scale(.94);
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+  transition: transform .52s var(--ease);
+}
+.bv-case.is-shown .bv-case__shell { transform: none; }
+
+/* Was position:fixed against the viewport, which is now outside the panel.
+   `right: 20px` from the original rule has to be cleared explicitly: in RTL
+   `inset-inline-end` resolves to `left`, so leaving the old declaration in
+   place pinned the button to BOTH edges and it landed on top of the rail. */
+.bv-case__x { position: absolute; top: 14px; right: auto; left: auto; inset-inline-end: 16px; }
+
+/* Breathing room. The dossier had four metric cards on one row, section padding
+   tuned for a full-bleed page, and body text running the full width of a 1440px
+   screen — all of which read as crowded the moment the panel got margins. */
+.bv-case__mast { padding: clamp(30px, 3.6vw, 52px) clamp(20px, 3.4vw, 52px) 28px; }
+.bv-case__sec { padding: clamp(28px, 3.4vw, 46px) clamp(20px, 3.4vw, 52px); }
+.bv-case__sec h3 { margin-bottom: 20px; }
+.bv-case__panel { padding-bottom: 64px; }
+.bv-case__out { max-width: 24ch; }
+.bv-case__caveat { margin-top: 14px; font-size: .84rem; max-width: 60ch; line-height: 1.6; }
+.bv-case__meta { margin-bottom: 14px; font-size: .64rem; }
+.bv-case__chips { margin-top: 18px; }
+.bv-mx { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 900px; }
+@media (min-width: 1320px) { .bv-mx { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.bv-m, .bv-m__in { min-height: 148px; }
+.bv-step { grid-template-columns: 62px minmax(0, 1fr); gap: 18px; padding-bottom: 26px; }
+.bv-step__hex { width: 50px; font-size: .66rem; }
+.bv-step__b { font-size: .9rem; line-height: 1.68; max-width: 64ch; }
+.bv-step__line { left: 30px; top: 62px; }
+.bv-camp { max-width: 700px; }
+
+@media (max-width: 900px) {
+  /* On a phone the margin is a hairline. There is no page worth showing through
+     at 390px, and the content needs every pixel it can get.
+     The single column has to be RESTATED here: the phone rule that sets it
+     lives earlier in the file, and the desktop `grid-template-columns` above is
+     unconditional, so it would win and leave the rail as a 244px strip with two
+     thirds of the screen empty beside it. */
+  .bv-case__shell {
+    width: calc(100% - 16px); height: calc(100svh - 16px); margin: 8px auto;
+    border-radius: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  /* The close button is inset from whichever side it is on, so the rail has to
+     keep its title clear of that side — the other side, in Arabic. */
+  .bv-case__rail { padding: 18px 20px; padding-inline-end: 76px; }
+}
+
+/* ---------- 5. the journey rail shows the whole journey -------------------- */
+/* NOTE: "when I scroll it does not make all the journey glow on the side tab".
+   A spine fills with the reader's progress and every stage already passed stays
+   lit. See trackJourney() in beeviro.js for why the observer that used to do
+   this could not. */
+
+.bv-case__nav { position: relative; }
+.bv-case__spine {
+  position: absolute; inset-inline-start: 17px; top: 12px; bottom: 12px;
+  width: 2px; border-radius: 2px; background: var(--line); overflow: hidden;
+}
+.bv-case__spine i {
+  display: block; width: 100%; height: 100%;
+  background: linear-gradient(180deg, var(--honey), var(--honey-deep));
+  transform: scaleY(0); transform-origin: 50% 0;
+  transition: transform .4s var(--ease);
+}
+.bv-case__steps button.is-done { color: var(--fog-2); }
+.bv-case__steps button.is-done .bv-case__pip { background: rgba(255, 194, 2, .62); }
+@media (max-width: 900px) { .bv-case__spine { display: none; } }
+
+/* ---------- 6. lite tier -------------------------------------------------- */
+/* NOTES: "very heavy and not suitable for weak or normal devices", "the home
+   page is lagging when scrolling or hovering". perf.js picks the tier before
+   anything is built, and the reader can force it either way from the masthead.
+   Everything switched off below is per-FRAME work. Layout, colour, type and the
+   scroll reveals are untouched — lite is a quieter site, not a broken one. */
+
+/* TWO CLASSES, AND THE DIFFERENCE MATTERS.
+     .bv-lite       the tier is lite, however it got there.
+     .bv-lite-boot  it was lite BEFORE the page was built.
+   Only the second may change layout or remove an element the reader is already
+   looking at. A runtime demotion (the FPS watchdog in perf.js) happens several
+   seconds in, with somebody's pointer on the page and their scroll position
+   somewhere — so it is allowed to switch off per-frame work and nothing else.
+   Getting this wrong produced a page with NO POINTER AT ALL: the demotion hid
+   the custom cursor while `html.bv-cursor-on` was still hiding the OS one. */
+.bv-lite .bv-hero__comb,
+.bv-lite .bv-drip { display: none; }
+
+/* The pointer companion survives a runtime demotion on purpose. It is one rAF
+   loop that sleeps when the pointer stops, it is not what makes this page slow,
+   and both reviewers singled it out — "custom crosshair is cool", "the custom
+   pointer works perfectly". When lite is chosen at boot the module never starts
+   at all, so this rule is only tidying up the element it left behind. */
+.bv-lite-boot .bv-cursor { display: none; }
+
+/* The full-bleed photograph is the most expensive raster on the page, and it
+   sits behind a scrim and a comb. Hold it still. */
+.bv-lite .bv-hero__photo { will-change: auto; transform: none !important; }
+
+/* Compositor work with nothing to show for it on a slow GPU. */
+.bv-lite .bv-hive3d__lattice { animation: none; }
+.bv-lite .bv-cellx { animation: none; will-change: auto; }
+.bv-lite .bv-hive3d__tilt { transition: none; }
+
+/* Blur and backdrop-filter are the two most expensive properties in this
+   stylesheet, and there are eight of them. */
+.bv-lite .bv-mast.is-stuck { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(10, 9, 9, .95); }
+.bv-lite .bv-card__tag { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.bv-lite .bv-case__x { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.bv-lite .bv-case.is-shown .bv-case__veil { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(5, 4, 4, .88); }
+.bv-lite .bv-lb.is-shown .bv-lb__bg { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.bv-lite .bv-hive__read { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.bv-lite .bv-gal img { filter: none; opacity: 1; }
+.bv-lite .bv-tile { filter: none; transform: none; }
+.bv-lite .bv-card,
+.bv-lite .bv-cta,
+.bv-lite .bv-w { will-change: auto; }
+
+/* The pinned method section is 300vh of sticky positioning scrubbed on every
+   scroll frame — on a weak device it is the jankiest thing here. scrubPin()
+   already has a correct un-pinned path, so take it.
+   BOOT ONLY: un-pinning removes about two viewport heights from the document,
+   and doing that to somebody who is already scrolled teleports them. */
+.bv-lite-boot .bv-pin__rail { height: auto; }
+.bv-lite-boot .bv-pin__stage { position: static; min-height: 0; padding: clamp(56px, 8vw, 110px) var(--pad); }
+
+/* Sections below the fold cost nothing to have in the document until they are
+   near it. contain-intrinsic-size keeps the scrollbar honest meanwhile.
+   Boot only, for the same reason: applying this to a page that is already laid
+   out re-estimates every section's height under the reader. */
+.bv-lite-boot #services,
+.bv-lite-boot #work,
+.bv-lite-boot #creative,
+.bv-lite-boot #voices {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* ---------- 7. Arabic ------------------------------------------------------ */
+/* Aclonica is a Latin-only face, so Arabic falls through it per character to the
+   next family that has the glyphs — which is exactly right here, because the
+   client names stay in Latin script inside Arabic sentences and should keep
+   their Aclonica. */
+
+:root {
+  --display-ar: 'Aclonica', 'Sakkal Majalla', 'Damascus', 'Geeza Pro',
+                'Noto Kufi Arabic', 'Segoe UI', Tahoma, sans-serif;
+  --body-ar: 'Segoe UI', Tahoma, 'Noto Naskh Arabic', 'Geeza Pro', Arial, sans-serif;
+}
+
+html[dir="rtl"] body { font-family: var(--body-ar); }
+html[dir="rtl"] .bv-mega,
+html[dir="rtl"] .bv-h2,
+html[dir="rtl"] .bv-h3,
+html[dir="rtl"] .bv-quote,
+html[dir="rtl"] .bv-card__t,
+html[dir="rtl"] .bv-case__name,
+html[dir="rtl"] .bv-case__tagline,
+html[dir="rtl"] .bv-stat__v,
+html[dir="rtl"] .bv-step__t,
+html[dir="rtl"] .bv-svc__t,
+html[dir="rtl"] .bv-m__v,
+html[dir="rtl"] .bv-camp__v,
+html[dir="rtl"] .bv-marquee__item,
+html[dir="rtl"] .bv-menu__cells b,
+html[dir="rtl"] .bv-hive__read-n {
+  font-family: var(--display-ar);
+  /* THE IMPORTANT ONE. Arabic is a connected script: tracking pulls the joins
+     apart and the word stops being a word. The faces we fall back to are also
+     lighter than Aclonica, so the weight is put back deliberately. */
+  letter-spacing: normal;
+  font-weight: 600;
+}
+/* Leading has to grow: Arabic carries marks above the line and descenders
+   below it, and 0.92 clips both. */
+html[dir="rtl"] .bv-mega,
+html[dir="rtl"] .bv-h2 { line-height: 1.22; }
+html[dir="rtl"] .bv-quote { line-height: 1.55; }
+html[dir="rtl"] .bv-case__tagline { line-height: 1.4; }
+
+/* Mono labels: uppercasing does nothing to Arabic and the tracking breaks it. */
+html[dir="rtl"] .bv-eyebrow,
+html[dir="rtl"] .bv-case__no,
+html[dir="rtl"] .bv-case__meta,
+html[dir="rtl"] .bv-case__sec h3,
+html[dir="rtl"] .bv-card__meta,
+html[dir="rtl"] .bv-card__kind,
+html[dir="rtl"] .bv-chip,
+html[dir="rtl"] .bv-stat__l,
+html[dir="rtl"] .bv-m__l,
+html[dir="rtl"] .bv-camp__k,
+html[dir="rtl"] .bv-camp__h,
+html[dir="rtl"] .bv-case__facts dt,
+html[dir="rtl"] .bv-quote__who,
+html[dir="rtl"] .bv-gal__toggle,
+html[dir="rtl"] .bv-more__count,
+html[dir="rtl"] .bv-redact,
+html[dir="rtl"] .bv-scrollcue,
+html[dir="rtl"] .bv-hive__read-s,
+html[dir="rtl"] .bv-hive__read-go,
+html[dir="rtl"] .bv-foot h3,
+html[dir="rtl"] .bv-svc__n {
+  font-family: var(--body-ar);
+  letter-spacing: normal;
+  text-transform: none;
+}
+/* The ( parenthetical ) eyebrow, in an RTL paragraph.
+   Brackets carry the Bidi_Mirrored property, so a literal "(" at the start of a
+   right-to-left run is drawn as ")" and the pair reads inside out. Authoring
+   them backwards works by accident and breaks the moment the element is reused;
+   `direction: ltr; unicode-bidi: isolate` was tried and STILL came out mirrored
+   — rendered at 54px to check, both glyphs drew as ")".
+   So the Arabic eyebrow does not use characters at all. The brackets are two
+   drawn boxes with one side removed, positioned with logical properties: the
+   opening always faces the text, at any direction, with no bidi involved.
+   Same device, same weight, one less thing that can silently invert. */
+html[dir="rtl"] .bv-eyebrow::before,
+html[dir="rtl"] .bv-eyebrow::after {
+  content: "";
+  display: inline-block;
+  width: .34em;
+  height: .92em;
+  vertical-align: -.14em;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  opacity: .5;
+}
+/* ::before sits at the right and the words run left from it, so its opening is
+   the inline-END side; ::after is the mirror of that. */
+html[dir="rtl"] .bv-eyebrow::before { border-inline-end: 0; margin-inline-end: .5em; }
+html[dir="rtl"] .bv-eyebrow::after  { border-inline-start: 0; margin-inline-start: .5em; }
+
+/* Positioned rather than flowed — the only things `dir` cannot fix by itself. */
+html[dir="rtl"] .bv-drip { left: auto; right: max(14px, 2vw); }
+html[dir="rtl"] .bv-skip { left: auto; right: 10px; }
+html[dir="rtl"] .bv-prog { transform-origin: 100% 50%; }
+html[dir="rtl"] .bv-pin__meter span { transform-origin: 100% 50%; }
+html[dir="rtl"] .bv-card__tag { left: auto; right: 14px; }
+html[dir="rtl"] .bv-m__hint { right: auto; left: 16px; }
+html[dir="rtl"] .bv-case__rail { border-right: 0; border-left: 1px solid var(--line); }
+html[dir="rtl"] .bv-case__steps button { text-align: right; }
+html[dir="rtl"] .bv-step__line { left: auto; right: 30px; }
+html[dir="rtl"] .bv-foot__mark { right: auto; left: -60px; }
+html[dir="rtl"] .bv-hero__glow { right: auto; left: -14vw; }
+/* The arrow on a work card points "onward"; onward is the other way here. */
+html[dir="rtl"] .bv-card__t svg { transform: scaleX(-1); }
+html[dir="rtl"] .bv-card.is-in:hover .bv-card__t svg,
+html[dir="rtl"] .bv-card:hover .bv-card__t svg { transform: scaleX(-1) rotate(-45deg); }
+html[dir="rtl"] .bv-hive__read-go svg { transform: scaleX(-1); }
+
+/* The phone step-strip scrolls, and the fade on its trailing edge is the only
+   thing saying there is more of it. In Arabic the trailing edge is the left. */
+@media (max-width: 900px) {
+  html[dir="rtl"] .bv-case__steps {
+    -webkit-mask-image: linear-gradient(270deg, #000 0 82%, transparent 100%);
+            mask-image: linear-gradient(270deg, #000 0 82%, transparent 100%);
+  }
+}
+
+/* Metric values are not translated — "EGP 60,000+", "9–13.2", "24 → 100" are the
+   same figure in both languages, and they are authored left to right. Dropped
+   into an RTL paragraph, a trailing "+" or "%" migrates to the front and the
+   number changes meaning. `plaintext` resolves each value's direction from its
+   own first strong character, so it renders exactly as written; the explicit
+   alignment keeps the cards looking like each other. */
+html[dir="rtl"] .bv-m__v,
+html[dir="rtl"] .bv-camp__v,
+html[dir="rtl"] .bv-stat__v {
+  unicode-bidi: plaintext;
+  text-align: right;
+}
+
+/* The hero comb sits in the right third for a left-to-right reader because the
+   copy starts on the left. In Arabic the copy starts on the RIGHT, so the comb
+   and the scrim that holds the type down both change sides. */
+@media (min-width: 1100px) {
+  html[dir="rtl"] .bv-hive3d__tilt { left: 24%; }
+  html[dir="rtl"] .bv-hive3d {
+    perspective-origin: 24% 50%;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 38%, transparent 60%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 38%, transparent 60%);
+  }
+  html[dir="rtl"] .bv-hero__scrim {
+    background:
+      linear-gradient(270deg, var(--ink) 12%, rgba(10, 9, 9, .88) 40%, rgba(10, 9, 9, .30) 66%, transparent 84%),
+      linear-gradient(to top, var(--ink) 1%, transparent 34%);
+  }
+}
+html[dir="rtl"] .bv-hero__photo { background-position: 38% 50%; }
+
+/* The contact headline fills with honey as it crosses the viewport. Reading
+   starts on the right here, so the fill has to as well. */
+html[dir="rtl"] .bv-fill {
+  background-image: linear-gradient(270deg, var(--honey) 0%, #ffe27a var(--fill), var(--fog) calc(var(--fill) + 1%));
+}
+
+/* The strips are driven by JS in the full tier, and that direction is handled
+   there (see SIGN in motion.js). This is the CSS animation used on lite, under
+   reduced motion and with no JS at all — and it needs its own keyframe, not a
+   reversed one. In an RTL flex row the duplicate track sits to the LEFT of the
+   original, so the loop has to travel RIGHT to pull it in; `animation-direction:
+   reverse` would instead start the strip a full width out of place and leave a
+   gap on the first pass. The --rev variants keep their reverse and compose. */
+@keyframes bv-slide-rtl { to { transform: translateX(100%); } }
+html[dir="rtl"] .bv-marquee__track,
+html[dir="rtl"] .bv-reel__track,
+html[dir="rtl"] .bv-gal__track { animation-name: bv-slide-rtl; }
+
+/* ---------- 8. hero cell readout ------------------------------------------ */
+/* The "See the work" label for Beeviro's own reel is written by hive.js now so
+   that it exists in both languages. The old CSS pseudo-element that hardcoded
+   the English has to be retired or it prints underneath. */
+.bv-hive__read.is-self .bv-hive__read-go { font-size: .55rem; }
+.bv-hive__read.is-self .bv-hive__read-go::before { content: none; }
+
+/* ---------- the film in a dossier ----------------------------------------- */
+/* Fifteen of the twenty-five case files describe video deliverables and could
+   only ever show still frames of them. Where the actual reel exists it plays
+   here, above the stills — POSTER-FIRST, so a dossier costs no more to open
+   than it did and the video only downloads for someone who asked for it. */
+
+.bv-film {
+  position: relative;
+  width: min(420px, 100%);
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--ink-2);
+  cursor: pointer;
+}
+.bv-film__poster {
+  width: 100%; height: 100%; object-fit: cover;
+  /* graded down so the play control reads on any frame, and lifted on hover */
+  filter: saturate(.7) brightness(.55);
+  transition: filter .5s var(--ease), transform .7s var(--ease);
+}
+.bv-film:hover .bv-film__poster { filter: saturate(.9) brightness(.7); transform: scale(1.03); }
+
+.bv-film__play {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  color: var(--paper);
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .16em; text-transform: uppercase;
+}
+.bv-film__play svg {
+  width: 58px; height: 58px; padding: 17px;
+  border-radius: 50%;
+  background: var(--a, var(--honey)); color: var(--ink);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+  transition: transform .4s var(--ease);
+}
+.bv-film:hover .bv-film__play svg { transform: scale(1.08); }
+
+/* Once it is playing the poster and the control are gone for good — the video
+   owns the box, with its own controls. */
+.bv-film.is-playing .bv-film__poster,
+.bv-film.is-playing .bv-film__play { display: none; }
+.bv-film video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+
+/* the beat between the press and the first frame */
+.bv-film.is-loading::after {
+  content: ''; position: absolute; inset: 0; margin: auto;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2px solid rgba(255, 194, 2, .25); border-top-color: var(--honey);
+  animation: bv-spin .7s linear infinite;
+}
+@keyframes bv-spin { to { transform: rotate(360deg); } }
+
+.bv-film__note {
+  margin: 14px 0 0; font-size: .86rem; line-height: 1.6; max-width: 56ch;
+}
+
+html[dir="rtl"] .bv-film__play { font-family: var(--body-ar); letter-spacing: normal; text-transform: none; }
+
+/* Under reduced motion the poster still lifts nothing and the spinner is a
+   spinning thing — neither is worth the exemption. */
+@media (prefers-reduced-motion: reduce) {
+  .bv-film__poster, .bv-film__play svg { transition: none; }
+  .bv-film.is-loading::after { animation: none; }
+}
+
+/* ---------- touch ergonomics ----------------------------------------------
+   Scoped to `pointer: coarse` — a finger, not a mouse — so none of it touches
+   the desktop layout. Two separate jobs.
+
+   1. TARGET SIZE. 24px is the WCAG floor and it is what the desktop build is
+      held to; 44px is what Apple's HIG asks for and what a thumb on glass
+      actually needs. Footer links, the brand mark and the masthead nav were
+      all in the high twenties, which is fine to click and fiddly to tap.
+      Grown with padding rather than font-size so nothing reflows: the ROW
+      pitch changes, the type does not.
+
+   2. PRESS FEEDBACK. Suppressing -webkit-tap-highlight-color removed the only
+      thing telling a reader their tap landed, so it has to be replaced. These
+      :active states fire instantly on touchstart, before any navigation or
+      class change, which is what makes a control feel connected to the finger.
+      Kept fast (.06s) — anything slower reads as lag rather than response. */
+@media (pointer: coarse) {
+  /* display: block, so the whole row is the target rather than just the glyphs.
+     "Work" is 34px of text — tall enough after padding, and still a 34px-wide
+     thing to hit. A native list row is tappable across its full width and this
+     is the same idea; it also means the reader never has to aim horizontally. */
+  .bv-foot li a { display: block; padding-block: 11px; }
+  .bv-foot ul { gap: 0; }
+  .bv-brand { padding-block: 5px; }
+  .bv-nav a { padding-block: 8px; }
+
+  a:active, button:active, [role="button"]:active {
+    opacity: .62;
+    transition: opacity .06s linear;
+  }
+  .bv-cta:active { transform: scale(.97); }
+  .bv-card:active .bv-card__img img { transform: scale(1.03); }
+  /* The pointer companion and the hover-pop never run on touch, so the tile
+     needs its own press state or a tap on the carousel feels inert. */
+  .bv-tile:active, .bv-gal__t:active { opacity: .8; }
+}
+
+/* A phone on its side is 390px tall, and the menu was built for 844.
+   Six stacked rows plus the switches plus the contact block do not fit, so two
+   of the eight ended up below the fold — reachable only by scrolling a sheet
+   that gives no hint there is more of it. A navigation sheet that has to be
+   scrolled is a list, not a menu.
+   Two columns and tighter rows put all eight back on screen. Only the geometry
+   changes: same order, same targets (still 44px+), same stagger. Keyed on
+   height rather than `orientation` so a short desktop window gets it too, and
+   guarded to the range where the menu exists at all. */
+@media (max-width: 900px) and (max-height: 560px) {
+  .bv-menu { gap: 14px; justify-content: flex-start; padding-block: max(72px, calc(env(safe-area-inset-top) + 58px)) max(16px, env(safe-area-inset-bottom)); }
+  .bv-menu__cells { grid-template-columns: 1fr 1fr; column-gap: 10px; }
+  .bv-menu__cells a { padding: 11px 14px; gap: 12px; }
+  .bv-menu__cells b { font-size: 1.35rem; }
+  .bv-menu__switches { gap: 8px; }
+  .bv-menu__foot { padding-top: 12px; }
+}
+
+/* The work shelf is mounted a beat after the dossier opens, so this holds its
+   place until then. Without a reserved box the panel's scrollHeight jumps when
+   the shelf lands, which moves the scrollbar under the reader's thumb and
+   re-runs the journey rail's arithmetic against a different height — the exact
+   jitter deferring the shelf was meant to remove. */
+.bv-shelf-slot {
+  contain-intrinsic-size: auto 460px;
+  content-visibility: auto;
+  min-height: 460px;
+}
+@media (max-width: 900px) { .bv-shelf-slot { contain-intrinsic-size: auto 320px; min-height: 320px; } }

@@ -1,0 +1,89 @@
+{
+  "_note": "Client films: which Google Drive file each dossier reel is cut from. Ids come from the link annotations in infosource/Beeviro Portfolio Formatted .pdf, resolved to a client by the PAGE the link was printed on and then confirmed against the file names inside the folder. Folder names are useless on their own — nine different brands have a folder called 'Reels'. Consumed by tools/ingest-reels.mjs.",
+  "_rules": "Delivered creative only. Never the 'bts' / 'raw' folders: those are candid footage of identifiable people, not work the client approved for publication — the same line that kept Dar El Hadith's raw posters out of the gallery.",
+  "reels": [
+    {
+      "slug": "dar-al-hadith",
+      "id": "1nuh_9BZ31EANuXSCUzpvAt9YKkPqDk8m",
+      "src": "Final videos/2",
+      "page": "p16",
+      "poster": true,
+      "why": "work: 0 — the entire engagement was four films, so the dossier had no visual at all. No gallery means no image to borrow a poster from, so this one ships its own."
+    },
+    {
+      "slug": "volt-ems",
+      "id": "1dgkYz8qNlKhHFPULmPeIKx6jyIyLEx6l",
+      "src": "reels/Copy of vlot final real_2.mp4",
+      "page": "p23",
+      "why": "work: 5, every one of them a poster frame. Its own copy apologises for it."
+    },
+    {
+      "slug": "cognistar",
+      "id": "18F_WBYySzQD9uVLYv8sjCBiTTmOZbnZJ",
+      "src": "Videos/Mr. Hossam Hassan 2.mp4",
+      "page": "p29",
+      "why": "Named tutor films; the same tutor appears on the orientation flyer already in the gallery."
+    },
+    {
+      "slug": "izar",
+      "id": "1_bZSd_78t-hIJKRpOgvagWuJhXkgUayD",
+      "src": "08.stories&reels/Reels/December/FINAL VIDEOS/video 1 again.mp4",
+      "page": "p28",
+      "why": "The case rests on real-model video and a fit guide — stills cannot show either."
+    },
+    {
+      "slug": "qr-tably",
+      "id": "1iuVxNrlOGOHQ6oSpO8pnNJ395MPYEGJS",
+      "src": "Video tably/نسخة من qr tably.mp4",
+      "page": "p11",
+      "why": "A product demo of a digital menu; motion is the product. NOT video_20250919_200715_edit.mp4 from the same folder — Chrome decodes that one as 0x0, i.e. it carries a codec this pipeline cannot read."
+    },
+    {
+      "slug": "hadeel-maqlad",
+      "id": "1HIgL_MpjqSQPbqH4xDxEr2Hbrkj82EVW",
+      "src": "Reels/blue dress reel.mp4",
+      "page": "p27",
+      "start": 2.5,
+      "why": "Printed on Rojana Kids Store's page, but it is NOT Rojana's. The poster frame is an adult woman's evening dress and Rojana is a children's clothing brand — the content contradicts the page. Three signals say Hadeel Maqlad instead: a sibling file named 'HM Beige dress.mp4' (her initials), exactly 8 videos against the '8 reels' figure in her record, and every one of them a women's collection piece, which is what a fashion designer's lookbook reels are. The page is evidence; the file names are proof."
+    },
+    {
+      "slug": "master-craft",
+      "id": "1cjVEN5vUIAe26QXycypV2ONjF7ELxdhs",
+      "src": "Videos/video/final 2 .mp4",
+      "page": "p32",
+      "why": "Boats sell on motion. Confirmed by the sibling file 'master 1 finaaal gold'."
+    },
+    {
+      "slug": "electro-master",
+      "id": "1rhieVjGLGk2uqZ9FyhF2QbAcR3QlNeaK",
+      "src": "final videos/0916 (1).mp4",
+      "page": "p6",
+      "start": 30,
+      "why": "The before-and-after format the whole content plan is anchored on. Started late on purpose: at 1.5s the frame is a chased brick wall and a bucket, which is the 'before' — the case is about the transformation, so the clip opens nearer the finished end."
+    },
+    {
+      "slug": "black-star",
+      "id": "1hAjjrwGv_jUleWSc2bwXztsobSI7yoiS",
+      "src": "final material/0909 (1).mp4",
+      "page": "p10",
+      "why": "Reels are named first in its deliverables list."
+    }
+  ],
+  "_skipped": [
+    {
+      "page": "p19",
+      "folder": "1D-c348pmFRNqA425XB0Kft64R6z9MGAP",
+      "reason": "Sits between the Moafa App section and the Renda Perfumes section and the file names ('مليون', 'chance channel') settle neither. Guessing here puts one client's film in another client's dossier."
+    },
+    {
+      "page": "p26",
+      "folder": "1Sj_Fn6vlCkD0aJMYoatOgHW6Qztk08KM",
+      "reason": "Could be Dr. Eman Khamis or Hadeel Maqlad — both are personal brands on adjacent pages. The sibling 'raw' folder is candid phone footage either way."
+    },
+    {
+      "page": "p20",
+      "folder": "1O2VBwZ0govXfhLpgn5Fj4ck4RYSueXAa",
+      "reason": "Printed under Renda Perfumes but the files are named 'Reno's kitchen kitchen.mp4' — it is Rino's Kitchen's, and Rino's already has its film. A folder's page is evidence; the file names are proof."
+    }
+  ]
+}

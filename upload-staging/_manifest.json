@@ -1,0 +1,2922 @@
+[
+ {
+  "sitePath": "assets/work/beeviro/01.jpg",
+  "uploadName": "bv-beeviro-01.jpg",
+  "bytes": 89824
+ },
+ {
+  "sitePath": "assets/work/beeviro/02.jpg",
+  "uploadName": "bv-beeviro-02.jpg",
+  "bytes": 222368
+ },
+ {
+  "sitePath": "assets/work/beeviro/03.jpg",
+  "uploadName": "bv-beeviro-03.jpg",
+  "bytes": 91439
+ },
+ {
+  "sitePath": "assets/work/beeviro/thumb/01.webp",
+  "uploadName": "bv-t-beeviro-01.webp",
+  "bytes": 30646
+ },
+ {
+  "sitePath": "assets/work/beeviro/thumb/02.webp",
+  "uploadName": "bv-t-beeviro-02.webp",
+  "bytes": 32850
+ },
+ {
+  "sitePath": "assets/work/beeviro/thumb/03.webp",
+  "uploadName": "bv-t-beeviro-03.webp",
+  "bytes": 30674
+ },
+ {
+  "sitePath": "assets/work/beeviro/cell/01.webp",
+  "uploadName": "bv-c-beeviro-01.webp",
+  "bytes": 8264
+ },
+ {
+  "sitePath": "assets/work/beeviro/cell/02.webp",
+  "uploadName": "bv-c-beeviro-02.webp",
+  "bytes": 9764
+ },
+ {
+  "sitePath": "assets/work/beeviro/cell/03.webp",
+  "uploadName": "bv-c-beeviro-03.webp",
+  "bytes": 8758
+ },
+ {
+  "sitePath": "assets/work/black-star/01.jpg",
+  "uploadName": "bv-black-star-01.jpg",
+  "bytes": 188173
+ },
+ {
+  "sitePath": "assets/work/black-star/02.jpg",
+  "uploadName": "bv-black-star-02.jpg",
+  "bytes": 110959
+ },
+ {
+  "sitePath": "assets/work/black-star/03.jpg",
+  "uploadName": "bv-black-star-03.jpg",
+  "bytes": 149874
+ },
+ {
+  "sitePath": "assets/work/black-star/04.jpg",
+  "uploadName": "bv-black-star-04.jpg",
+  "bytes": 129080
+ },
+ {
+  "sitePath": "assets/work/black-star/05.jpg",
+  "uploadName": "bv-black-star-05.jpg",
+  "bytes": 148071
+ },
+ {
+  "sitePath": "assets/work/black-star/06.jpg",
+  "uploadName": "bv-black-star-06.jpg",
+  "bytes": 128605
+ },
+ {
+  "sitePath": "assets/work/black-star/07.jpg",
+  "uploadName": "bv-black-star-07.jpg",
+  "bytes": 110576
+ },
+ {
+  "sitePath": "assets/work/black-star/08.jpg",
+  "uploadName": "bv-black-star-08.jpg",
+  "bytes": 125378
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/01.webp",
+  "uploadName": "bv-t-black-star-01.webp",
+  "bytes": 16858
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/02.webp",
+  "uploadName": "bv-t-black-star-02.webp",
+  "bytes": 13276
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/03.webp",
+  "uploadName": "bv-t-black-star-03.webp",
+  "bytes": 16486
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/04.webp",
+  "uploadName": "bv-t-black-star-04.webp",
+  "bytes": 11496
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/05.webp",
+  "uploadName": "bv-t-black-star-05.webp",
+  "bytes": 12308
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/06.webp",
+  "uploadName": "bv-t-black-star-06.webp",
+  "bytes": 11606
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/07.webp",
+  "uploadName": "bv-t-black-star-07.webp",
+  "bytes": 9418
+ },
+ {
+  "sitePath": "assets/work/black-star/thumb/08.webp",
+  "uploadName": "bv-t-black-star-08.webp",
+  "bytes": 12954
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/01.webp",
+  "uploadName": "bv-c-black-star-01.webp",
+  "bytes": 5310
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/02.webp",
+  "uploadName": "bv-c-black-star-02.webp",
+  "bytes": 5144
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/03.webp",
+  "uploadName": "bv-c-black-star-03.webp",
+  "bytes": 5164
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/04.webp",
+  "uploadName": "bv-c-black-star-04.webp",
+  "bytes": 4110
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/05.webp",
+  "uploadName": "bv-c-black-star-05.webp",
+  "bytes": 4140
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/06.webp",
+  "uploadName": "bv-c-black-star-06.webp",
+  "bytes": 3638
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/07.webp",
+  "uploadName": "bv-c-black-star-07.webp",
+  "bytes": 3394
+ },
+ {
+  "sitePath": "assets/work/black-star/cell/08.webp",
+  "uploadName": "bv-c-black-star-08.webp",
+  "bytes": 4646
+ },
+ {
+  "sitePath": "assets/work/cognistar/01.jpg",
+  "uploadName": "bv-cognistar-01.jpg",
+  "bytes": 230751
+ },
+ {
+  "sitePath": "assets/work/cognistar/02.jpg",
+  "uploadName": "bv-cognistar-02.jpg",
+  "bytes": 235281
+ },
+ {
+  "sitePath": "assets/work/cognistar/03.jpg",
+  "uploadName": "bv-cognistar-03.jpg",
+  "bytes": 228636
+ },
+ {
+  "sitePath": "assets/work/cognistar/04.jpg",
+  "uploadName": "bv-cognistar-04.jpg",
+  "bytes": 215973
+ },
+ {
+  "sitePath": "assets/work/cognistar/05.jpg",
+  "uploadName": "bv-cognistar-05.jpg",
+  "bytes": 234250
+ },
+ {
+  "sitePath": "assets/work/cognistar/06.jpg",
+  "uploadName": "bv-cognistar-06.jpg",
+  "bytes": 178993
+ },
+ {
+  "sitePath": "assets/work/cognistar/07.jpg",
+  "uploadName": "bv-cognistar-07.jpg",
+  "bytes": 186814
+ },
+ {
+  "sitePath": "assets/work/cognistar/08.jpg",
+  "uploadName": "bv-cognistar-08.jpg",
+  "bytes": 180640
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/01.webp",
+  "uploadName": "bv-t-cognistar-01.webp",
+  "bytes": 40440
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/02.webp",
+  "uploadName": "bv-t-cognistar-02.webp",
+  "bytes": 43978
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/03.webp",
+  "uploadName": "bv-t-cognistar-03.webp",
+  "bytes": 41842
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/04.webp",
+  "uploadName": "bv-t-cognistar-04.webp",
+  "bytes": 38776
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/05.webp",
+  "uploadName": "bv-t-cognistar-05.webp",
+  "bytes": 39682
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/06.webp",
+  "uploadName": "bv-t-cognistar-06.webp",
+  "bytes": 27848
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/07.webp",
+  "uploadName": "bv-t-cognistar-07.webp",
+  "bytes": 31350
+ },
+ {
+  "sitePath": "assets/work/cognistar/thumb/08.webp",
+  "uploadName": "bv-t-cognistar-08.webp",
+  "bytes": 28370
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/01.webp",
+  "uploadName": "bv-c-cognistar-01.webp",
+  "bytes": 12522
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/02.webp",
+  "uploadName": "bv-c-cognistar-02.webp",
+  "bytes": 13068
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/03.webp",
+  "uploadName": "bv-c-cognistar-03.webp",
+  "bytes": 12808
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/04.webp",
+  "uploadName": "bv-c-cognistar-04.webp",
+  "bytes": 12058
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/05.webp",
+  "uploadName": "bv-c-cognistar-05.webp",
+  "bytes": 12760
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/06.webp",
+  "uploadName": "bv-c-cognistar-06.webp",
+  "bytes": 8620
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/07.webp",
+  "uploadName": "bv-c-cognistar-07.webp",
+  "bytes": 9450
+ },
+ {
+  "sitePath": "assets/work/cognistar/cell/08.webp",
+  "uploadName": "bv-c-cognistar-08.webp",
+  "bytes": 8804
+ },
+ {
+  "sitePath": "assets/work/daily-box/01.jpg",
+  "uploadName": "bv-daily-box-01.jpg",
+  "bytes": 193500
+ },
+ {
+  "sitePath": "assets/work/daily-box/02.jpg",
+  "uploadName": "bv-daily-box-02.jpg",
+  "bytes": 154874
+ },
+ {
+  "sitePath": "assets/work/daily-box/03.jpg",
+  "uploadName": "bv-daily-box-03.jpg",
+  "bytes": 214467
+ },
+ {
+  "sitePath": "assets/work/daily-box/04.jpg",
+  "uploadName": "bv-daily-box-04.jpg",
+  "bytes": 166988
+ },
+ {
+  "sitePath": "assets/work/daily-box/05.jpg",
+  "uploadName": "bv-daily-box-05.jpg",
+  "bytes": 177409
+ },
+ {
+  "sitePath": "assets/work/daily-box/06.jpg",
+  "uploadName": "bv-daily-box-06.jpg",
+  "bytes": 205795
+ },
+ {
+  "sitePath": "assets/work/daily-box/07.jpg",
+  "uploadName": "bv-daily-box-07.jpg",
+  "bytes": 146091
+ },
+ {
+  "sitePath": "assets/work/daily-box/08.jpg",
+  "uploadName": "bv-daily-box-08.jpg",
+  "bytes": 166448
+ },
+ {
+  "sitePath": "assets/work/daily-box/09.jpg",
+  "uploadName": "bv-daily-box-09.jpg",
+  "bytes": 207941
+ },
+ {
+  "sitePath": "assets/work/daily-box/10.jpg",
+  "uploadName": "bv-daily-box-10.jpg",
+  "bytes": 299233
+ },
+ {
+  "sitePath": "assets/work/daily-box/11.jpg",
+  "uploadName": "bv-daily-box-11.jpg",
+  "bytes": 147830
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/01.webp",
+  "uploadName": "bv-t-daily-box-01.webp",
+  "bytes": 27154
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/02.webp",
+  "uploadName": "bv-t-daily-box-02.webp",
+  "bytes": 36296
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/03.webp",
+  "uploadName": "bv-t-daily-box-03.webp",
+  "bytes": 29608
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/04.webp",
+  "uploadName": "bv-t-daily-box-04.webp",
+  "bytes": 12834
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/05.webp",
+  "uploadName": "bv-t-daily-box-05.webp",
+  "bytes": 15400
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/06.webp",
+  "uploadName": "bv-t-daily-box-06.webp",
+  "bytes": 18054
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/07.webp",
+  "uploadName": "bv-t-daily-box-07.webp",
+  "bytes": 18406
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/08.webp",
+  "uploadName": "bv-t-daily-box-08.webp",
+  "bytes": 23306
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/09.webp",
+  "uploadName": "bv-t-daily-box-09.webp",
+  "bytes": 28640
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/10.webp",
+  "uploadName": "bv-t-daily-box-10.webp",
+  "bytes": 40764
+ },
+ {
+  "sitePath": "assets/work/daily-box/thumb/11.webp",
+  "uploadName": "bv-t-daily-box-11.webp",
+  "bytes": 17658
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/01.webp",
+  "uploadName": "bv-c-daily-box-01.webp",
+  "bytes": 8828
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/02.webp",
+  "uploadName": "bv-c-daily-box-02.webp",
+  "bytes": 10212
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/03.webp",
+  "uploadName": "bv-c-daily-box-03.webp",
+  "bytes": 8620
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/04.webp",
+  "uploadName": "bv-c-daily-box-04.webp",
+  "bytes": 4218
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/05.webp",
+  "uploadName": "bv-c-daily-box-05.webp",
+  "bytes": 5036
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/06.webp",
+  "uploadName": "bv-c-daily-box-06.webp",
+  "bytes": 5948
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/07.webp",
+  "uploadName": "bv-c-daily-box-07.webp",
+  "bytes": 6280
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/08.webp",
+  "uploadName": "bv-c-daily-box-08.webp",
+  "bytes": 7234
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/09.webp",
+  "uploadName": "bv-c-daily-box-09.webp",
+  "bytes": 7540
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/10.webp",
+  "uploadName": "bv-c-daily-box-10.webp",
+  "bytes": 10032
+ },
+ {
+  "sitePath": "assets/work/daily-box/cell/11.webp",
+  "uploadName": "bv-c-daily-box-11.webp",
+  "bytes": 6012
+ },
+ {
+  "sitePath": "assets/work/edara-plus/01.jpg",
+  "uploadName": "bv-edara-plus-01.jpg",
+  "bytes": 172123
+ },
+ {
+  "sitePath": "assets/work/edara-plus/02.jpg",
+  "uploadName": "bv-edara-plus-02.jpg",
+  "bytes": 174251
+ },
+ {
+  "sitePath": "assets/work/edara-plus/03.jpg",
+  "uploadName": "bv-edara-plus-03.jpg",
+  "bytes": 160849
+ },
+ {
+  "sitePath": "assets/work/edara-plus/04.jpg",
+  "uploadName": "bv-edara-plus-04.jpg",
+  "bytes": 133634
+ },
+ {
+  "sitePath": "assets/work/edara-plus/05.jpg",
+  "uploadName": "bv-edara-plus-05.jpg",
+  "bytes": 179265
+ },
+ {
+  "sitePath": "assets/work/edara-plus/06.jpg",
+  "uploadName": "bv-edara-plus-06.jpg",
+  "bytes": 218636
+ },
+ {
+  "sitePath": "assets/work/edara-plus/07.jpg",
+  "uploadName": "bv-edara-plus-07.jpg",
+  "bytes": 184445
+ },
+ {
+  "sitePath": "assets/work/edara-plus/thumb/01.webp",
+  "uploadName": "bv-t-edara-plus-01.webp",
+  "bytes": 19134
+ },
+ {
+  "sitePath": "assets/work/edara-plus/thumb/02.webp",
+  "uploadName": "bv-t-edara-plus-02.webp",
+  "bytes": 26308
+ },
+ {
+  "sitePath": "assets/work/edara-plus/thumb/03.webp",
+  "uploadName": "bv-t-edara-plus-03.webp",
+  "bytes": 27300
+ },
+ {
+  "sitePath": "assets/work/edara-plus/thumb/04.webp",
+  "uploadName": "bv-t-edara-plus-04.webp",
+  "bytes": 21014
+ },
+ {
+  "sitePath": "assets/work/edara-plus/thumb/05.webp",
+  "uploadName": "bv-t-edara-plus-05.webp",
+  "bytes": 28534
+ },
+ {
+  "sitePath": "assets/work/edara-plus/thumb/06.webp",
+  "uploadName": "bv-t-edara-plus-06.webp",
+  "bytes": 22642
+ },
+ {
+  "sitePath": "assets/work/edara-plus/thumb/07.webp",
+  "uploadName": "bv-t-edara-plus-07.webp",
+  "bytes": 30430
+ },
+ {
+  "sitePath": "assets/work/edara-plus/cell/01.webp",
+  "uploadName": "bv-c-edara-plus-01.webp",
+  "bytes": 6442
+ },
+ {
+  "sitePath": "assets/work/edara-plus/cell/02.webp",
+  "uploadName": "bv-c-edara-plus-02.webp",
+  "bytes": 9154
+ },
+ {
+  "sitePath": "assets/work/edara-plus/cell/03.webp",
+  "uploadName": "bv-c-edara-plus-03.webp",
+  "bytes": 8490
+ },
+ {
+  "sitePath": "assets/work/edara-plus/cell/04.webp",
+  "uploadName": "bv-c-edara-plus-04.webp",
+  "bytes": 7682
+ },
+ {
+  "sitePath": "assets/work/edara-plus/cell/05.webp",
+  "uploadName": "bv-c-edara-plus-05.webp",
+  "bytes": 9608
+ },
+ {
+  "sitePath": "assets/work/edara-plus/cell/06.webp",
+  "uploadName": "bv-c-edara-plus-06.webp",
+  "bytes": 7588
+ },
+ {
+  "sitePath": "assets/work/edara-plus/cell/07.webp",
+  "uploadName": "bv-c-edara-plus-07.webp",
+  "bytes": 9798
+ },
+ {
+  "sitePath": "assets/work/electro-master/01.jpg",
+  "uploadName": "bv-electro-master-01.jpg",
+  "bytes": 106587
+ },
+ {
+  "sitePath": "assets/work/electro-master/02.jpg",
+  "uploadName": "bv-electro-master-02.jpg",
+  "bytes": 129788
+ },
+ {
+  "sitePath": "assets/work/electro-master/03.jpg",
+  "uploadName": "bv-electro-master-03.jpg",
+  "bytes": 147877
+ },
+ {
+  "sitePath": "assets/work/electro-master/04.jpg",
+  "uploadName": "bv-electro-master-04.jpg",
+  "bytes": 140786
+ },
+ {
+  "sitePath": "assets/work/electro-master/05.jpg",
+  "uploadName": "bv-electro-master-05.jpg",
+  "bytes": 171684
+ },
+ {
+  "sitePath": "assets/work/electro-master/06.jpg",
+  "uploadName": "bv-electro-master-06.jpg",
+  "bytes": 167367
+ },
+ {
+  "sitePath": "assets/work/electro-master/thumb/01.webp",
+  "uploadName": "bv-t-electro-master-01.webp",
+  "bytes": 16816
+ },
+ {
+  "sitePath": "assets/work/electro-master/thumb/02.webp",
+  "uploadName": "bv-t-electro-master-02.webp",
+  "bytes": 19504
+ },
+ {
+  "sitePath": "assets/work/electro-master/thumb/03.webp",
+  "uploadName": "bv-t-electro-master-03.webp",
+  "bytes": 24726
+ },
+ {
+  "sitePath": "assets/work/electro-master/thumb/04.webp",
+  "uploadName": "bv-t-electro-master-04.webp",
+  "bytes": 19170
+ },
+ {
+  "sitePath": "assets/work/electro-master/thumb/05.webp",
+  "uploadName": "bv-t-electro-master-05.webp",
+  "bytes": 30982
+ },
+ {
+  "sitePath": "assets/work/electro-master/thumb/06.webp",
+  "uploadName": "bv-t-electro-master-06.webp",
+  "bytes": 29422
+ },
+ {
+  "sitePath": "assets/work/electro-master/cell/01.webp",
+  "uploadName": "bv-c-electro-master-01.webp",
+  "bytes": 6078
+ },
+ {
+  "sitePath": "assets/work/electro-master/cell/02.webp",
+  "uploadName": "bv-c-electro-master-02.webp",
+  "bytes": 6978
+ },
+ {
+  "sitePath": "assets/work/electro-master/cell/03.webp",
+  "uploadName": "bv-c-electro-master-03.webp",
+  "bytes": 8116
+ },
+ {
+  "sitePath": "assets/work/electro-master/cell/04.webp",
+  "uploadName": "bv-c-electro-master-04.webp",
+  "bytes": 6716
+ },
+ {
+  "sitePath": "assets/work/electro-master/cell/05.webp",
+  "uploadName": "bv-c-electro-master-05.webp",
+  "bytes": 10232
+ },
+ {
+  "sitePath": "assets/work/electro-master/cell/06.webp",
+  "uploadName": "bv-c-electro-master-06.webp",
+  "bytes": 9236
+ },
+ {
+  "sitePath": "assets/work/eqbal/01.jpg",
+  "uploadName": "bv-eqbal-01.jpg",
+  "bytes": 162046
+ },
+ {
+  "sitePath": "assets/work/eqbal/02.jpg",
+  "uploadName": "bv-eqbal-02.jpg",
+  "bytes": 163124
+ },
+ {
+  "sitePath": "assets/work/eqbal/03.jpg",
+  "uploadName": "bv-eqbal-03.jpg",
+  "bytes": 259834
+ },
+ {
+  "sitePath": "assets/work/eqbal/04.jpg",
+  "uploadName": "bv-eqbal-04.jpg",
+  "bytes": 141875
+ },
+ {
+  "sitePath": "assets/work/eqbal/05.jpg",
+  "uploadName": "bv-eqbal-05.jpg",
+  "bytes": 197045
+ },
+ {
+  "sitePath": "assets/work/eqbal/06.jpg",
+  "uploadName": "bv-eqbal-06.jpg",
+  "bytes": 192379
+ },
+ {
+  "sitePath": "assets/work/eqbal/07.jpg",
+  "uploadName": "bv-eqbal-07.jpg",
+  "bytes": 314564
+ },
+ {
+  "sitePath": "assets/work/eqbal/08.jpg",
+  "uploadName": "bv-eqbal-08.jpg",
+  "bytes": 83302
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/01.webp",
+  "uploadName": "bv-t-eqbal-01.webp",
+  "bytes": 20720
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/02.webp",
+  "uploadName": "bv-t-eqbal-02.webp",
+  "bytes": 21066
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/03.webp",
+  "uploadName": "bv-t-eqbal-03.webp",
+  "bytes": 26754
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/04.webp",
+  "uploadName": "bv-t-eqbal-04.webp",
+  "bytes": 14952
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/05.webp",
+  "uploadName": "bv-t-eqbal-05.webp",
+  "bytes": 45964
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/06.webp",
+  "uploadName": "bv-t-eqbal-06.webp",
+  "bytes": 39076
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/07.webp",
+  "uploadName": "bv-t-eqbal-07.webp",
+  "bytes": 89172
+ },
+ {
+  "sitePath": "assets/work/eqbal/thumb/08.webp",
+  "uploadName": "bv-t-eqbal-08.webp",
+  "bytes": 17462
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/01.webp",
+  "uploadName": "bv-c-eqbal-01.webp",
+  "bytes": 7070
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/02.webp",
+  "uploadName": "bv-c-eqbal-02.webp",
+  "bytes": 7178
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/03.webp",
+  "uploadName": "bv-c-eqbal-03.webp",
+  "bytes": 6734
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/04.webp",
+  "uploadName": "bv-c-eqbal-04.webp",
+  "bytes": 4630
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/05.webp",
+  "uploadName": "bv-c-eqbal-05.webp",
+  "bytes": 13054
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/06.webp",
+  "uploadName": "bv-c-eqbal-06.webp",
+  "bytes": 11020
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/07.webp",
+  "uploadName": "bv-c-eqbal-07.webp",
+  "bytes": 17120
+ },
+ {
+  "sitePath": "assets/work/eqbal/cell/08.webp",
+  "uploadName": "bv-c-eqbal-08.webp",
+  "bytes": 5278
+ },
+ {
+  "sitePath": "assets/work/freestyle/01.jpg",
+  "uploadName": "bv-freestyle-01.jpg",
+  "bytes": 156966
+ },
+ {
+  "sitePath": "assets/work/freestyle/02.jpg",
+  "uploadName": "bv-freestyle-02.jpg",
+  "bytes": 180446
+ },
+ {
+  "sitePath": "assets/work/freestyle/03.jpg",
+  "uploadName": "bv-freestyle-03.jpg",
+  "bytes": 216640
+ },
+ {
+  "sitePath": "assets/work/freestyle/04.jpg",
+  "uploadName": "bv-freestyle-04.jpg",
+  "bytes": 139623
+ },
+ {
+  "sitePath": "assets/work/freestyle/05.jpg",
+  "uploadName": "bv-freestyle-05.jpg",
+  "bytes": 187876
+ },
+ {
+  "sitePath": "assets/work/freestyle/06.jpg",
+  "uploadName": "bv-freestyle-06.jpg",
+  "bytes": 205600
+ },
+ {
+  "sitePath": "assets/work/freestyle/07.jpg",
+  "uploadName": "bv-freestyle-07.jpg",
+  "bytes": 230464
+ },
+ {
+  "sitePath": "assets/work/freestyle/08.jpg",
+  "uploadName": "bv-freestyle-08.jpg",
+  "bytes": 190076
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/01.webp",
+  "uploadName": "bv-t-freestyle-01.webp",
+  "bytes": 17262
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/02.webp",
+  "uploadName": "bv-t-freestyle-02.webp",
+  "bytes": 24232
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/03.webp",
+  "uploadName": "bv-t-freestyle-03.webp",
+  "bytes": 24622
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/04.webp",
+  "uploadName": "bv-t-freestyle-04.webp",
+  "bytes": 15908
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/05.webp",
+  "uploadName": "bv-t-freestyle-05.webp",
+  "bytes": 13904
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/06.webp",
+  "uploadName": "bv-t-freestyle-06.webp",
+  "bytes": 35916
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/07.webp",
+  "uploadName": "bv-t-freestyle-07.webp",
+  "bytes": 38204
+ },
+ {
+  "sitePath": "assets/work/freestyle/thumb/08.webp",
+  "uploadName": "bv-t-freestyle-08.webp",
+  "bytes": 20584
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/01.webp",
+  "uploadName": "bv-c-freestyle-01.webp",
+  "bytes": 5986
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/02.webp",
+  "uploadName": "bv-c-freestyle-02.webp",
+  "bytes": 8454
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/03.webp",
+  "uploadName": "bv-c-freestyle-03.webp",
+  "bytes": 7460
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/04.webp",
+  "uploadName": "bv-c-freestyle-04.webp",
+  "bytes": 5628
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/05.webp",
+  "uploadName": "bv-c-freestyle-05.webp",
+  "bytes": 4590
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/06.webp",
+  "uploadName": "bv-c-freestyle-06.webp",
+  "bytes": 11748
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/07.webp",
+  "uploadName": "bv-c-freestyle-07.webp",
+  "bytes": 10942
+ },
+ {
+  "sitePath": "assets/work/freestyle/cell/08.webp",
+  "uploadName": "bv-c-freestyle-08.webp",
+  "bytes": 6518
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/01.jpg",
+  "uploadName": "bv-hadeel-maqlad-01.jpg",
+  "bytes": 150762
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/02.jpg",
+  "uploadName": "bv-hadeel-maqlad-02.jpg",
+  "bytes": 125878
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/03.jpg",
+  "uploadName": "bv-hadeel-maqlad-03.jpg",
+  "bytes": 117455
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/04.jpg",
+  "uploadName": "bv-hadeel-maqlad-04.jpg",
+  "bytes": 116714
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/05.jpg",
+  "uploadName": "bv-hadeel-maqlad-05.jpg",
+  "bytes": 96360
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/06.jpg",
+  "uploadName": "bv-hadeel-maqlad-06.jpg",
+  "bytes": 121513
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/07.jpg",
+  "uploadName": "bv-hadeel-maqlad-07.jpg",
+  "bytes": 172430
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/thumb/01.webp",
+  "uploadName": "bv-t-hadeel-maqlad-01.webp",
+  "bytes": 20362
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/thumb/02.webp",
+  "uploadName": "bv-t-hadeel-maqlad-02.webp",
+  "bytes": 16774
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/thumb/03.webp",
+  "uploadName": "bv-t-hadeel-maqlad-03.webp",
+  "bytes": 14684
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/thumb/04.webp",
+  "uploadName": "bv-t-hadeel-maqlad-04.webp",
+  "bytes": 13098
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/thumb/05.webp",
+  "uploadName": "bv-t-hadeel-maqlad-05.webp",
+  "bytes": 10250
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/thumb/06.webp",
+  "uploadName": "bv-t-hadeel-maqlad-06.webp",
+  "bytes": 15304
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/thumb/07.webp",
+  "uploadName": "bv-t-hadeel-maqlad-07.webp",
+  "bytes": 22712
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/cell/01.webp",
+  "uploadName": "bv-c-hadeel-maqlad-01.webp",
+  "bytes": 6692
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/cell/02.webp",
+  "uploadName": "bv-c-hadeel-maqlad-02.webp",
+  "bytes": 5474
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/cell/03.webp",
+  "uploadName": "bv-c-hadeel-maqlad-03.webp",
+  "bytes": 4646
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/cell/04.webp",
+  "uploadName": "bv-c-hadeel-maqlad-04.webp",
+  "bytes": 4436
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/cell/05.webp",
+  "uploadName": "bv-c-hadeel-maqlad-05.webp",
+  "bytes": 3642
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/cell/06.webp",
+  "uploadName": "bv-c-hadeel-maqlad-06.webp",
+  "bytes": 5258
+ },
+ {
+  "sitePath": "assets/work/hadeel-maqlad/cell/07.webp",
+  "uploadName": "bv-c-hadeel-maqlad-07.webp",
+  "bytes": 7606
+ },
+ {
+  "sitePath": "assets/work/izar/01.jpg",
+  "uploadName": "bv-izar-01.jpg",
+  "bytes": 102657
+ },
+ {
+  "sitePath": "assets/work/izar/02.jpg",
+  "uploadName": "bv-izar-02.jpg",
+  "bytes": 80652
+ },
+ {
+  "sitePath": "assets/work/izar/03.jpg",
+  "uploadName": "bv-izar-03.jpg",
+  "bytes": 89672
+ },
+ {
+  "sitePath": "assets/work/izar/04.jpg",
+  "uploadName": "bv-izar-04.jpg",
+  "bytes": 91585
+ },
+ {
+  "sitePath": "assets/work/izar/05.jpg",
+  "uploadName": "bv-izar-05.jpg",
+  "bytes": 124027
+ },
+ {
+  "sitePath": "assets/work/izar/06.jpg",
+  "uploadName": "bv-izar-06.jpg",
+  "bytes": 147256
+ },
+ {
+  "sitePath": "assets/work/izar/07.jpg",
+  "uploadName": "bv-izar-07.jpg",
+  "bytes": 93786
+ },
+ {
+  "sitePath": "assets/work/izar/08.jpg",
+  "uploadName": "bv-izar-08.jpg",
+  "bytes": 60370
+ },
+ {
+  "sitePath": "assets/work/izar/09.jpg",
+  "uploadName": "bv-izar-09.jpg",
+  "bytes": 158287
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/01.webp",
+  "uploadName": "bv-t-izar-01.webp",
+  "bytes": 9904
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/02.webp",
+  "uploadName": "bv-t-izar-02.webp",
+  "bytes": 6856
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/03.webp",
+  "uploadName": "bv-t-izar-03.webp",
+  "bytes": 8638
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/04.webp",
+  "uploadName": "bv-t-izar-04.webp",
+  "bytes": 8670
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/05.webp",
+  "uploadName": "bv-t-izar-05.webp",
+  "bytes": 11990
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/06.webp",
+  "uploadName": "bv-t-izar-06.webp",
+  "bytes": 11874
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/07.webp",
+  "uploadName": "bv-t-izar-07.webp",
+  "bytes": 9110
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/08.webp",
+  "uploadName": "bv-t-izar-08.webp",
+  "bytes": 8178
+ },
+ {
+  "sitePath": "assets/work/izar/thumb/09.webp",
+  "uploadName": "bv-t-izar-09.webp",
+  "bytes": 22438
+ },
+ {
+  "sitePath": "assets/work/izar/cell/01.webp",
+  "uploadName": "bv-c-izar-01.webp",
+  "bytes": 3852
+ },
+ {
+  "sitePath": "assets/work/izar/cell/02.webp",
+  "uploadName": "bv-c-izar-02.webp",
+  "bytes": 2672
+ },
+ {
+  "sitePath": "assets/work/izar/cell/03.webp",
+  "uploadName": "bv-c-izar-03.webp",
+  "bytes": 3328
+ },
+ {
+  "sitePath": "assets/work/izar/cell/04.webp",
+  "uploadName": "bv-c-izar-04.webp",
+  "bytes": 3362
+ },
+ {
+  "sitePath": "assets/work/izar/cell/05.webp",
+  "uploadName": "bv-c-izar-05.webp",
+  "bytes": 4566
+ },
+ {
+  "sitePath": "assets/work/izar/cell/06.webp",
+  "uploadName": "bv-c-izar-06.webp",
+  "bytes": 4178
+ },
+ {
+  "sitePath": "assets/work/izar/cell/07.webp",
+  "uploadName": "bv-c-izar-07.webp",
+  "bytes": 3650
+ },
+ {
+  "sitePath": "assets/work/izar/cell/08.webp",
+  "uploadName": "bv-c-izar-08.webp",
+  "bytes": 2774
+ },
+ {
+  "sitePath": "assets/work/izar/cell/09.webp",
+  "uploadName": "bv-c-izar-09.webp",
+  "bytes": 8120
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/01.jpg",
+  "uploadName": "bv-kinetic-health-01.jpg",
+  "bytes": 145846
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/02.jpg",
+  "uploadName": "bv-kinetic-health-02.jpg",
+  "bytes": 165298
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/03.jpg",
+  "uploadName": "bv-kinetic-health-03.jpg",
+  "bytes": 135697
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/04.jpg",
+  "uploadName": "bv-kinetic-health-04.jpg",
+  "bytes": 147222
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/05.jpg",
+  "uploadName": "bv-kinetic-health-05.jpg",
+  "bytes": 172438
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/06.jpg",
+  "uploadName": "bv-kinetic-health-06.jpg",
+  "bytes": 209912
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/07.jpg",
+  "uploadName": "bv-kinetic-health-07.jpg",
+  "bytes": 171459
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/08.jpg",
+  "uploadName": "bv-kinetic-health-08.jpg",
+  "bytes": 195044
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/01.webp",
+  "uploadName": "bv-t-kinetic-health-01.webp",
+  "bytes": 15198
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/02.webp",
+  "uploadName": "bv-t-kinetic-health-02.webp",
+  "bytes": 18492
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/03.webp",
+  "uploadName": "bv-t-kinetic-health-03.webp",
+  "bytes": 15274
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/04.webp",
+  "uploadName": "bv-t-kinetic-health-04.webp",
+  "bytes": 16156
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/05.webp",
+  "uploadName": "bv-t-kinetic-health-05.webp",
+  "bytes": 19426
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/06.webp",
+  "uploadName": "bv-t-kinetic-health-06.webp",
+  "bytes": 20130
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/07.webp",
+  "uploadName": "bv-t-kinetic-health-07.webp",
+  "bytes": 18960
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/thumb/08.webp",
+  "uploadName": "bv-t-kinetic-health-08.webp",
+  "bytes": 19690
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/01.webp",
+  "uploadName": "bv-c-kinetic-health-01.webp",
+  "bytes": 5404
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/02.webp",
+  "uploadName": "bv-c-kinetic-health-02.webp",
+  "bytes": 5904
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/03.webp",
+  "uploadName": "bv-c-kinetic-health-03.webp",
+  "bytes": 5184
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/04.webp",
+  "uploadName": "bv-c-kinetic-health-04.webp",
+  "bytes": 5504
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/05.webp",
+  "uploadName": "bv-c-kinetic-health-05.webp",
+  "bytes": 6194
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/06.webp",
+  "uploadName": "bv-c-kinetic-health-06.webp",
+  "bytes": 6184
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/07.webp",
+  "uploadName": "bv-c-kinetic-health-07.webp",
+  "bytes": 6018
+ },
+ {
+  "sitePath": "assets/work/kinetic-health/cell/08.webp",
+  "uploadName": "bv-c-kinetic-health-08.webp",
+  "bytes": 6298
+ },
+ {
+  "sitePath": "assets/work/kirin/01.jpg",
+  "uploadName": "bv-kirin-01.jpg",
+  "bytes": 89756
+ },
+ {
+  "sitePath": "assets/work/kirin/02.jpg",
+  "uploadName": "bv-kirin-02.jpg",
+  "bytes": 202637
+ },
+ {
+  "sitePath": "assets/work/kirin/03.jpg",
+  "uploadName": "bv-kirin-03.jpg",
+  "bytes": 201624
+ },
+ {
+  "sitePath": "assets/work/kirin/04.jpg",
+  "uploadName": "bv-kirin-04.jpg",
+  "bytes": 204476
+ },
+ {
+  "sitePath": "assets/work/kirin/05.jpg",
+  "uploadName": "bv-kirin-05.jpg",
+  "bytes": 200870
+ },
+ {
+  "sitePath": "assets/work/kirin/06.jpg",
+  "uploadName": "bv-kirin-06.jpg",
+  "bytes": 217408
+ },
+ {
+  "sitePath": "assets/work/kirin/07.jpg",
+  "uploadName": "bv-kirin-07.jpg",
+  "bytes": 217926
+ },
+ {
+  "sitePath": "assets/work/kirin/thumb/01.webp",
+  "uploadName": "bv-t-kirin-01.webp",
+  "bytes": 9322
+ },
+ {
+  "sitePath": "assets/work/kirin/thumb/02.webp",
+  "uploadName": "bv-t-kirin-02.webp",
+  "bytes": 19254
+ },
+ {
+  "sitePath": "assets/work/kirin/thumb/03.webp",
+  "uploadName": "bv-t-kirin-03.webp",
+  "bytes": 18876
+ },
+ {
+  "sitePath": "assets/work/kirin/thumb/04.webp",
+  "uploadName": "bv-t-kirin-04.webp",
+  "bytes": 19482
+ },
+ {
+  "sitePath": "assets/work/kirin/thumb/05.webp",
+  "uploadName": "bv-t-kirin-05.webp",
+  "bytes": 18962
+ },
+ {
+  "sitePath": "assets/work/kirin/thumb/06.webp",
+  "uploadName": "bv-t-kirin-06.webp",
+  "bytes": 31916
+ },
+ {
+  "sitePath": "assets/work/kirin/thumb/07.webp",
+  "uploadName": "bv-t-kirin-07.webp",
+  "bytes": 32006
+ },
+ {
+  "sitePath": "assets/work/kirin/cell/01.webp",
+  "uploadName": "bv-c-kirin-01.webp",
+  "bytes": 2922
+ },
+ {
+  "sitePath": "assets/work/kirin/cell/02.webp",
+  "uploadName": "bv-c-kirin-02.webp",
+  "bytes": 5284
+ },
+ {
+  "sitePath": "assets/work/kirin/cell/03.webp",
+  "uploadName": "bv-c-kirin-03.webp",
+  "bytes": 5100
+ },
+ {
+  "sitePath": "assets/work/kirin/cell/04.webp",
+  "uploadName": "bv-c-kirin-04.webp",
+  "bytes": 5576
+ },
+ {
+  "sitePath": "assets/work/kirin/cell/05.webp",
+  "uploadName": "bv-c-kirin-05.webp",
+  "bytes": 5330
+ },
+ {
+  "sitePath": "assets/work/kirin/cell/06.webp",
+  "uploadName": "bv-c-kirin-06.webp",
+  "bytes": 9262
+ },
+ {
+  "sitePath": "assets/work/kirin/cell/07.webp",
+  "uploadName": "bv-c-kirin-07.webp",
+  "bytes": 9226
+ },
+ {
+  "sitePath": "assets/work/master-craft/01.jpg",
+  "uploadName": "bv-master-craft-01.jpg",
+  "bytes": 216130
+ },
+ {
+  "sitePath": "assets/work/master-craft/02.jpg",
+  "uploadName": "bv-master-craft-02.jpg",
+  "bytes": 127881
+ },
+ {
+  "sitePath": "assets/work/master-craft/03.jpg",
+  "uploadName": "bv-master-craft-03.jpg",
+  "bytes": 203614
+ },
+ {
+  "sitePath": "assets/work/master-craft/04.jpg",
+  "uploadName": "bv-master-craft-04.jpg",
+  "bytes": 117015
+ },
+ {
+  "sitePath": "assets/work/master-craft/05.jpg",
+  "uploadName": "bv-master-craft-05.jpg",
+  "bytes": 142072
+ },
+ {
+  "sitePath": "assets/work/master-craft/06.jpg",
+  "uploadName": "bv-master-craft-06.jpg",
+  "bytes": 133764
+ },
+ {
+  "sitePath": "assets/work/master-craft/07.jpg",
+  "uploadName": "bv-master-craft-07.jpg",
+  "bytes": 70545
+ },
+ {
+  "sitePath": "assets/work/master-craft/08.jpg",
+  "uploadName": "bv-master-craft-08.jpg",
+  "bytes": 148708
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/01.webp",
+  "uploadName": "bv-t-master-craft-01.webp",
+  "bytes": 25154
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/02.webp",
+  "uploadName": "bv-t-master-craft-02.webp",
+  "bytes": 17116
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/03.webp",
+  "uploadName": "bv-t-master-craft-03.webp",
+  "bytes": 27662
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/04.webp",
+  "uploadName": "bv-t-master-craft-04.webp",
+  "bytes": 14500
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/05.webp",
+  "uploadName": "bv-t-master-craft-05.webp",
+  "bytes": 17568
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/06.webp",
+  "uploadName": "bv-t-master-craft-06.webp",
+  "bytes": 17514
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/07.webp",
+  "uploadName": "bv-t-master-craft-07.webp",
+  "bytes": 8852
+ },
+ {
+  "sitePath": "assets/work/master-craft/thumb/08.webp",
+  "uploadName": "bv-t-master-craft-08.webp",
+  "bytes": 20412
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/01.webp",
+  "uploadName": "bv-c-master-craft-01.webp",
+  "bytes": 7720
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/02.webp",
+  "uploadName": "bv-c-master-craft-02.webp",
+  "bytes": 6122
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/03.webp",
+  "uploadName": "bv-c-master-craft-03.webp",
+  "bytes": 8010
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/04.webp",
+  "uploadName": "bv-c-master-craft-04.webp",
+  "bytes": 5100
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/05.webp",
+  "uploadName": "bv-c-master-craft-05.webp",
+  "bytes": 5838
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/06.webp",
+  "uploadName": "bv-c-master-craft-06.webp",
+  "bytes": 5928
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/07.webp",
+  "uploadName": "bv-c-master-craft-07.webp",
+  "bytes": 3072
+ },
+ {
+  "sitePath": "assets/work/master-craft/cell/08.webp",
+  "uploadName": "bv-c-master-craft-08.webp",
+  "bytes": 6926
+ },
+ {
+  "sitePath": "assets/work/moaafa/01.jpg",
+  "uploadName": "bv-moaafa-01.jpg",
+  "bytes": 162093
+ },
+ {
+  "sitePath": "assets/work/moaafa/02.jpg",
+  "uploadName": "bv-moaafa-02.jpg",
+  "bytes": 171929
+ },
+ {
+  "sitePath": "assets/work/moaafa/03.jpg",
+  "uploadName": "bv-moaafa-03.jpg",
+  "bytes": 188242
+ },
+ {
+  "sitePath": "assets/work/moaafa/04.jpg",
+  "uploadName": "bv-moaafa-04.jpg",
+  "bytes": 74865
+ },
+ {
+  "sitePath": "assets/work/moaafa/05.jpg",
+  "uploadName": "bv-moaafa-05.jpg",
+  "bytes": 169966
+ },
+ {
+  "sitePath": "assets/work/moaafa/06.jpg",
+  "uploadName": "bv-moaafa-06.jpg",
+  "bytes": 162093
+ },
+ {
+  "sitePath": "assets/work/moaafa/07.jpg",
+  "uploadName": "bv-moaafa-07.jpg",
+  "bytes": 59569
+ },
+ {
+  "sitePath": "assets/work/moaafa/08.jpg",
+  "uploadName": "bv-moaafa-08.jpg",
+  "bytes": 51774
+ },
+ {
+  "sitePath": "assets/work/moaafa/09.jpg",
+  "uploadName": "bv-moaafa-09.jpg",
+  "bytes": 87359
+ },
+ {
+  "sitePath": "assets/work/moaafa/10.jpg",
+  "uploadName": "bv-moaafa-10.jpg",
+  "bytes": 115315
+ },
+ {
+  "sitePath": "assets/work/moaafa/11.jpg",
+  "uploadName": "bv-moaafa-11.jpg",
+  "bytes": 79731
+ },
+ {
+  "sitePath": "assets/work/moaafa/12.jpg",
+  "uploadName": "bv-moaafa-12.jpg",
+  "bytes": 263849
+ },
+ {
+  "sitePath": "assets/work/moaafa/13.jpg",
+  "uploadName": "bv-moaafa-13.jpg",
+  "bytes": 260276
+ },
+ {
+  "sitePath": "assets/work/moaafa/14.jpg",
+  "uploadName": "bv-moaafa-14.jpg",
+  "bytes": 276347
+ },
+ {
+  "sitePath": "assets/work/moaafa/15.jpg",
+  "uploadName": "bv-moaafa-15.jpg",
+  "bytes": 260708
+ },
+ {
+  "sitePath": "assets/work/moaafa/16.jpg",
+  "uploadName": "bv-moaafa-16.jpg",
+  "bytes": 178048
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/01.webp",
+  "uploadName": "bv-t-moaafa-01.webp",
+  "bytes": 20726
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/02.webp",
+  "uploadName": "bv-t-moaafa-02.webp",
+  "bytes": 17120
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/03.webp",
+  "uploadName": "bv-t-moaafa-03.webp",
+  "bytes": 18504
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/04.webp",
+  "uploadName": "bv-t-moaafa-04.webp",
+  "bytes": 7572
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/05.webp",
+  "uploadName": "bv-t-moaafa-05.webp",
+  "bytes": 16498
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/06.webp",
+  "uploadName": "bv-t-moaafa-06.webp",
+  "bytes": 20726
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/07.webp",
+  "uploadName": "bv-t-moaafa-07.webp",
+  "bytes": 9622
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/08.webp",
+  "uploadName": "bv-t-moaafa-08.webp",
+  "bytes": 8990
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/09.webp",
+  "uploadName": "bv-t-moaafa-09.webp",
+  "bytes": 12248
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/10.webp",
+  "uploadName": "bv-t-moaafa-10.webp",
+  "bytes": 16652
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/11.webp",
+  "uploadName": "bv-t-moaafa-11.webp",
+  "bytes": 11452
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/12.webp",
+  "uploadName": "bv-t-moaafa-12.webp",
+  "bytes": 36624
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/13.webp",
+  "uploadName": "bv-t-moaafa-13.webp",
+  "bytes": 34206
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/14.webp",
+  "uploadName": "bv-t-moaafa-14.webp",
+  "bytes": 39804
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/15.webp",
+  "uploadName": "bv-t-moaafa-15.webp",
+  "bytes": 33800
+ },
+ {
+  "sitePath": "assets/work/moaafa/thumb/16.webp",
+  "uploadName": "bv-t-moaafa-16.webp",
+  "bytes": 22188
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/01.webp",
+  "uploadName": "bv-c-moaafa-01.webp",
+  "bytes": 7350
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/02.webp",
+  "uploadName": "bv-c-moaafa-02.webp",
+  "bytes": 5848
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/03.webp",
+  "uploadName": "bv-c-moaafa-03.webp",
+  "bytes": 5962
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/04.webp",
+  "uploadName": "bv-c-moaafa-04.webp",
+  "bytes": 2824
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/05.webp",
+  "uploadName": "bv-c-moaafa-05.webp",
+  "bytes": 5588
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/06.webp",
+  "uploadName": "bv-c-moaafa-06.webp",
+  "bytes": 7350
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/07.webp",
+  "uploadName": "bv-c-moaafa-07.webp",
+  "bytes": 3430
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/08.webp",
+  "uploadName": "bv-c-moaafa-08.webp",
+  "bytes": 3432
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/09.webp",
+  "uploadName": "bv-c-moaafa-09.webp",
+  "bytes": 4742
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/10.webp",
+  "uploadName": "bv-c-moaafa-10.webp",
+  "bytes": 5560
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/11.webp",
+  "uploadName": "bv-c-moaafa-11.webp",
+  "bytes": 4472
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/12.webp",
+  "uploadName": "bv-c-moaafa-12.webp",
+  "bytes": 11358
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/13.webp",
+  "uploadName": "bv-c-moaafa-13.webp",
+  "bytes": 9544
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/14.webp",
+  "uploadName": "bv-c-moaafa-14.webp",
+  "bytes": 12592
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/15.webp",
+  "uploadName": "bv-c-moaafa-15.webp",
+  "bytes": 9238
+ },
+ {
+  "sitePath": "assets/work/moaafa/cell/16.webp",
+  "uploadName": "bv-c-moaafa-16.webp",
+  "bytes": 6332
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/01.jpg",
+  "uploadName": "bv-moamen-medhat-01.jpg",
+  "bytes": 145752
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/02.jpg",
+  "uploadName": "bv-moamen-medhat-02.jpg",
+  "bytes": 112101
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/03.jpg",
+  "uploadName": "bv-moamen-medhat-03.jpg",
+  "bytes": 128384
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/04.jpg",
+  "uploadName": "bv-moamen-medhat-04.jpg",
+  "bytes": 160096
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/thumb/01.webp",
+  "uploadName": "bv-t-moamen-medhat-01.webp",
+  "bytes": 15368
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/thumb/02.webp",
+  "uploadName": "bv-t-moamen-medhat-02.webp",
+  "bytes": 7682
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/thumb/03.webp",
+  "uploadName": "bv-t-moamen-medhat-03.webp",
+  "bytes": 17688
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/thumb/04.webp",
+  "uploadName": "bv-t-moamen-medhat-04.webp",
+  "bytes": 22822
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/cell/01.webp",
+  "uploadName": "bv-c-moamen-medhat-01.webp",
+  "bytes": 5392
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/cell/02.webp",
+  "uploadName": "bv-c-moamen-medhat-02.webp",
+  "bytes": 3562
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/cell/03.webp",
+  "uploadName": "bv-c-moamen-medhat-03.webp",
+  "bytes": 5888
+ },
+ {
+  "sitePath": "assets/work/moamen-medhat/cell/04.webp",
+  "uploadName": "bv-c-moamen-medhat-04.webp",
+  "bytes": 7138
+ },
+ {
+  "sitePath": "assets/work/qr-tably/01.jpg",
+  "uploadName": "bv-qr-tably-01.jpg",
+  "bytes": 173683
+ },
+ {
+  "sitePath": "assets/work/qr-tably/02.jpg",
+  "uploadName": "bv-qr-tably-02.jpg",
+  "bytes": 122929
+ },
+ {
+  "sitePath": "assets/work/qr-tably/03.jpg",
+  "uploadName": "bv-qr-tably-03.jpg",
+  "bytes": 242218
+ },
+ {
+  "sitePath": "assets/work/qr-tably/04.jpg",
+  "uploadName": "bv-qr-tably-04.jpg",
+  "bytes": 335926
+ },
+ {
+  "sitePath": "assets/work/qr-tably/05.jpg",
+  "uploadName": "bv-qr-tably-05.jpg",
+  "bytes": 202206
+ },
+ {
+  "sitePath": "assets/work/qr-tably/06.jpg",
+  "uploadName": "bv-qr-tably-06.jpg",
+  "bytes": 176406
+ },
+ {
+  "sitePath": "assets/work/qr-tably/07.jpg",
+  "uploadName": "bv-qr-tably-07.jpg",
+  "bytes": 158847
+ },
+ {
+  "sitePath": "assets/work/qr-tably/08.jpg",
+  "uploadName": "bv-qr-tably-08.jpg",
+  "bytes": 159036
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/01.webp",
+  "uploadName": "bv-t-qr-tably-01.webp",
+  "bytes": 27862
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/02.webp",
+  "uploadName": "bv-t-qr-tably-02.webp",
+  "bytes": 21054
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/03.webp",
+  "uploadName": "bv-t-qr-tably-03.webp",
+  "bytes": 32998
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/04.webp",
+  "uploadName": "bv-t-qr-tably-04.webp",
+  "bytes": 46194
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/05.webp",
+  "uploadName": "bv-t-qr-tably-05.webp",
+  "bytes": 37234
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/06.webp",
+  "uploadName": "bv-t-qr-tably-06.webp",
+  "bytes": 29724
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/07.webp",
+  "uploadName": "bv-t-qr-tably-07.webp",
+  "bytes": 30626
+ },
+ {
+  "sitePath": "assets/work/qr-tably/thumb/08.webp",
+  "uploadName": "bv-t-qr-tably-08.webp",
+  "bytes": 25448
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/01.webp",
+  "uploadName": "bv-c-qr-tably-01.webp",
+  "bytes": 9704
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/02.webp",
+  "uploadName": "bv-c-qr-tably-02.webp",
+  "bytes": 6912
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/03.webp",
+  "uploadName": "bv-c-qr-tably-03.webp",
+  "bytes": 10380
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/04.webp",
+  "uploadName": "bv-c-qr-tably-04.webp",
+  "bytes": 11814
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/05.webp",
+  "uploadName": "bv-c-qr-tably-05.webp",
+  "bytes": 12368
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/06.webp",
+  "uploadName": "bv-c-qr-tably-06.webp",
+  "bytes": 9824
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/07.webp",
+  "uploadName": "bv-c-qr-tably-07.webp",
+  "bytes": 9918
+ },
+ {
+  "sitePath": "assets/work/qr-tably/cell/08.webp",
+  "uploadName": "bv-c-qr-tably-08.webp",
+  "bytes": 8810
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/01.jpg",
+  "uploadName": "bv-renda-perfumes-01.jpg",
+  "bytes": 190810
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/02.jpg",
+  "uploadName": "bv-renda-perfumes-02.jpg",
+  "bytes": 219509
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/03.jpg",
+  "uploadName": "bv-renda-perfumes-03.jpg",
+  "bytes": 182216
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/04.jpg",
+  "uploadName": "bv-renda-perfumes-04.jpg",
+  "bytes": 163813
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/05.jpg",
+  "uploadName": "bv-renda-perfumes-05.jpg",
+  "bytes": 187094
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/06.jpg",
+  "uploadName": "bv-renda-perfumes-06.jpg",
+  "bytes": 176769
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/07.jpg",
+  "uploadName": "bv-renda-perfumes-07.jpg",
+  "bytes": 180342
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/08.jpg",
+  "uploadName": "bv-renda-perfumes-08.jpg",
+  "bytes": 174467
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/01.webp",
+  "uploadName": "bv-t-renda-perfumes-01.webp",
+  "bytes": 21150
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/02.webp",
+  "uploadName": "bv-t-renda-perfumes-02.webp",
+  "bytes": 27342
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/03.webp",
+  "uploadName": "bv-t-renda-perfumes-03.webp",
+  "bytes": 21472
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/04.webp",
+  "uploadName": "bv-t-renda-perfumes-04.webp",
+  "bytes": 18628
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/05.webp",
+  "uploadName": "bv-t-renda-perfumes-05.webp",
+  "bytes": 22104
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/06.webp",
+  "uploadName": "bv-t-renda-perfumes-06.webp",
+  "bytes": 20264
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/07.webp",
+  "uploadName": "bv-t-renda-perfumes-07.webp",
+  "bytes": 20996
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/thumb/08.webp",
+  "uploadName": "bv-t-renda-perfumes-08.webp",
+  "bytes": 19554
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/01.webp",
+  "uploadName": "bv-c-renda-perfumes-01.webp",
+  "bytes": 6780
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/02.webp",
+  "uploadName": "bv-c-renda-perfumes-02.webp",
+  "bytes": 7946
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/03.webp",
+  "uploadName": "bv-c-renda-perfumes-03.webp",
+  "bytes": 7102
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/04.webp",
+  "uploadName": "bv-c-renda-perfumes-04.webp",
+  "bytes": 6212
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/05.webp",
+  "uploadName": "bv-c-renda-perfumes-05.webp",
+  "bytes": 7402
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/06.webp",
+  "uploadName": "bv-c-renda-perfumes-06.webp",
+  "bytes": 6842
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/07.webp",
+  "uploadName": "bv-c-renda-perfumes-07.webp",
+  "bytes": 7030
+ },
+ {
+  "sitePath": "assets/work/renda-perfumes/cell/08.webp",
+  "uploadName": "bv-c-renda-perfumes-08.webp",
+  "bytes": 6588
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/01.jpg",
+  "uploadName": "bv-revenuelab360-01.jpg",
+  "bytes": 109338
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/02.jpg",
+  "uploadName": "bv-revenuelab360-02.jpg",
+  "bytes": 82252
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/03.jpg",
+  "uploadName": "bv-revenuelab360-03.jpg",
+  "bytes": 148975
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/04.jpg",
+  "uploadName": "bv-revenuelab360-04.jpg",
+  "bytes": 112816
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/05.jpg",
+  "uploadName": "bv-revenuelab360-05.jpg",
+  "bytes": 113625
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/06.jpg",
+  "uploadName": "bv-revenuelab360-06.jpg",
+  "bytes": 113286
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/07.jpg",
+  "uploadName": "bv-revenuelab360-07.jpg",
+  "bytes": 90449
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/08.jpg",
+  "uploadName": "bv-revenuelab360-08.jpg",
+  "bytes": 146967
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/01.webp",
+  "uploadName": "bv-t-revenuelab360-01.webp",
+  "bytes": 17664
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/02.webp",
+  "uploadName": "bv-t-revenuelab360-02.webp",
+  "bytes": 10870
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/03.webp",
+  "uploadName": "bv-t-revenuelab360-03.webp",
+  "bytes": 18364
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/04.webp",
+  "uploadName": "bv-t-revenuelab360-04.webp",
+  "bytes": 17806
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/05.webp",
+  "uploadName": "bv-t-revenuelab360-05.webp",
+  "bytes": 17426
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/06.webp",
+  "uploadName": "bv-t-revenuelab360-06.webp",
+  "bytes": 17482
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/07.webp",
+  "uploadName": "bv-t-revenuelab360-07.webp",
+  "bytes": 13340
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/thumb/08.webp",
+  "uploadName": "bv-t-revenuelab360-08.webp",
+  "bytes": 17894
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/01.webp",
+  "uploadName": "bv-c-revenuelab360-01.webp",
+  "bytes": 5722
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/02.webp",
+  "uploadName": "bv-c-revenuelab360-02.webp",
+  "bytes": 3356
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/03.webp",
+  "uploadName": "bv-c-revenuelab360-03.webp",
+  "bytes": 5834
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/04.webp",
+  "uploadName": "bv-c-revenuelab360-04.webp",
+  "bytes": 5610
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/05.webp",
+  "uploadName": "bv-c-revenuelab360-05.webp",
+  "bytes": 5580
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/06.webp",
+  "uploadName": "bv-c-revenuelab360-06.webp",
+  "bytes": 5546
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/07.webp",
+  "uploadName": "bv-c-revenuelab360-07.webp",
+  "bytes": 4030
+ },
+ {
+  "sitePath": "assets/work/revenuelab360/cell/08.webp",
+  "uploadName": "bv-c-revenuelab360-08.webp",
+  "bytes": 5792
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/01.jpg",
+  "uploadName": "bv-rinos-kitchen-01.jpg",
+  "bytes": 299345
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/02.jpg",
+  "uploadName": "bv-rinos-kitchen-02.jpg",
+  "bytes": 209940
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/03.jpg",
+  "uploadName": "bv-rinos-kitchen-03.jpg",
+  "bytes": 185198
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/04.jpg",
+  "uploadName": "bv-rinos-kitchen-04.jpg",
+  "bytes": 244465
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/05.jpg",
+  "uploadName": "bv-rinos-kitchen-05.jpg",
+  "bytes": 194428
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/06.jpg",
+  "uploadName": "bv-rinos-kitchen-06.jpg",
+  "bytes": 208291
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/07.jpg",
+  "uploadName": "bv-rinos-kitchen-07.jpg",
+  "bytes": 199018
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/08.jpg",
+  "uploadName": "bv-rinos-kitchen-08.jpg",
+  "bytes": 182325
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/01.webp",
+  "uploadName": "bv-t-rinos-kitchen-01.webp",
+  "bytes": 47328
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/02.webp",
+  "uploadName": "bv-t-rinos-kitchen-02.webp",
+  "bytes": 38652
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/03.webp",
+  "uploadName": "bv-t-rinos-kitchen-03.webp",
+  "bytes": 30370
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/04.webp",
+  "uploadName": "bv-t-rinos-kitchen-04.webp",
+  "bytes": 39216
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/05.webp",
+  "uploadName": "bv-t-rinos-kitchen-05.webp",
+  "bytes": 33022
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/06.webp",
+  "uploadName": "bv-t-rinos-kitchen-06.webp",
+  "bytes": 40330
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/07.webp",
+  "uploadName": "bv-t-rinos-kitchen-07.webp",
+  "bytes": 37912
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/thumb/08.webp",
+  "uploadName": "bv-t-rinos-kitchen-08.webp",
+  "bytes": 33560
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/01.webp",
+  "uploadName": "bv-c-rinos-kitchen-01.webp",
+  "bytes": 12914
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/02.webp",
+  "uploadName": "bv-c-rinos-kitchen-02.webp",
+  "bytes": 10810
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/03.webp",
+  "uploadName": "bv-c-rinos-kitchen-03.webp",
+  "bytes": 9586
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/04.webp",
+  "uploadName": "bv-c-rinos-kitchen-04.webp",
+  "bytes": 10936
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/05.webp",
+  "uploadName": "bv-c-rinos-kitchen-05.webp",
+  "bytes": 9106
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/06.webp",
+  "uploadName": "bv-c-rinos-kitchen-06.webp",
+  "bytes": 11740
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/07.webp",
+  "uploadName": "bv-c-rinos-kitchen-07.webp",
+  "bytes": 11466
+ },
+ {
+  "sitePath": "assets/work/rinos-kitchen/cell/08.webp",
+  "uploadName": "bv-c-rinos-kitchen-08.webp",
+  "bytes": 9976
+ },
+ {
+  "sitePath": "assets/work/rojana/01.jpg",
+  "uploadName": "bv-rojana-01.jpg",
+  "bytes": 214868
+ },
+ {
+  "sitePath": "assets/work/rojana/02.jpg",
+  "uploadName": "bv-rojana-02.jpg",
+  "bytes": 216131
+ },
+ {
+  "sitePath": "assets/work/rojana/03.jpg",
+  "uploadName": "bv-rojana-03.jpg",
+  "bytes": 219004
+ },
+ {
+  "sitePath": "assets/work/rojana/04.jpg",
+  "uploadName": "bv-rojana-04.jpg",
+  "bytes": 199750
+ },
+ {
+  "sitePath": "assets/work/rojana/05.jpg",
+  "uploadName": "bv-rojana-05.jpg",
+  "bytes": 191371
+ },
+ {
+  "sitePath": "assets/work/rojana/06.jpg",
+  "uploadName": "bv-rojana-06.jpg",
+  "bytes": 122907
+ },
+ {
+  "sitePath": "assets/work/rojana/thumb/01.webp",
+  "uploadName": "bv-t-rojana-01.webp",
+  "bytes": 27332
+ },
+ {
+  "sitePath": "assets/work/rojana/thumb/02.webp",
+  "uploadName": "bv-t-rojana-02.webp",
+  "bytes": 26482
+ },
+ {
+  "sitePath": "assets/work/rojana/thumb/03.webp",
+  "uploadName": "bv-t-rojana-03.webp",
+  "bytes": 26572
+ },
+ {
+  "sitePath": "assets/work/rojana/thumb/04.webp",
+  "uploadName": "bv-t-rojana-04.webp",
+  "bytes": 25906
+ },
+ {
+  "sitePath": "assets/work/rojana/thumb/05.webp",
+  "uploadName": "bv-t-rojana-05.webp",
+  "bytes": 25844
+ },
+ {
+  "sitePath": "assets/work/rojana/thumb/06.webp",
+  "uploadName": "bv-t-rojana-06.webp",
+  "bytes": 17552
+ },
+ {
+  "sitePath": "assets/work/rojana/cell/01.webp",
+  "uploadName": "bv-c-rojana-01.webp",
+  "bytes": 9010
+ },
+ {
+  "sitePath": "assets/work/rojana/cell/02.webp",
+  "uploadName": "bv-c-rojana-02.webp",
+  "bytes": 8806
+ },
+ {
+  "sitePath": "assets/work/rojana/cell/03.webp",
+  "uploadName": "bv-c-rojana-03.webp",
+  "bytes": 8700
+ },
+ {
+  "sitePath": "assets/work/rojana/cell/04.webp",
+  "uploadName": "bv-c-rojana-04.webp",
+  "bytes": 8806
+ },
+ {
+  "sitePath": "assets/work/rojana/cell/05.webp",
+  "uploadName": "bv-c-rojana-05.webp",
+  "bytes": 8952
+ },
+ {
+  "sitePath": "assets/work/rojana/cell/06.webp",
+  "uploadName": "bv-c-rojana-06.webp",
+  "bytes": 6034
+ },
+ {
+  "sitePath": "assets/work/speakup/01.jpg",
+  "uploadName": "bv-speakup-01.jpg",
+  "bytes": 189685
+ },
+ {
+  "sitePath": "assets/work/speakup/02.jpg",
+  "uploadName": "bv-speakup-02.jpg",
+  "bytes": 161036
+ },
+ {
+  "sitePath": "assets/work/speakup/03.jpg",
+  "uploadName": "bv-speakup-03.jpg",
+  "bytes": 150519
+ },
+ {
+  "sitePath": "assets/work/speakup/04.jpg",
+  "uploadName": "bv-speakup-04.jpg",
+  "bytes": 195781
+ },
+ {
+  "sitePath": "assets/work/speakup/05.jpg",
+  "uploadName": "bv-speakup-05.jpg",
+  "bytes": 286544
+ },
+ {
+  "sitePath": "assets/work/speakup/06.jpg",
+  "uploadName": "bv-speakup-06.jpg",
+  "bytes": 212558
+ },
+ {
+  "sitePath": "assets/work/speakup/07.jpg",
+  "uploadName": "bv-speakup-07.jpg",
+  "bytes": 207528
+ },
+ {
+  "sitePath": "assets/work/speakup/08.jpg",
+  "uploadName": "bv-speakup-08.jpg",
+  "bytes": 179308
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/01.webp",
+  "uploadName": "bv-t-speakup-01.webp",
+  "bytes": 29778
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/02.webp",
+  "uploadName": "bv-t-speakup-02.webp",
+  "bytes": 16456
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/03.webp",
+  "uploadName": "bv-t-speakup-03.webp",
+  "bytes": 24618
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/04.webp",
+  "uploadName": "bv-t-speakup-04.webp",
+  "bytes": 30578
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/05.webp",
+  "uploadName": "bv-t-speakup-05.webp",
+  "bytes": 39654
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/06.webp",
+  "uploadName": "bv-t-speakup-06.webp",
+  "bytes": 36538
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/07.webp",
+  "uploadName": "bv-t-speakup-07.webp",
+  "bytes": 32778
+ },
+ {
+  "sitePath": "assets/work/speakup/thumb/08.webp",
+  "uploadName": "bv-t-speakup-08.webp",
+  "bytes": 31574
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/01.webp",
+  "uploadName": "bv-c-speakup-01.webp",
+  "bytes": 11108
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/02.webp",
+  "uploadName": "bv-c-speakup-02.webp",
+  "bytes": 5768
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/03.webp",
+  "uploadName": "bv-c-speakup-03.webp",
+  "bytes": 9436
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/04.webp",
+  "uploadName": "bv-c-speakup-04.webp",
+  "bytes": 10752
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/05.webp",
+  "uploadName": "bv-c-speakup-05.webp",
+  "bytes": 13218
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/06.webp",
+  "uploadName": "bv-c-speakup-06.webp",
+  "bytes": 11890
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/07.webp",
+  "uploadName": "bv-c-speakup-07.webp",
+  "bytes": 11538
+ },
+ {
+  "sitePath": "assets/work/speakup/cell/08.webp",
+  "uploadName": "bv-c-speakup-08.webp",
+  "bytes": 11760
+ },
+ {
+  "sitePath": "assets/work/tamahwour/01.jpg",
+  "uploadName": "bv-tamahwour-01.jpg",
+  "bytes": 40930
+ },
+ {
+  "sitePath": "assets/work/tamahwour/02.jpg",
+  "uploadName": "bv-tamahwour-02.jpg",
+  "bytes": 68627
+ },
+ {
+  "sitePath": "assets/work/tamahwour/03.jpg",
+  "uploadName": "bv-tamahwour-03.jpg",
+  "bytes": 176754
+ },
+ {
+  "sitePath": "assets/work/tamahwour/04.jpg",
+  "uploadName": "bv-tamahwour-04.jpg",
+  "bytes": 73045
+ },
+ {
+  "sitePath": "assets/work/tamahwour/05.jpg",
+  "uploadName": "bv-tamahwour-05.jpg",
+  "bytes": 49481
+ },
+ {
+  "sitePath": "assets/work/tamahwour/06.jpg",
+  "uploadName": "bv-tamahwour-06.jpg",
+  "bytes": 43488
+ },
+ {
+  "sitePath": "assets/work/tamahwour/07.jpg",
+  "uploadName": "bv-tamahwour-07.jpg",
+  "bytes": 43488
+ },
+ {
+  "sitePath": "assets/work/tamahwour/08.jpg",
+  "uploadName": "bv-tamahwour-08.jpg",
+  "bytes": 219901
+ },
+ {
+  "sitePath": "assets/work/tamahwour/09.jpg",
+  "uploadName": "bv-tamahwour-09.jpg",
+  "bytes": 209615
+ },
+ {
+  "sitePath": "assets/work/tamahwour/10.jpg",
+  "uploadName": "bv-tamahwour-10.jpg",
+  "bytes": 73018
+ },
+ {
+  "sitePath": "assets/work/tamahwour/11.jpg",
+  "uploadName": "bv-tamahwour-11.jpg",
+  "bytes": 195222
+ },
+ {
+  "sitePath": "assets/work/tamahwour/12.jpg",
+  "uploadName": "bv-tamahwour-12.jpg",
+  "bytes": 100666
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/01.webp",
+  "uploadName": "bv-t-tamahwour-01.webp",
+  "bytes": 6660
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/02.webp",
+  "uploadName": "bv-t-tamahwour-02.webp",
+  "bytes": 9872
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/03.webp",
+  "uploadName": "bv-t-tamahwour-03.webp",
+  "bytes": 6064
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/04.webp",
+  "uploadName": "bv-t-tamahwour-04.webp",
+  "bytes": 9632
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/05.webp",
+  "uploadName": "bv-t-tamahwour-05.webp",
+  "bytes": 6960
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/06.webp",
+  "uploadName": "bv-t-tamahwour-06.webp",
+  "bytes": 6792
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/07.webp",
+  "uploadName": "bv-t-tamahwour-07.webp",
+  "bytes": 6792
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/08.webp",
+  "uploadName": "bv-t-tamahwour-08.webp",
+  "bytes": 7072
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/09.webp",
+  "uploadName": "bv-t-tamahwour-09.webp",
+  "bytes": 5284
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/10.webp",
+  "uploadName": "bv-t-tamahwour-10.webp",
+  "bytes": 10106
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/11.webp",
+  "uploadName": "bv-t-tamahwour-11.webp",
+  "bytes": 6154
+ },
+ {
+  "sitePath": "assets/work/tamahwour/thumb/12.webp",
+  "uploadName": "bv-t-tamahwour-12.webp",
+  "bytes": 3366
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/01.webp",
+  "uploadName": "bv-c-tamahwour-01.webp",
+  "bytes": 2764
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/02.webp",
+  "uploadName": "bv-c-tamahwour-02.webp",
+  "bytes": 2856
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/03.webp",
+  "uploadName": "bv-c-tamahwour-03.webp",
+  "bytes": 2144
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/04.webp",
+  "uploadName": "bv-c-tamahwour-04.webp",
+  "bytes": 3772
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/05.webp",
+  "uploadName": "bv-c-tamahwour-05.webp",
+  "bytes": 2466
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/06.webp",
+  "uploadName": "bv-c-tamahwour-06.webp",
+  "bytes": 2672
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/07.webp",
+  "uploadName": "bv-c-tamahwour-07.webp",
+  "bytes": 2672
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/08.webp",
+  "uploadName": "bv-c-tamahwour-08.webp",
+  "bytes": 2938
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/09.webp",
+  "uploadName": "bv-c-tamahwour-09.webp",
+  "bytes": 2096
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/10.webp",
+  "uploadName": "bv-c-tamahwour-10.webp",
+  "bytes": 3978
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/11.webp",
+  "uploadName": "bv-c-tamahwour-11.webp",
+  "bytes": 2394
+ },
+ {
+  "sitePath": "assets/work/tamahwour/cell/12.webp",
+  "uploadName": "bv-c-tamahwour-12.webp",
+  "bytes": 1630
+ },
+ {
+  "sitePath": "assets/work/volt-ems/01.jpg",
+  "uploadName": "bv-volt-ems-01.jpg",
+  "bytes": 120732
+ },
+ {
+  "sitePath": "assets/work/volt-ems/02.jpg",
+  "uploadName": "bv-volt-ems-02.jpg",
+  "bytes": 104822
+ },
+ {
+  "sitePath": "assets/work/volt-ems/03.jpg",
+  "uploadName": "bv-volt-ems-03.jpg",
+  "bytes": 82712
+ },
+ {
+  "sitePath": "assets/work/volt-ems/04.jpg",
+  "uploadName": "bv-volt-ems-04.jpg",
+  "bytes": 149448
+ },
+ {
+  "sitePath": "assets/work/volt-ems/05.jpg",
+  "uploadName": "bv-volt-ems-05.jpg",
+  "bytes": 142781
+ },
+ {
+  "sitePath": "assets/work/volt-ems/thumb/01.webp",
+  "uploadName": "bv-t-volt-ems-01.webp",
+  "bytes": 22388
+ },
+ {
+  "sitePath": "assets/work/volt-ems/thumb/02.webp",
+  "uploadName": "bv-t-volt-ems-02.webp",
+  "bytes": 18454
+ },
+ {
+  "sitePath": "assets/work/volt-ems/thumb/03.webp",
+  "uploadName": "bv-t-volt-ems-03.webp",
+  "bytes": 10676
+ },
+ {
+  "sitePath": "assets/work/volt-ems/thumb/04.webp",
+  "uploadName": "bv-t-volt-ems-04.webp",
+  "bytes": 21874
+ },
+ {
+  "sitePath": "assets/work/volt-ems/thumb/05.webp",
+  "uploadName": "bv-t-volt-ems-05.webp",
+  "bytes": 22712
+ },
+ {
+  "sitePath": "assets/work/volt-ems/cell/01.webp",
+  "uploadName": "bv-c-volt-ems-01.webp",
+  "bytes": 7900
+ },
+ {
+  "sitePath": "assets/work/volt-ems/cell/02.webp",
+  "uploadName": "bv-c-volt-ems-02.webp",
+  "bytes": 6774
+ },
+ {
+  "sitePath": "assets/work/volt-ems/cell/03.webp",
+  "uploadName": "bv-c-volt-ems-03.webp",
+  "bytes": 3568
+ },
+ {
+  "sitePath": "assets/work/volt-ems/cell/04.webp",
+  "uploadName": "bv-c-volt-ems-04.webp",
+  "bytes": 8254
+ },
+ {
+  "sitePath": "assets/work/volt-ems/cell/05.webp",
+  "uploadName": "bv-c-volt-ems-05.webp",
+  "bytes": 7982
+ },
+ {
+  "sitePath": "assets/light/beeviro-icon.webp",
+  "uploadName": "bv-l-beeviro-icon.webp",
+  "bytes": 21742
+ },
+ {
+  "sitePath": "assets/light/beeviro.webp",
+  "uploadName": "bv-l-beeviro.webp",
+  "bytes": 12310
+ },
+ {
+  "sitePath": "assets/light/comb-tall.webp",
+  "uploadName": "bv-l-comb-tall.webp",
+  "bytes": 39486
+ },
+ {
+  "sitePath": "assets/light/comb-wide.webp",
+  "uploadName": "bv-l-comb-wide.webp",
+  "bytes": 67348
+ },
+ {
+  "sitePath": "assets/light/dr-eman.webp",
+  "uploadName": "bv-l-dr-eman.webp",
+  "bytes": 16942
+ },
+ {
+  "sitePath": "assets/light/favicon.png",
+  "uploadName": "bv-l-favicon.png",
+  "bytes": 2292
+ },
+ {
+  "sitePath": "assets/light/hadeel-maqlad.webp",
+  "uploadName": "bv-l-hadeel-maqlad.webp",
+  "bytes": 9630
+ },
+ {
+  "sitePath": "assets/light/kirin.webp",
+  "uploadName": "bv-l-kirin.webp",
+  "bytes": 20340
+ },
+ {
+  "sitePath": "assets/light/rojana.webp",
+  "uploadName": "bv-l-rojana.webp",
+  "bytes": 9272
+ },
+ {
+  "sitePath": "assets/light/sheikh-hosney.webp",
+  "uploadName": "bv-l-sheikh-hosney.webp",
+  "bytes": 14614
+ },
+ {
+  "sitePath": "assets/hero/reels/beeviro.webm",
+  "uploadName": "bv-reel-beeviro.webm",
+  "bytes": 282058
+ },
+ {
+  "sitePath": "assets/hero/reels/black-star.webm",
+  "uploadName": "bv-reel-black-star.webm",
+  "bytes": 438190
+ },
+ {
+  "sitePath": "assets/hero/reels/cognistar.webm",
+  "uploadName": "bv-reel-cognistar.webm",
+  "bytes": 367975
+ },
+ {
+  "sitePath": "assets/hero/reels/daily-box.webm",
+  "uploadName": "bv-reel-daily-box.webm",
+  "bytes": 437641
+ },
+ {
+  "sitePath": "assets/hero/reels/dar-al-hadith.webm",
+  "uploadName": "bv-reel-dar-al-hadith.webm",
+  "bytes": 473061
+ },
+ {
+  "sitePath": "assets/hero/reels/electro-master.webm",
+  "uploadName": "bv-reel-electro-master.webm",
+  "bytes": 524306
+ },
+ {
+  "sitePath": "assets/hero/reels/eqbal.webm",
+  "uploadName": "bv-reel-eqbal.webm",
+  "bytes": 335416
+ },
+ {
+  "sitePath": "assets/hero/reels/freestyle.webm",
+  "uploadName": "bv-reel-freestyle.webm",
+  "bytes": 341612
+ },
+ {
+  "sitePath": "assets/hero/reels/hadeel-maqlad.webm",
+  "uploadName": "bv-reel-hadeel-maqlad.webm",
+  "bytes": 417298
+ },
+ {
+  "sitePath": "assets/hero/reels/izar.webm",
+  "uploadName": "bv-reel-izar.webm",
+  "bytes": 408017
+ },
+ {
+  "sitePath": "assets/hero/reels/kinetic-health.webm",
+  "uploadName": "bv-reel-kinetic-health.webm",
+  "bytes": 297444
+ },
+ {
+  "sitePath": "assets/hero/reels/master-craft.webm",
+  "uploadName": "bv-reel-master-craft.webm",
+  "bytes": 458490
+ },
+ {
+  "sitePath": "assets/hero/reels/qr-tably.webm",
+  "uploadName": "bv-reel-qr-tably.webm",
+  "bytes": 407726
+ },
+ {
+  "sitePath": "assets/hero/reels/rinos-kitchen.webm",
+  "uploadName": "bv-reel-rinos-kitchen.webm",
+  "bytes": 365599
+ },
+ {
+  "sitePath": "assets/hero/reels/volt-ems.webm",
+  "uploadName": "bv-reel-volt-ems.webm",
+  "bytes": 519493
+ },
+ {
+  "sitePath": "assets/hero/reels/small/beeviro.webm",
+  "uploadName": "bv-reel-sm-beeviro.webm",
+  "bytes": 77512
+ },
+ {
+  "sitePath": "assets/hero/reels/small/daily-box.webm",
+  "uploadName": "bv-reel-sm-daily-box.webm",
+  "bytes": 117829
+ },
+ {
+  "sitePath": "assets/hero/reels/small/eqbal.webm",
+  "uploadName": "bv-reel-sm-eqbal.webm",
+  "bytes": 94419
+ },
+ {
+  "sitePath": "assets/hero/reels/small/freestyle.webm",
+  "uploadName": "bv-reel-sm-freestyle.webm",
+  "bytes": 97555
+ },
+ {
+  "sitePath": "assets/hero/reels/small/kinetic-health.webm",
+  "uploadName": "bv-reel-sm-kinetic-health.webm",
+  "bytes": 92363
+ },
+ {
+  "sitePath": "assets/hero/reels/small/rinos-kitchen.webm",
+  "uploadName": "bv-reel-sm-rinos-kitchen.webm",
+  "bytes": 98695
+ },
+ {
+  "sitePath": "assets/hero/reels/poster/dar-al-hadith.webp",
+  "uploadName": "bv-reel-poster-dar-al-hadith.webp",
+  "bytes": 21266
+ },
+ {
+  "sitePath": "assets/hero/comb-tall.jpg",
+  "uploadName": "bv-hero-comb-tall.jpg",
+  "bytes": 108691
+ },
+ {
+  "sitePath": "assets/hero/comb-wide.jpg",
+  "uploadName": "bv-hero-comb-wide.jpg",
+  "bytes": 195007
+ },
+ {
+  "sitePath": "assets/logos/beeviro-icon.png",
+  "uploadName": "bv-logo-beeviro-icon.png",
+  "bytes": 75567
+ },
+ {
+  "sitePath": "assets/logos/beeviro.png",
+  "uploadName": "bv-logo-beeviro.png",
+  "bytes": 35761
+ },
+ {
+  "sitePath": "assets/logos/dr-eman.png",
+  "uploadName": "bv-logo-dr-eman.png",
+  "bytes": 97245
+ },
+ {
+  "sitePath": "assets/logos/hadeel-maqlad.png",
+  "uploadName": "bv-logo-hadeel-maqlad.png",
+  "bytes": 39654
+ },
+ {
+  "sitePath": "assets/logos/kirin.png",
+  "uploadName": "bv-logo-kirin.png",
+  "bytes": 54365
+ },
+ {
+  "sitePath": "assets/logos/rojana.png",
+  "uploadName": "bv-logo-rojana.png",
+  "bytes": 75382
+ },
+ {
+  "sitePath": "assets/logos/sheikh-hosney.png",
+  "uploadName": "bv-logo-sheikh-hosney.png",
+  "bytes": 51922
+ }
+]

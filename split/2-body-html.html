@@ -1,0 +1,353 @@
+
+
+<!-- boot sequence: the mark draws itself, the count runs, then the page arrives -->
+<div class="bv-boot" id="boot">
+  <svg class="bv-boot__mark" viewBox="0 0 100 116" aria-hidden="true">
+    <path id="bootHex" d="M50 2 L96 29 L96 87 L50 114 L4 87 L4 29 Z"
+          fill="none" stroke="#ffc202" stroke-width="3" stroke-linejoin="round"/>
+    <path id="bootHex2" d="M50 32 L73 45 L73 71 L50 84 L27 71 L27 45 Z"
+          fill="none" stroke="#ffc202" stroke-width="2" stroke-linejoin="round" opacity=".5"/>
+  </svg>
+  <div class="bv-boot__n"><span id="bootN">0</span><i>%</i></div>
+  <div class="bv-boot__bar"><span id="bootBar"></span></div>
+</div>
+
+<!-- pointer companion -->
+<div class="bv-cursor" id="cursor" aria-hidden="true">
+  <span class="bv-cursor__dot"></span>
+  <span class="bv-cursor__ring"></span>
+  <span class="bv-cursor__label" id="cursorLabel"></span>
+</div>
+
+<div class="bv-prog" id="prog"></div>
+
+<!-- honey running down the edge of the page as you scroll -->
+<div class="bv-drip" id="drip" aria-hidden="true">
+  <span class="bv-drip__fill" id="dripFill"></span>
+  <span class="bv-drip__bead" id="dripBead"></span>
+</div>
+
+<a class="bv-skip" href="#top" data-i18n="nav.skip">Skip to content</a>
+
+<header class="bv-mast" id="mast">
+  <a class="bv-brand" href="#top">
+    <img src="https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6a92cd870914f11215034bc0.webp" alt="" width="34" height="34">
+    <span>Beeviro</span>
+  </a>
+  <nav class="bv-nav" id="nav" data-i18n-attr="aria-label:nav.sections">
+    <a href="#method" data-to="method" data-i18n="nav.method">Method</a>
+    <a href="#services" data-to="services" data-i18n="nav.services">Services</a>
+    <a href="#work" data-to="work" data-i18n="nav.work">Work</a>
+    <a href="#creative" data-to="creative" data-i18n="nav.creative">Creative</a>
+    <a href="#voices" data-to="voices" data-i18n="nav.voices">Voices</a>
+  </nav>
+
+  <!-- Two switches, deliberately in the masthead rather than buried in a
+       footer: one changes the language of the whole site, the other trades
+       motion for frames on a device that cannot afford it. Both are the sort
+       of thing a reader gives up looking for after about four seconds. -->
+  <div class="bv-tools">
+    <button class="bv-tool bv-tool--lang" type="button" data-lang-toggle lang="ar">العربية</button>
+    <button class="bv-tool bv-tool--perf" type="button" data-perf-toggle aria-pressed="true"
+            data-i18n-attr="title:perf.label,aria-label:perf.label">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+           stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+    </button>
+  </div>
+
+  <a class="bv-cta bv-mast__cta" href="#contact" data-i18n="nav.cta">Start a project</a>
+
+  <!-- Under 900px the nav above is hidden; this is the way in. -->
+  <button class="bv-burger" id="burger" aria-expanded="false" aria-controls="menu"
+          data-i18n-attr="aria-label:nav.open">
+    <span></span><span></span>
+  </button>
+</header>
+
+<!-- ── mobile menu: the sections as a comb you tap ────────────────────────── -->
+<div class="bv-menu" id="menu" hidden>
+  <nav class="bv-menu__cells" data-i18n-attr="aria-label:nav.sections">
+    <a href="#method"   data-to="method"><i>01</i><b data-i18n="nav.method">Method</b></a>
+    <a href="#services" data-to="services"><i>02</i><b data-i18n="nav.services">Services</b></a>
+    <a href="#work"     data-to="work"><i>03</i><b data-i18n="nav.work">Work</b></a>
+    <a href="#creative" data-to="creative"><i>04</i><b data-i18n="nav.creative">Creative</b></a>
+    <a href="#voices"   data-to="voices"><i>05</i><b data-i18n="nav.voices">Voices</b></a>
+    <a href="#contact"  data-to="contact"><i>06</i><b data-i18n="nav.contact">Contact</b></a>
+  </nav>
+  <div class="bv-menu__switches">
+    <button class="bv-tool bv-tool--lang" type="button" data-lang-toggle lang="ar">العربية</button>
+    <button class="bv-tool bv-tool--perf bv-tool--wide" type="button" data-perf-toggle aria-pressed="true">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+           stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+      <span data-i18n="perf.label">Reduce animation for slower devices</span>
+    </button>
+  </div>
+  <div class="bv-menu__foot">
+    <a class="bv-cta" href="mailto:info@beeviro.com">info@beeviro.com</a>
+    <span class="bv-dim" data-i18n="nav.region">Egypt &amp; the Gulf</span>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ── hero ────────────────────────────────────────────────────────────── -->
+  <section class="bv-hero" id="hero">
+    <!-- The photograph is now only depth behind the live comb. -->
+    <div class="bv-hero__photo bv-hero__photo--base" aria-hidden="true"></div>
+    <canvas class="bv-hero__comb" id="comb" aria-hidden="true"></canvas>
+
+    <!-- The revolving comb: real client work in the cells, built by js/hive.js.
+         Cells are hexagons; six of them play actual client reels. Hovering one
+         names the client, clicking opens that case. -->
+    <div class="bv-hive3d" id="hive3d">
+      <!-- two nested layers on purpose: the lattice owns the CSS revolve, and a
+           running animation outranks an inline transform, so the pointer lean
+           has to live on its own wrapper or it would be silently ignored -->
+      <div class="bv-hive3d__tilt" id="hiveTilt">
+        <div class="bv-hive3d__lattice" id="lattice"></div>
+      </div>
+    </div>
+
+    <!-- The client readout. Outside the comb and outside the 3D context: a
+         pointy-top hexagon tapers to a point exactly where a caption would sit,
+         so a label inside the cell is clipped and long names lose whole lines. -->
+    <div class="bv-hive__read" id="hiveRead" aria-hidden="true">
+      <span class="bv-hive__read-s"></span>
+      <strong class="bv-hive__read-n"></strong>
+      <span class="bv-hive__read-o"></span>
+      <span class="bv-hive__read-go"><b data-i18n="card.open">Open case</b> <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
+    <div class="bv-hero__scrim"></div>
+    <div class="bv-hero__glow"></div>
+    <div class="bv-hero__inner">
+      <span class="bv-eyebrow" data-i18n="hero.eyebrow">Digital marketing agency · Egypt &amp; the Gulf</span>
+      <h1 class="bv-mega" id="heroTitle" data-i18n="hero.title">We turn audiences into customers</h1>
+      <p class="bv-lede bv-hero__lede" data-i18n="hero.lede">
+        Beeviro is a client-generating system, not a content service. We build the whole
+        path — diagnosis, positioning, creative, funnel and media — then run it against
+        numbers that matter.
+      </p>
+      <div class="bv-hero__actions">
+        <a class="bv-cta" href="#work" data-i18n="hero.cta1">See the work</a>
+        <a class="bv-cta bv-cta--ghost" href="#method" data-i18n="hero.cta2">How we work</a>
+      </div>
+      <div class="bv-scrollcue"><span></span> <b data-i18n="hero.scroll">SCROLL TO EXPLORE</b></div>
+    </div>
+  </section>
+
+  <!-- ── capability marquee ──────────────────────────────────────────────── -->
+  <div class="bv-marquee" style="--dur:38s" id="mq1"></div>
+
+  <!-- ── the count ───────────────────────────────────────────────────────── -->
+  <section class="bv-section bv-wash" id="count">
+    <div class="bv-wrap">
+      <div class="bv-head">
+        <span class="bv-eyebrow" data-i18n="count.eyebrow">Counted, not claimed</span>
+        <h2 class="bv-h2" data-i18n-html="count.h2">Every number here<br>points at something<br>you can open.</h2>
+      </div>
+      <div class="bv-stats" id="stats"></div>
+    </div>
+  </section>
+
+  <!-- ── method / the hive (pinned + scroll-scrubbed) ────────────────────── -->
+  <section class="bv-pin" id="method">
+    <div class="bv-pin__rail" id="pinRail">
+      <div class="bv-pin__stage">
+        <div class="bv-wrap">
+          <div class="bv-head">
+            <span class="bv-eyebrow" data-i18n="method.eyebrow">The method</span>
+            <h2 class="bv-h2" data-i18n-html="method.h2">Six cells,<br>built in order.</h2>
+            <p class="bv-lede" style="margin-top:22px" data-i18n="method.lede">
+              Every engagement runs the same six stages. Nothing gets designed before the
+              market is read, and nothing gets bought before the position is decided.
+              Open any client below and you will see these six again, filled in with
+              their specifics.
+            </p>
+          </div>
+          <div class="bv-comb bv-wash" id="hive"></div>
+          <div class="bv-stage" id="stagePanel">
+            <div class="bv-stage__no" id="stageNo">01</div>
+            <div>
+              <div class="bv-stage__t" id="stageT"></div>
+              <div class="bv-stage__d" id="stageD"></div>
+            </div>
+          </div>
+          <div class="bv-pin__meter" aria-hidden="true"><span id="pinFill"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="bv-rule">
+
+  <!-- ── services ────────────────────────────────────────────────────────── -->
+  <section class="bv-section" id="services">
+    <div class="bv-wrap">
+      <div class="bv-head">
+        <span class="bv-eyebrow" data-i18n="svc.eyebrow">Services</span>
+        <h2 class="bv-h2" data-i18n-html="svc.h2">What we actually<br>do all day.</h2>
+      </div>
+      <div class="bv-svc" id="svc"></div>
+    </div>
+  </section>
+
+  <!-- ── work ────────────────────────────────────────────────────────────── -->
+  <section class="bv-section bv-wash" id="work">
+    <div class="bv-wrap">
+      <div class="bv-head">
+        <span class="bv-eyebrow" data-i18n="work.eyebrow">Selected work</span>
+        <h2 class="bv-h2" data-i18n-html="work.h2">Twenty-five brands.<br>Every journey shown<br>end to end.</h2>
+        <p class="bv-lede" style="margin-top:22px" data-i18n="work.lede">
+          Open a card to walk the whole engagement — first contact, diagnosis, positioning,
+          build, launch, outcome — with the designs and the campaign numbers attached.
+          Where a figure is a target rather than a delivered result, it says so.
+        </p>
+      </div>
+      <div class="bv-grid" id="grid"></div>
+      <!-- Twenty-five cards at once reads as a wall rather than a portfolio.
+           Six, then the rest on request. -->
+      <div class="bv-more" id="moreWrap" hidden>
+        <span class="bv-more__count" id="moreCount"></span>
+        <button class="bv-cta bv-cta--ghost bv-more__btn" type="button" id="moreBtn">
+          <span id="moreLabel">Show more work</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── infinite creative carousel ──────────────────────────────────────── -->
+  <section class="bv-section" id="creative" style="padding-inline:0">
+    <div class="bv-wrap bv-wrap--bleed">
+      <div class="bv-head">
+        <span class="bv-eyebrow" data-i18n="creative.eyebrow">The output</span>
+        <h2 class="bv-h2" data-i18n-html="creative.h2">Roughly nine hundred<br>files delivered.</h2>
+        <p class="bv-lede" style="margin-top:22px" data-i18n="creative.lede">
+          A sample of the design work, pulled straight from the client deliverable folders.
+          Click any tile to open it.
+        </p>
+      </div>
+    </div>
+    <!-- data-px-per-sec, not --dur: the lite tier builds half as many tiles and Arabic
+         marquees are narrower — a fixed duration over a shorter track is slower. beeviro.js
+         divides the width it actually laid out by this. 10824px / 168s = 65 px/s. -->
+    <div class="bv-reel" data-px-per-sec="65" id="reelA"></div>
+    <div class="bv-reel bv-reel--rev" data-px-per-sec="55" id="reelB"></div>
+  </section>
+
+  <!-- ── voices ──────────────────────────────────────────────────────────── -->
+  <section class="bv-section" id="voices">
+    <div class="bv-wrap bv-wrap--measure">
+      <span class="bv-eyebrow" data-i18n="voices.eyebrow">What the work is for</span>
+      <p class="bv-quote" data-i18n-html="voices.quote">
+        “Beeviro’s client-generating system isn’t just content. We transform targeted
+        audiences into <span class="bv-amber">loyal customers</span> through meaningful
+        interactions, delivering real, measurable results.”
+      </p>
+      <div class="bv-quote__who" data-i18n="voices.who">The line that opens every strategy we write</div>
+    </div>
+  </section>
+
+  <hr class="bv-rule">
+
+  <!-- ── contact ─────────────────────────────────────────────────────────── -->
+  <section class="bv-section" id="contact">
+    <div class="bv-wrap bv-wrap--measure">
+      <span class="bv-eyebrow" data-i18n="contact.eyebrow">Start the conversation</span>
+      <h2 class="bv-mega bv-fill" id="fillHead" data-i18n-html="contact.h2">Let’s build<br>your comb.</h2>
+      <p class="bv-lede" style="margin:26px 0 34px" data-i18n="contact.lede">
+        Tell us the number you need to move. We will tell you what it takes to move it —
+        and show you the client we did it for.
+      </p>
+      <div class="bv-hero__actions">
+        <a class="bv-cta" href="mailto:info@beeviro.com">info@beeviro.com</a>
+        <a class="bv-cta bv-cta--ghost" href="https://beeviro.com" target="_blank" rel="noopener noreferrer">beeviro.com</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="bv-marquee bv-marquee--rev" style="--dur:44s" id="mq2"></div>
+
+</main>
+
+<footer class="bv-foot">
+  <img class="bv-foot__mark" src="https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6a92cd870914f11215034bc0.webp" alt="" width="340" height="340">
+  <div class="bv-foot__grid">
+    <div>
+      <img src="https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6a92cd8703b6820c461a7961.webp" alt="Beeviro" width="158" height="158" style="width:158px;margin-bottom:18px">
+      <p class="bv-dim" style="max-width:38ch;font-size:.9rem" data-i18n="foot.about">
+        A digital marketing agency building strategy, brand, creative and media systems
+        for brands across Egypt and the Gulf.
+      </p>
+    </div>
+    <div>
+      <h3 data-i18n="nav.sections">Sections</h3>
+      <ul>
+        <li><a href="#method" data-i18n="nav.method">Method</a></li>
+        <li><a href="#services" data-i18n="nav.services">Services</a></li>
+        <li><a href="#work" data-i18n="nav.work">Work</a></li>
+        <li><a href="#creative" data-i18n="nav.creative">Creative</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 data-i18n="foot.touch">Get in touch</h3>
+      <ul>
+        <li><a href="mailto:info@beeviro.com">info@beeviro.com</a></li>
+        <li><a href="https://beeviro.com" target="_blank" rel="noopener noreferrer">beeviro.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bv-foot__base">
+    <span>© <span id="yr"></span> <b data-i18n="foot.rights">Beeviro LLC. All rights reserved.</b></span>
+    <span data-i18n="foot.note">Client figures published with permission. Budgets, competitor analysis and
+      personal data withheld.</span>
+  </div>
+</footer>
+
+<!-- ── case dossier ──────────────────────────────────────────────────────────
+     The dossier is INSET rather than full-bleed: the page stays visible around
+     its edges, dimmed, so a reader always knows they are on top of the site
+     rather than navigated away from it, and the way out is obvious. -->
+<div class="bv-case" id="case" role="dialog" aria-modal="true" data-i18n-attr="aria-label:case.aria">
+  <div class="bv-case__veil" id="caseVeil"></div>
+  <div class="bv-case__shell">
+    <button class="bv-case__x" id="caseX" data-i18n-attr="aria-label:case.close">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <aside class="bv-case__rail">
+      <div>
+        <div class="bv-case__no" id="caseNo"></div>
+        <div class="bv-case__name" id="caseName"></div>
+      </div>
+      <!-- The spine is the reader's position in the journey. It fills as the
+           panel scrolls, so every stage they have passed stays lit instead of
+           exactly one stage being lit at a time. -->
+      <div class="bv-case__nav">
+        <span class="bv-case__spine" aria-hidden="true"><i id="caseSpine"></i></span>
+        <ul class="bv-case__steps" id="caseSteps"></ul>
+      </div>
+      <dl class="bv-case__facts" id="caseFacts"></dl>
+      <div class="bv-case__railfoot">
+        <button class="bv-cta bv-cta--ghost" id="casePrev" data-i18n="case.prev">← Previous client</button>
+        <button class="bv-cta bv-cta--ghost" id="caseNext" data-i18n="case.next">Next client →</button>
+      </div>
+    </aside>
+    <div class="bv-case__panel" id="casePanel"></div>
+  </div>
+</div>
+
+<!-- ── lightbox ──────────────────────────────────────────────────────────── -->
+<div class="bv-lb" id="lb">
+  <div class="bv-lb__bg" id="lbBg"></div>
+  <button class="bv-lb__x" id="lbX" data-i18n-attr="aria-label:lb.close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <button class="bv-lb__nav bv-lb__nav--p" id="lbP" data-i18n-attr="aria-label:lb.prev">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+  <img id="lbImg" alt="">
+  <button class="bv-lb__nav bv-lb__nav--n" id="lbN" data-i18n-attr="aria-label:lb.next">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+  <div class="bv-lb__count" id="lbCount"></div>
+</div>
