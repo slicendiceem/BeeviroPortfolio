@@ -10,6 +10,7 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireChrome } from './chrome.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -19,8 +20,7 @@ const LITE = args.includes('--lite');
 const BASE = arg('url', 'http://localhost:4173/');
 const W = Number(arg('w', 1440));
 
-const CHROME = ['C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'].find((p) => existsSync(p));
+const CHROME = requireChrome();
 const PORT = 9560 + (process.pid % 120);
 const chrome = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars',
   '--remote-debugging-port=' + PORT, '--user-data-dir=' + path.join(ROOT, '.chrome-strips'),

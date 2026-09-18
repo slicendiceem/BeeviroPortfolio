@@ -13,6 +13,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireChrome } from './chrome.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, '.shots');
@@ -25,11 +26,7 @@ const LITE = has('lite');
 const BASE = arg('url', 'http://localhost:4173/');
 const WIDTHS = (arg('widths', '1440,1100,390')).split(',').map(Number);
 
-const CHROME = [
-  'C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-].find((p) => existsSync(p));
-if (!CHROME) { console.error('chrome not found'); process.exit(1); }
+const CHROME = requireChrome();
 
 const PORT = 9500 + (process.pid % 300);
 const chrome = spawn(CHROME, [

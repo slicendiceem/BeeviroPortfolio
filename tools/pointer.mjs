@@ -15,7 +15,8 @@
  *   node tools/pointer.mjs
  */
 import { spawn } from 'node:child_process';
-const CH = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+import { requireChrome } from './chrome.mjs';
+const CH = requireChrome();
 const PORT = 9682;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const c = spawn(CH, ['--headless=new', '--disable-gpu', '--hide-scrollbars',

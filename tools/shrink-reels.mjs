@@ -22,6 +22,7 @@ import { readdir, mkdir, writeFile, readFile, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireChrome } from './chrome.mjs';
 import { replaceMap } from './map.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -34,9 +35,7 @@ const arg = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? Number
 const SIZE = arg('size', 300);
 const KBPS = arg('kbps', 170);
 
-const CHROME = ['C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'].find((p) => existsSync(p));
-if (!CHROME) { console.error('chrome not found'); process.exit(1); }
+const CHROME = requireChrome();
 
 const PORT = 9390 + (process.pid % 200);
 const chrome = spawn(CHROME, [

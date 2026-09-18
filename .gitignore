@@ -1,0 +1,8 @@
+# Per-tool Chrome user-data-dirs (check, weigh, reels, thumbs, squeeze, flow,
+# jank, film, ingest, mobile, prof, shoot, strips, video) — scratch profiles
+# spawned fresh on every run, never meant to be committed.
+.chrome-*/
+
+# Working state for the superpowers plan/spec/task tooling — local scaffolding,
+# not part of the shipped site.
+.superpowers/

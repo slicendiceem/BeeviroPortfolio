@@ -18,6 +18,7 @@ import { spawn } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireChrome } from './chrome.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = path.join(ROOT, 'site');
@@ -29,9 +30,7 @@ const W = Number(arg('w', LANDSCAPE ? 844 : 390));
 const H = Number(arg('h', LANDSCAPE ? 390 : 844));
 const BASE = arg('url', 'http://localhost:4173/');
 
-const CHROME = ['C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'].find((p) => existsSync(p));
-if (!CHROME) { console.error('chrome not found'); process.exit(1); }
+const CHROME = requireChrome();
 const PORT = 9620 + (process.pid % 150);
 const chrome = spawn(CHROME, ['--headless=new', '--disable-gpu', '--hide-scrollbars',
   '--force-device-scale-factor=1', '--remote-debugging-port=' + PORT,

@@ -35,6 +35,7 @@ import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireChrome } from './chrome.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = path.join(ROOT, 'site');
@@ -148,9 +149,7 @@ server.on('error', (e) => {
 await new Promise((r) => server.listen(HTTP_PORT, '127.0.0.1', r));
 
 /* ── chrome ──────────────────────────────────────────────────────────────── */
-const CHROME = ['C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'].find((p) => existsSync(p));
-if (!CHROME) { console.error('chrome not found'); process.exit(1); }
+const CHROME = requireChrome();
 const PORT = 9260 + (process.pid % 120);
 const chrome = spawn(CHROME, ['--headless=new', '--disable-gpu', '--no-first-run',
   '--mute-audio', '--autoplay-policy=no-user-gesture-required',

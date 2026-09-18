@@ -9,6 +9,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { requireChrome } from './chrome.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, '.shots');
@@ -21,8 +22,7 @@ const LANG = arg('lang', 'en');
 const LITE = args.includes('--lite');
 const BASE = arg('url', 'http://localhost:4173/');
 
-const CHROME = ['C:/Program Files/Google/Chrome/Application/chrome.exe',
-  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'].find((p) => existsSync(p));
+const CHROME = requireChrome();
 const PORT = 9700 + (process.pid % 200);
 const chrome = spawn(CHROME, ['--headless=new', '--disable-gpu', '--no-first-run',
   '--hide-scrollbars', '--force-device-scale-factor=1',

@@ -25,6 +25,11 @@ const CANDIDATES = [
   '/usr/bin/google-chrome-stable',
   '/usr/bin/chromium',
   '/usr/bin/chromium-browser',
+  // The wrapper below re-execs under confinement, so the PID we spawn is not
+  // the PID that runs — kill() on it throws EACCES and the real browser leaks.
+  // Prefer the inner binary the wrapper would have launched; it takes and
+  // honors signals normally.
+  '/snap/chromium/current/usr/lib/chromium-browser/chrome',
   '/snap/bin/chromium',
   '/opt/google/chrome/chrome',
 ];
