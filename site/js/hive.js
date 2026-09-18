@@ -13,10 +13,13 @@
       ("SpeakUp English Training") lost whole lines. The readout is a separate
       element outside the 3D context, positioned beside whichever cell is hot.
 
-   2. THE POOL IS BOUNDED. It used to walk all ~176 gallery images at one new
-      image every 2.6s, so a reader who lingered downloaded the entire gallery
-      through the hero. It now cycles a curated set (two pieces per client), and
-      once those are cached the turnover costs no network at all.
+   2. THE POOL IS CHEAP, NOT NARROW. It used to walk all ~176 gallery images at
+      full size, one every 2.6s, so a reader who lingered downloaded the whole
+      gallery through the hero. It still walks every client's gallery — 178
+      pieces across 22 clients, one client at a time — and nextPiece() skips any
+      brand already in another cell, so no client holds two hexagons at once.
+      What keeps it cheap is the tier, not the count: cells resolve through
+      BV_CELL to 200px WebP, and nothing is fetched until a cell turns over.
 
    3. NOTHING IS CREATED PER TURN. Each face keeps its <img> for the life of the
       cell and only its `src` changes. */

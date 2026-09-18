@@ -50,7 +50,7 @@ beeviro-portfolio/
 │  ├─ js/hive.js            ← the revolving hero comb
 │  └─ assets/
 │     ├─ hero/reels/*.webm       ← 6 real client reels, 420px, 2.0 MB
-│     ├─ hero/reels/small/       ← generated 288px copies, 0.63 MB  ← SHIPPED
+│     ├─ hero/reels/small/       ← generated 288px copies, 0.62 MB  ← SHIPPED
 │     ├─ work/<slug>/NN.jpg      ← 181 curated deliverables (~28 MB)
 │     ├─ work/<slug>/thumb/*.webp ← generated 480px, cards + tiles   ← SHIPPED
 │     ├─ work/<slug>/cell/*.webp  ← generated 200px, hero comb       ← SHIPPED
@@ -331,7 +331,7 @@ before the dossier grows out of the cell.
 
 | | before | after |
 |---|---|---|
-| turnover pool | all ~176 gallery images | 44 (2 per client), then cached |
+| turnover pool | all ~176 full-size images | all 178, at 200px, no brand twice at once |
 | network while idling on the hero | ~23 new images/min, forever | converges to zero |
 | elements per turn | a new `<img>` every 2.6s | none — the face's `<img>` keeps its src slot |
 | background tab | kept turning | `visibilitychange` stops everything |
