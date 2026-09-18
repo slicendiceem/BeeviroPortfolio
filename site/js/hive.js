@@ -42,7 +42,13 @@
   // decoding behind a headline is the single most expensive thing on this page,
   // so on the lite tier the comb is all stills — same lattice, same work, no
   // video decoders.
-  var REELS = RICH ? ['freestyle', 'kinetic-health', 'eqbal', 'rinos-kitchen', 'daily-box', 'beeviro'] : [];
+  /* Six of the nineteen cells play a real client reel. Rino's Kitchen came out
+     on review — the frame that landed in the comb read as a dish on a dark
+     counter and said nothing about the work. MasterCraft went in for it; its
+     420px cut was already in the library, only the 288px copy was missing.
+     Every slug here needs an entry in small/ (tools/shrink-reels.mjs) or the
+     comb streams the full file into a 116px hexagon. */
+  var REELS = RICH ? ['freestyle', 'kinetic-health', 'eqbal', 'master-craft', 'daily-box', 'beeviro'] : [];
 
   // same resolver the rest of the site uses; falls back to the local path
   var asset = window.BV_ASSET || function (p) { return p; };
@@ -58,20 +64,27 @@
   };
 
   /* ---- the pool ---------------------------------------------------------------
-     Deliberately small. Two pieces per client gives 19 cells plenty of variety
-     without ever pulling the whole gallery, and the set converges into cache so
-     later turns are free. Interleaved one client at a time so the comb never
-     shows a run of the same brand. */
-  var PER_CLIENT = 2;
+     Reviewed as "the cells repeat projects, and the material is not the best we
+     have". Both were the same cause: the pool was images 01 and 02 of each
+     client — 44 pieces, taken in filename order, for 19 cells that turn over
+     every few seconds.
+     It now walks each client's WHOLE gallery, still one client at a time, so a
+     brand cannot come back until every other brand has had a turn, and every
+     piece gets used rather than only whichever two sorted first. That is 178
+     pieces across 22 clients. (181 thumbnails exist on disk; three of them are
+     Beeviro's own work, which is not a client record and never enters the pool.)
+     Still bounded, and still cheap: the cells resolve through BV_CELL to 200px
+     WebP, and nothing is fetched until the cell it lands in turns over. */
   var pool = [];
   (function buildPool() {
     var withWork = C.filter(function (c) { return c.work; });
-    for (var depth = 0; depth < PER_CLIENT; depth++) {
+    var deepest = 0;
+    withWork.forEach(function (c) { if (c.work > deepest) deepest = c.work; });
+    for (var depth = 1; depth <= deepest; depth++) {
       for (var b = 0; b < withWork.length; b++) {
         var c = withWork[b];
-        var n = depth + 1;
-        if (n > c.work) continue;
-        pool.push({ src: shot(c.slug, n), slug: c.slug });
+        if (depth > c.work) continue;
+        pool.push({ src: shot(c.slug, depth), slug: c.slug });
       }
     }
   })();

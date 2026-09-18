@@ -50,7 +50,7 @@ beeviro-portfolio/
 │  ├─ js/hive.js            ← the revolving hero comb
 │  └─ assets/
 │     ├─ hero/reels/*.webm       ← 6 real client reels, 420px, 2.0 MB
-│     ├─ hero/reels/small/       ← generated 288px copies, 0.55 MB  ← SHIPPED
+│     ├─ hero/reels/small/       ← generated 288px copies, 0.63 MB  ← SHIPPED
 │     ├─ work/<slug>/NN.jpg      ← 181 curated deliverables (~28 MB)
 │     ├─ work/<slug>/thumb/*.webp ← generated 480px, cards + tiles   ← SHIPPED
 │     ├─ work/<slug>/cell/*.webp  ← generated 200px, hero comb       ← SHIPPED
@@ -64,6 +64,11 @@ beeviro-portfolio/
 ├─ infosource/
 └─ serve.mjs
 ```
+
+The six reels that play in the hero comb are named in `REELS` at the top of
+`site/js/hive.js`. Every slug listed there needs a 288px copy in
+`assets/hero/reels/small/` — run `node tools/shrink-reels.mjs` after changing the
+list, or the comb streams the full 420px file into a 116px hexagon.
 
 Script order in `index.html` is load-bearing: `perf.js` first (it decides how much
 motion gets BUILT), then the data files, then `i18n.js` (it merges the Arabic
