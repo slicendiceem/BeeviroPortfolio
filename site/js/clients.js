@@ -20,6 +20,26 @@ window.BV_STAGES = [
   { key: 'outcome',  label: 'Outcome',       hint: 'What came back.' },
 ];
 
+/* DISPLAY ORDER, by slug.
+ *
+ * The work grid shows six cards before "Show more work", so the first six here
+ * are the whole of what a visitor sees without scrolling — which is why the
+ * client specifies them and not the other nineteen. Revenue Lab 360 leads on
+ * their instruction: a prospect who opens it by chance sees the work that went
+ * into it.
+ *
+ * The array below stays grouped however is convenient for editing; this decides
+ * what renders. A slug missing from this list is not an error — it sorts after
+ * everything listed, keeping its relative position, so adding a client without
+ * touching this list still works. */
+window.BV_ORDER = [
+  'revenuelab360', 'cognistar', 'master-craft', 'tamahwour', 'speakup', 'kinetic-health',
+  'izar', 'freestyle', 'qr-tably', 'kirin', 'volt-ems', 'dr-eman', 'rojana',
+  'black-star', 'daily-box', 'edara-plus', 'eqbal', 'moaafa', 'renda-perfumes',
+  'rinos-kitchen', 'electro-master', 'moamen-medhat', 'hadeel-maqlad',
+  'dar-al-hadith', 'sheikh-hosney',
+];
+
 window.BV_CLIENTS = [
   {
     slug: 'izar', name: 'Izar', accent: '#2dd4a8', year: '2025',

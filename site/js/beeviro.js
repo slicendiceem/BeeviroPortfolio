@@ -3,7 +3,23 @@
 (function () {
   'use strict';
 
+  /* Sorted once, here, rather than at each of the four places that walk the list
+     — the grid, the dossier's prev/next, the carousel and the hero comb all have
+     to agree on what "case 3 of 25" means. hive.js reads window.BV_CLIENTS
+     directly and gets the sorted array because this mutates in place. */
   var C = window.BV_CLIENTS || [];
+  (function applyOrder() {
+    var order = window.BV_ORDER;
+    if (!order || !order.length) return;
+    var rank = {};
+    for (var i = 0; i < order.length; i++) rank[order[i]] = i;
+    var at = function (c) {
+      return rank[c.slug] == null ? order.length + C.indexOf(c) : rank[c.slug];
+    };
+    var keyed = C.map(function (c, i) { return { c: c, k: at(c), i: i }; });
+    keyed.sort(function (a, b) { return a.k - b.k || a.i - b.i; });
+    for (var j = 0; j < keyed.length; j++) C[j] = keyed[j].c;
+  })();
   var STAGES = window.BV_STAGES || [];
   var $ = function (s, r) { return (r || document).querySelector(s); };
 

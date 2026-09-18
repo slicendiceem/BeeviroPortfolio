@@ -75,6 +75,12 @@ than to an empty box. To change how many gallery images a client shows, change i
 `work` count, add matching files to `site/assets/work/<slug>/`, and re-run
 `node tools/make-thumbs.mjs`.
 
+The order the clients appear in is **`window.BV_ORDER`** at the top of
+`site/js/clients.js` — a list of slugs. The work grid shows six cards before
+"Show more work", so the first six entries are what a visitor sees without
+scrolling. A slug left out of the list still renders; it sorts after everything
+listed.
+
 ---
 
 ## The editorial rule
