@@ -43,6 +43,54 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
   };
+  /* Arabic paragraphs reorder the numbers inside them.
+   *
+   * "~1.15 مليون" renders as "1.15~ مليون": the tilde is bidi-neutral, so in a
+   * right-to-left paragraph it takes the paragraph's direction and crosses to
+   * the far side of the number it modifies. "9–13.2" comes out "13.2–9" — a
+   * range reading backwards. A reviewer screenshotted both and said the case
+   * files were not understandable; they were not, because the figures in them
+   * were inverted.
+   *
+   * A TECHNICAL RUN is a maximal stretch with no Arabic letters that carries at
+   * least one digit or Latin letter. Wrapping it in an element with an explicit
+   * direction isolates it: the bidi algorithm resolves the run on its own and
+   * places the result as a single unit in the sentence.
+   *
+   * Runs containing Arabic are left alone — clients.ar.js may translate a metric
+   * value, and forcing that one left-to-right would be the same bug mirrored.
+   *
+   * Tokenise the RAW string and escape each piece, rather than escaping first:
+   * "&amp;" is Latin letters and would otherwise be wrapped as a technical run.
+   *
+   * The ranges are written as \u escapes on purpose. Spelled with literal Arabic
+   * characters this class ends at U+FEFF, which is also the byte-order mark — an
+   * editor that normalises it silently widens the class to everything. */
+  var ARABIC_RE = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
+  function bidi(s) {
+    s = String(s == null ? '' : s);
+    if (!/[0-9A-Za-z]/.test(s)) return esc(s);
+    var out = '';
+    var run = '';
+    function flush() {
+      if (!run) return;
+      // Trailing spaces belong to the sentence, not to the run.
+      var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(run);
+      var lead = m[1], core = m[2], tail = m[3];
+      if (/[0-9A-Za-z]/.test(core) && core.length > 1) {
+        out += esc(lead) + '<span dir="ltr">' + esc(core) + '</span>' + esc(tail);
+      } else {
+        out += esc(run);
+      }
+      run = '';
+    }
+    for (var i = 0; i < s.length; i++) {
+      if (ARABIC_RE.test(s.charAt(i))) { flush(); out += esc(s.charAt(i)); }
+      else run += s.charAt(i);
+    }
+    flush();
+    return out;
+  }
   /* Resolve an asset through the GHL media map when js/media-map.js is loaded,
      otherwise return the local relative path. That way the same build runs
      locally with no map and inside GHL with one — nothing else has to change. */
@@ -415,7 +463,7 @@
             i: String(i + 1).padStart(2, '0'), country: c.country, year: c.year,
           })) + '</div>' +
           '<div class="bv-card__t"><span>' + esc(c.name) + '</span>' + ARROW + '</div>' +
-          '<div class="bv-card__o">' + esc(c.outcome.headline) + '</div>' +
+          '<div class="bv-card__o">' + bidi(c.outcome.headline) + '</div>' +
           '<span class="bv-card__kind bv-kind--' + c.outcome.kind + '">' +
             esc(T(c.outcome.kind === 'result' ? 'card.kindResult' : 'card.kindGoal')) + '</span>' +
         '</div>';
@@ -801,8 +849,8 @@
     h += '<div class="bv-case__mast">' +
       '<div class="bv-case__meta">' + esc(c.industry) + ' · ' + esc(c.country) + ' · ' + esc(c.year) +
         (c.site ? ' · ' + esc(c.site) : '') + '</div>' +
-      '<h2 class="bv-case__tagline">' + esc(c.tagline) + '</h2>' +
-      '<p class="bv-lede">' + esc(c.summary) + '</p>' +
+      '<h2 class="bv-case__tagline">' + bidi(c.tagline) + '</h2>' +
+      '<p class="bv-lede">' + bidi(c.summary) + '</p>' +
       '<div class="bv-case__chips">' +
         c.services.map(function (s) { return '<span class="bv-chip">' + esc(s) + '</span>'; }).join('') +
       '</div></div>';
@@ -811,7 +859,7 @@
     h += '<div class="bv-case__sec"><h3>' +
       esc(T(c.outcome.kind === 'result' ? 'case.result' : 'case.goal')) +
       '</h3><div class="bv-case__tagline bv-case__out" style="color:' +
-      c.accent + '">' + esc(c.outcome.headline) + '</div>' +
+      c.accent + '">' + bidi(c.outcome.headline) + '</div>' +
       (c.outcome.kind === 'goal'
         ? '<p class="bv-dim bv-case__caveat">' + esc(T('case.goalNote')) + '</p>'
         : '') + '</div>';
@@ -824,7 +872,7 @@
           '<span class="bv-m__f"><span class="bv-m__hint">' + esc(T('case.tap')) + '</span>' +
             '<span class="bv-m__v">' + esc(m.v) + '</span>' +
             '<span class="bv-m__l">' + esc(m.l) + '</span></span>' +
-          '<span class="bv-m__b"><span class="bv-m__n">' + esc(m.note) + '</span></span>' +
+          '<span class="bv-m__b"><span class="bv-m__n">' + bidi(m.note) + '</span></span>' +
           '</span></button>';
       });
       h += '</div></div>';
@@ -839,7 +887,7 @@
         (i < STAGES.length - 1 ? '<span class="bv-step__line"><i></i></span>' : '') +
         '<div><div class="bv-step__hex">' + String(i + 1).padStart(2, '0') + '</div></div>' +
         '<div><div class="bv-step__t">' + esc(s.label) + '</div>' +
-        '<div class="bv-step__b">' + esc(body) + '</div></div></div>';
+        '<div class="bv-step__b">' + bidi(body) + '</div></div></div>';
     });
     h += '</div></div>';
 
@@ -851,7 +899,7 @@
         h += '<div class="bv-camp__c"><div class="bv-camp__v">' + esc(r[1]) +
           '</div><div class="bv-camp__k">' + esc(r[0]) + '</div></div>';
       });
-      h += '</div><div class="bv-camp__f">' + esc(c.campaign.split) + '</div></div>' +
+      h += '</div><div class="bv-camp__f">' + bidi(c.campaign.split) + '</div></div>' +
         '<div class="bv-redact"><b>&nbsp;' + esc(T('case.redacted')) + '&nbsp;</b> ' +
         esc(c.campaign.note) + '</div></div>';
     }
