@@ -139,6 +139,27 @@ const PROBE = (roots) => `(() => {
   return JSON.stringify(findings);
 })()`;
 
+/* The metric tile is a flip card, and .bv-m__b is its back face. The idiom
+   parks that face at rotateY(180deg) while the card sits at rest, so that when
+   .bv-m__in turns 180° the two rotations cancel and the face lands at net 0°.
+   At rest it is also invisible: opacity 0, and backface-visibility hidden.
+
+   Measured where it rests, every run on that face reads mirrored — x descends
+   through a string the reader only ever sees the right way round. That is a
+   reordering nobody can see, and it lands on m.note, which carries real
+   technical runs and is precisely the field this check exists to cover. The
+   probe already skips [hidden] and aria-hidden, but not opacity, so the face
+   is swept where it is least readable.
+
+   Cancelling the resting mirror puts that face in the same geometry the
+   flipped card gives it — net rotation 0 either way — so what gets measured is
+   the reader's view. Skipping .bv-m__n instead would drop the coverage rather
+   than fix the measurement. */
+const UNMIRROR =
+  '.bv-m__b{transform:none !important;opacity:1 !important;'
+  + 'backface-visibility:visible !important}'
+  + '.bv-m__in{transition:none !important}';
+
 /* EVERYTHING BELOW RUNS INSIDE main(), and the file ends by catching whatever
    it throws, because a browser spawned here and then abandoned cannot be
    cleaned up afterwards by anyone. The snap build re-execs under confinement,
@@ -213,14 +234,33 @@ async function main() {
      hashchange listener — so a hash set after load opens nothing and this would
      have measured twenty-five copies of the home page. */
   const slugs = await evaluate('JSON.stringify((window.BV_CLIENTS||[]).map(c=>c.slug))');
-  for (const slug of JSON.parse(slugs || '[]')) {
-    await evaluate('(() => { window.BV_OPEN_CASE(' + JSON.stringify(slug) + '); return 1; })()');
-    /* Long enough for the open transition to finish. Measuring a panel that is
-       still growing reads positions nobody will ever see. */
-    await sleep(600);
-    await collect(slug, ['#case']);
-    await evaluate('(() => { const x = document.getElementById("caseX"); if (x) x.click(); return 1; })()');
-    await sleep(250);
+
+  const unmirror = () => evaluate('(() => {'
+    + ' var s = document.createElement("style");'
+    + ' s.id = "bv-bidi-unmirror";'
+    + ' s.textContent = ' + JSON.stringify(UNMIRROR) + ';'
+    + ' document.head.appendChild(s); return 1; })()');
+  const remirror = () => evaluate('(() => {'
+    + ' var s = document.getElementById("bv-bidi-unmirror");'
+    + ' if (s) s.remove(); return 1; })()');
+
+  await unmirror();
+  try {
+    for (const slug of JSON.parse(slugs || '[]')) {
+      await evaluate('(() => { window.BV_OPEN_CASE(' + JSON.stringify(slug) + '); return 1; })()');
+      /* Long enough for the open transition to finish. Measuring a panel that is
+         still growing reads positions nobody will ever see. */
+      await sleep(600);
+      await collect(slug, ['#case']);
+      await evaluate('(() => { const x = document.getElementById("caseX"); if (x) x.click(); return 1; })()');
+      await sleep(250);
+    }
+  } finally {
+    /* The page must not be left mirrored for whatever reads it next. Best
+       effort and bounded, both on purpose: if the sweep fell over because the
+       socket went with it, this send is answered by nobody, and a cleanup left
+       hanging would strand the browser that main().catch exists to kill. */
+    await Promise.race([remirror().catch(() => {}), sleep(2000)]);
   }
 
   for (const f of findings) {
