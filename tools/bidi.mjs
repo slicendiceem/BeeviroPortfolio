@@ -139,78 +139,100 @@ const PROBE = (roots) => `(() => {
   return JSON.stringify(findings);
 })()`;
 
-const ws = await wsUrl();
-const sock = new WebSocket(ws);
-let seq = 0;
-const pending = new Map();
-sock.addEventListener('message', (e) => {
-  const m = JSON.parse(e.data);
-  if (pending.has(m.id)) { pending.get(m.id)(m.result); pending.delete(m.id); }
-});
-await new Promise((r) => sock.addEventListener('open', r));
-const send = (method, params) => new Promise((res) => {
-  const id = ++seq;
-  pending.set(id, res);
-  sock.send(JSON.stringify({ id, method, params }));
-});
-
-const evaluate = async (expr) => {
-  const r = await send('Runtime.evaluate', {
-    expression: expr, returnByValue: true, awaitPromise: true,
+/* EVERYTHING BELOW RUNS INSIDE main(), and the file ends by catching whatever
+   it throws, because a browser spawned here and then abandoned cannot be
+   cleaned up afterwards by anyone. The snap build re-execs under confinement,
+   so a stranded copy ignores signals from this tool, from the shell, and from
+   the person reading this — it holds its ~1 GB until the machine reboots. The
+   port poll can time out, the socket can refuse, and sock.send() throws
+   InvalidStateError if the far end closed mid-sweep; each of those is a throw
+   on a path that would otherwise skip chrome.kill(). */
+async function main() {
+  const ws = await wsUrl();
+  const sock = new WebSocket(ws);
+  let seq = 0;
+  const pending = new Map();
+  sock.addEventListener('message', (e) => {
+    const m = JSON.parse(e.data);
+    if (pending.has(m.id)) { pending.get(m.id)(m.result); pending.delete(m.id); }
   });
-  return r && r.result ? r.result.value : undefined;
-};
 
-await send('Page.enable');
-await send('Runtime.enable');
-await send('Page.navigate', { url: BASE + '?lang=ar' });
-await sleep(3500);
+  /* Waiting only on 'open' is the one failure the catch below cannot save us
+     from: a promise that never settles never rejects, so a target that refuses
+     the connection would hang here forever with the browser still up. Race the
+     three outcomes and let a rejection fall through to main().catch. */
+  await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('websocket never opened')), 15000);
+    sock.addEventListener('open', () => { clearTimeout(timer); resolve(); });
+    sock.addEventListener('error', () => { clearTimeout(timer); reject(new Error('websocket refused')); });
+  });
 
-const findings = [];
-const seen = new Set();
-const collect = async (label, roots) => {
-  const raw = await evaluate(PROBE(roots));
-  for (const f of JSON.parse(raw || '[]')) {
-    const key = label + '|' + f.text + '|' + f.context;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    findings.push(Object.assign({ at: label }, f));
-  }
-};
+  const send = (method, params) => new Promise((res) => {
+    const id = ++seq;
+    pending.set(id, res);
+    sock.send(JSON.stringify({ id, method, params }));
+  });
 
-/* The home page first, with every card revealed — once, and while no dossier
-   is open. Sweeping the whole document per dossier instead would re-measure
-   the page sitting behind the open panel twenty-five times over, mid-
-   animation, and file every line of it under whichever client was open. */
-await evaluate('(() => { const b = document.getElementById("moreBtn"); '
-  + 'for (let i = 0; i < 5; i++) if (b && !b.classList.contains("is-open")) b.click(); '
-  + 'return 1; })()');
-await sleep(600);
-await collect('home', ['main', 'footer']);
+  const evaluate = async (expr) => {
+    const r = await send('Runtime.evaluate', {
+      expression: expr, returnByValue: true, awaitPromise: true,
+    });
+    return r && r.result ? r.result.value : undefined;
+  };
 
-/* Then every dossier, because that is where the numbers live.
-   Called through BV_OPEN_CASE rather than by setting location.hash: the deep
-   link is read exactly once, at the bottom of beeviro.js, and there is no
-   hashchange listener — so a hash set after load opens nothing and this would
-   have measured twenty-five copies of the home page. */
-const slugs = await evaluate('JSON.stringify((window.BV_CLIENTS||[]).map(c=>c.slug))');
-for (const slug of JSON.parse(slugs || '[]')) {
-  await evaluate('(() => { window.BV_OPEN_CASE(' + JSON.stringify(slug) + '); return 1; })()');
-  /* Long enough for the open transition to finish. Measuring a panel that is
-     still growing reads positions nobody will ever see. */
+  await send('Page.enable');
+  await send('Runtime.enable');
+  await send('Page.navigate', { url: BASE + '?lang=ar' });
+  await sleep(3500);
+
+  const findings = [];
+  const seen = new Set();
+  const collect = async (label, roots) => {
+    const raw = await evaluate(PROBE(roots));
+    for (const f of JSON.parse(raw || '[]')) {
+      const key = label + '|' + f.text + '|' + f.context;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      findings.push(Object.assign({ at: label }, f));
+    }
+  };
+
+  /* The home page first, with every card revealed — once, and while no dossier
+     is open. Sweeping the whole document per dossier instead would re-measure
+     the page sitting behind the open panel twenty-five times over, mid-
+     animation, and file every line of it under whichever client was open. */
+  await evaluate('(() => { const b = document.getElementById("moreBtn"); '
+    + 'for (let i = 0; i < 5; i++) if (b && !b.classList.contains("is-open")) b.click(); '
+    + 'return 1; })()');
   await sleep(600);
-  await collect(slug, ['#case']);
-  await evaluate('(() => { const x = document.getElementById("caseX"); if (x) x.click(); return 1; })()');
-  await sleep(250);
+  await collect('home', ['main', 'footer']);
+
+  /* Then every dossier, because that is where the numbers live.
+     Called through BV_OPEN_CASE rather than by setting location.hash: the deep
+     link is read exactly once, at the bottom of beeviro.js, and there is no
+     hashchange listener — so a hash set after load opens nothing and this would
+     have measured twenty-five copies of the home page. */
+  const slugs = await evaluate('JSON.stringify((window.BV_CLIENTS||[]).map(c=>c.slug))');
+  for (const slug of JSON.parse(slugs || '[]')) {
+    await evaluate('(() => { window.BV_OPEN_CASE(' + JSON.stringify(slug) + '); return 1; })()');
+    /* Long enough for the open transition to finish. Measuring a panel that is
+       still growing reads positions nobody will ever see. */
+    await sleep(600);
+    await collect(slug, ['#case']);
+    await evaluate('(() => { const x = document.getElementById("caseX"); if (x) x.click(); return 1; })()');
+    await sleep(250);
+  }
+
+  for (const f of findings) {
+    console.log('FAIL  ' + f.at + '  ' + JSON.stringify(f.text) + '  in: ' + f.context);
+  }
+  console.log(findings.length === 0
+    ? 'PASS  every technical run reads as authored'
+    : findings.length + ' mis-ordered run(s)');
+
+  sock.close();
+  chrome.kill();
+  process.exit(findings.length ? 1 : 0);
 }
 
-for (const f of findings) {
-  console.log('FAIL  ' + f.at + '  ' + JSON.stringify(f.text) + '  in: ' + f.context);
-}
-console.log(findings.length === 0
-  ? 'PASS  every technical run reads as authored'
-  : findings.length + ' mis-ordered run(s)');
-
-sock.close();
-chrome.kill();
-process.exit(findings.length ? 1 : 0);
+main().catch((e) => { console.error(e); chrome.kill(); process.exit(1); });
