@@ -275,7 +275,7 @@ window.BV_CLIENTS = [
       { v: '2', l: 'Markets', note: 'Egypt and Saudi Arabia.' },
       { v: '3', l: 'Content tiers', note: 'Interactive, engagement and sales content, each with a distinct job.' },
     ],
-    work: 7,
+    work: 7, logo: 'kirin.png',
   },
 
   {
@@ -350,7 +350,7 @@ window.BV_CLIENTS = [
       { v: '6', l: 'Logo variants', note: 'Black, white, original palette and reversed lockups.' },
       { v: '6', l: 'Reels', note: 'Produced alongside raw behind-the-scenes footage.' },
     ],
-    work: 6,
+    work: 6, logo: 'rojana.png',
   },
 
   {
@@ -627,7 +627,7 @@ window.BV_CLIENTS = [
       { v: 'Per-collection', l: 'Lookbooks', note: 'Delivered as documents alongside the social set.' },
     ],
     film: { src: 'assets/hero/reels/hadeel-maqlad.webm', note: "One of the eight collection reels — the pieces in motion rather than laid flat." },
-    work: 7,
+    work: 7, logo: 'hadeel-maqlad.png',
   },
 
   {

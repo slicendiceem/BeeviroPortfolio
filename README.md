@@ -80,6 +80,18 @@ than to an empty box. To change how many gallery images a client shows, change i
 `work` count, add matching files to `site/assets/work/<slug>/`, and re-run
 `node tools/make-thumbs.mjs`.
 
+**Brand logos on the work cards.** A card leads with the client's mark whenever
+`logo:` is set on their record in `site/js/clients.js`, and falls back to their
+first gallery image when it is not. To add one:
+
+1. Drop the file into `site/assets/logos/<slug>.png` — cut out, transparent.
+2. Run `node tools/squeeze.mjs`, which discovers everything in that folder and
+   writes the 520px WebP copy the card actually displays.
+3. Add `logo: '<slug>.png',` to that client's record.
+
+Nothing else needs touching. A logo with no record still ships unused, and a
+record with no file falls back to the gallery shot — neither breaks the page.
+
 The order the clients appear in is **`window.BV_ORDER`** at the top of
 `site/js/clients.js` — a list of slugs. The work grid shows six cards before
 "Show more work", so the first six entries are what a visitor sees without

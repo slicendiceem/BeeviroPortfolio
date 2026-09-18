@@ -456,14 +456,20 @@
       b.style.setProperty('--a', c.accent);
       b.setAttribute('data-slug', c.slug);
       b.setAttribute('data-cursor', T('card.open'));
-      // Lead art: a gallery shot, else the client's logo on a tinted plate,
-      // else a branded hex with their initial (only where no logo was delivered).
+      /* Lead art, in the order a reviewer asked for it: the brand's own mark
+         first, then a gallery shot, then a branded hex with their initial.
+         Reviewed as "put the brands' logos instead of taking images from their
+         content" — a card is an index entry, and a brand is recognised by its
+         mark faster than by one of its posts.
+         The gallery fallback is not a stopgap: logos arrive per client, and a
+         client without one has to keep reading as a finished card rather than a
+         lettered placeholder. */
       var lead;
-      if (c.work) {
-        lead = '<img loading="lazy" decoding="async" src="' + shotSmall(c, 1) + '" alt="">';
-      } else if (c.logo) {
+      if (c.logo) {
         lead = '<span class="bv-card__plate"><img loading="lazy" decoding="async" src="' +
           thumb('assets/logos/' + c.logo) + '" alt="' + esc(c.name) + ' logo"></span>';
+      } else if (c.work) {
+        lead = '<img loading="lazy" decoding="async" src="' + shotSmall(c, 1) + '" alt="">';
       } else {
         lead = '<span class="bv-card__mark"><span class="bv-hex"></span><b>' +
           esc(c.name.charAt(0)) + '</b></span>';
@@ -485,7 +491,7 @@
         '</div>';
       // A logo plate or a lettered hex is opaque and already covers the frame,
       // so there is nothing to wait for — retire the skeleton immediately.
-      if (!c.work) b.querySelector('.bv-card__img').classList.add('is-loaded');
+      if (c.logo || !c.work) b.querySelector('.bv-card__img').classList.add('is-loaded');
       b.addEventListener('click', function () { openCase(c.slug, b); });
       host.appendChild(b);
     });
