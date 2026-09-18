@@ -30,12 +30,12 @@ const chrome = spawn(CHROME, [
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/* NOT /json/version. That hands back the browser-level target, which carries
+   no Page or Runtime domain: every call against it returns "'Page.enable'
+   wasn't found", every evaluate() resolves to undefined, and the check then
+   passes forever because the probe never ran. The page target is the one that
+   can be driven — the same lookup every other CDP tool here uses. */
 async function wsUrl() {
-  // /json/version hands back the BROWSER-level socket, which this Chrome build
-  // (--headless=new) does not attach Page/Runtime to — every call against it
-  // fails with "'Page.enable' wasn't found". Every other CDP tool in tools/
-  // (jank.mjs, mobile.mjs, pointer.mjs, profile.mjs, shoot.mjs, check.mjs)
-  // fetches /json/list and drives the page-typed target instead; matched here.
   for (let i = 0; i < 60; i++) {
     try {
       const list = await (await fetch('http://127.0.0.1:' + PORT + '/json/list')).json();
@@ -47,46 +47,75 @@ async function wsUrl() {
   throw new Error('chrome did not open a debugging port');
 }
 
-/* The probe, as a string, because it runs in the page rather than here.
+/* The probe, as a string, because it runs in the page rather than here. It is
+   built per sweep so the caller can point it at one part of the document.
+
    TECHNICAL RUN: a maximal stretch with no Arabic letters that holds at least
-   one digit or Latin letter. Those are the runs the bidi algorithm reorders. */
-const PROBE = `(() => {
+   one digit or Latin letter. Those are the runs the bidi algorithm reorders —
+   but most of them have nothing that CAN reorder, and measuring those reports
+   the writing system rather than a defect. Three things narrow it:
+
+   · TRIMMED to the first and last alphanumeric, then re-absorbing only a
+     leading ~ or + and a trailing % × +. A run's outer whitespace and its ·
+     separators sit on the bidi boundary and move there legitimately; including
+     them measures the boundary, not the reading order.
+   · RISKY only: a direction-neutral modifier touching an alphanumeric, or a
+     dash between two digits. "Meta" and "31" cannot come out backwards.
+   · WITHIN ONE LINE BOX. A wrapped run starts again at the margin, so x drops
+     at every line break for reasons that have nothing to do with bidi. */
+const PROBE = (roots) => `(() => {
   const ARABIC = /[\\u0600-\\u06FF\\u0750-\\u077F\\uFB50-\\uFDFF\\uFE70-\\uFEFF]/;
+  const ALNUM = /[0-9A-Za-z]/;
+  const RISKY = (s) => /[~+%×→](?=[0-9A-Za-z])|(?<=[0-9A-Za-z])[~+%×→]|(?<=\\d)\\s*[-–—]\\s*(?=\\d)/u.test(s);
   const findings = [];
 
-  function xsOf(node) {
-    const out = [];
+  /* Per character: where it is, and which line it landed on. */
+  function boxesOf(node) {
+    const xs = [], tops = [];
     for (let i = 0; i < node.data.length; i++) {
       const r = document.createRange();
       r.setStart(node, i); r.setEnd(node, i + 1);
       const b = r.getBoundingClientRect();
-      out.push(b.width || b.height ? b.left : null);
+      const drawn = b.width || b.height;
+      xs.push(drawn ? b.left : null);
+      tops.push(drawn ? Math.round(b.top) : null);
     }
-    return out;
+    return { xs: xs, tops: tops };
   }
 
   function scanTextNode(node) {
     const s = node.data;
-    if (!/[0-9A-Za-z]/.test(s)) return;
-    const x = xsOf(node);
+    if (!ALNUM.test(s)) return;
+    const box = boxesOf(node);
+    const x = box.xs, tops = box.tops;
     let run = null;
     const flush = () => {
       if (!run) return;
-      const seg = s.slice(run.a, run.b);
-      if (/[0-9A-Za-z]/.test(seg) && seg.trim().length > 1) {
-        let ok = true, prev = null;
-        for (let i = run.a; i < run.b; i++) {
-          if (x[i] == null) continue;
-          if (prev != null && x[i] < prev) { ok = false; break; }
-          prev = x[i];
-        }
-        if (!ok) findings.push({
-          text: seg.trim(),
-          context: s.trim().slice(0, 90),
-          where: (node.parentElement && node.parentElement.className) || '',
-        });
-      }
+      const r = run;
       run = null;
+
+      let a = -1, b = -1;
+      for (let i = r.a; i < r.b; i++) if (ALNUM.test(s[i])) { if (a < 0) a = i; b = i; }
+      if (a < 0) return;
+      if (a > r.a && (s[a - 1] === '~' || s[a - 1] === '+')) a--;
+      if (b + 1 < r.b && (s[b + 1] === '%' || s[b + 1] === '×' || s[b + 1] === '+')) b++;
+
+      const seg = s.slice(a, b + 1);
+      if (seg.trim().length < 2) return;
+      if (!RISKY(seg)) return;
+
+      let ok = true, prev = null, line = null;
+      for (let i = a; i <= b; i++) {
+        if (x[i] == null) continue;
+        if (tops[i] !== line) { line = tops[i]; prev = null; }
+        if (prev != null && x[i] < prev) { ok = false; break; }
+        prev = x[i];
+      }
+      if (!ok) findings.push({
+        text: seg.trim(),
+        context: s.trim().slice(0, 90),
+        where: (node.parentElement && node.parentElement.className) || '',
+      });
     };
     for (let i = 0; i < s.length; i++) {
       if (ARABIC.test(s[i])) flush();
@@ -96,12 +125,16 @@ const PROBE = `(() => {
     flush();
   }
 
-  const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  let n;
-  while ((n = walk.nextNode())) {
-    if (!n.parentElement) continue;
-    if (n.parentElement.closest('script, style, [hidden], [aria-hidden="true"]')) continue;
-    scanTextNode(n);
+  for (const sel of ${JSON.stringify(roots)}) {
+    const root = document.querySelector(sel);
+    if (!root) continue;
+    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walk.nextNode())) {
+      if (!n.parentElement) continue;
+      if (n.parentElement.closest('script, style, [hidden], [aria-hidden="true"]')) continue;
+      scanTextNode(n);
+    }
   }
   return JSON.stringify(findings);
 })()`;
@@ -135,8 +168,8 @@ await sleep(3500);
 
 const findings = [];
 const seen = new Set();
-const collect = async (label) => {
-  const raw = await evaluate(PROBE);
+const collect = async (label, roots) => {
+  const raw = await evaluate(PROBE(roots));
   for (const f of JSON.parse(raw || '[]')) {
     const key = label + '|' + f.text + '|' + f.context;
     if (seen.has(key)) continue;
@@ -145,12 +178,15 @@ const collect = async (label) => {
   }
 };
 
-/* The home page first, with every card revealed. */
+/* The home page first, with every card revealed — once, and while no dossier
+   is open. Sweeping the whole document per dossier instead would re-measure
+   the page sitting behind the open panel twenty-five times over, mid-
+   animation, and file every line of it under whichever client was open. */
 await evaluate('(() => { const b = document.getElementById("moreBtn"); '
   + 'for (let i = 0; i < 5; i++) if (b && !b.classList.contains("is-open")) b.click(); '
   + 'return 1; })()');
 await sleep(600);
-await collect('home');
+await collect('home', ['main', 'footer']);
 
 /* Then every dossier, because that is where the numbers live.
    Called through BV_OPEN_CASE rather than by setting location.hash: the deep
@@ -160,8 +196,10 @@ await collect('home');
 const slugs = await evaluate('JSON.stringify((window.BV_CLIENTS||[]).map(c=>c.slug))');
 for (const slug of JSON.parse(slugs || '[]')) {
   await evaluate('(() => { window.BV_OPEN_CASE(' + JSON.stringify(slug) + '); return 1; })()');
-  await sleep(450);
-  await collect(slug);
+  /* Long enough for the open transition to finish. Measuring a panel that is
+     still growing reads positions nobody will ever see. */
+  await sleep(600);
+  await collect(slug, ['#case']);
   await evaluate('(() => { const x = document.getElementById("caseX"); if (x) x.click(); return 1; })()');
   await sleep(250);
 }
