@@ -106,7 +106,42 @@
   var cells = [];
   var poolAt = 0;
   var step = { x: 0, y: 0 };
-  var nextPiece = function () { var p = pool[poolAt % pool.length]; poolAt++; return p; };
+  /* Nineteen cells drawing from ONE sequential cursor over a pool ordered by
+     depth. Widening that pool from 44 pieces to 178 made the cursor take much
+     longer to come back round, but it did not change what happens when it does:
+     it lands on a brand that is still sitting in another cell, and the comb
+     shows the same client twice at once. Cells also turn over on a timer that
+     picks one at random, so nothing about WHICH cell is rewritten has any
+     relation to what is currently displayed. "The cells repeat projects" is the
+     note this whole pass answers, so the pool being bigger is not enough — the
+     guard is what makes it true rather than merely unlikely.
+
+     The displayed slugs are read off the live cells every time instead of being
+     tracked alongside them: a parallel list is one more thing that can drift out
+     of step with what the reader is actually looking at.
+
+     A reel cell never turns over, so its brand is on screen for the life of the
+     page. Those are seeded from REELS because during build() the reel cells may
+     not have been pushed to `cells` yet, and a still must not double a brand the
+     comb is already playing. REELS is empty on the lite tier, where there are no
+     reel cells to clash with.
+
+     Bounded to a single lap of the pool. If every brand in it somehow turned out
+     to be on screen the cursor gives up and takes whatever is next, so a short
+     client list degrades to the old behaviour rather than spinning forever. */
+  var nextPiece = function () {
+    var onScreen = {};
+    for (var r = 0; r < REELS.length; r++) onScreen[REELS[r]] = true;
+    for (var i = 0; i < cells.length; i++) onScreen[cells[i].slug] = true;
+    for (var seen = 0; seen < pool.length; seen++) {
+      var p = pool[poolAt % pool.length];
+      poolAt++;
+      if (!onScreen[p.slug]) return p;
+    }
+    var q = pool[poolAt % pool.length];
+    poolAt++;
+    return q;
+  };
 
   function build() {
     lattice.innerHTML = '';
