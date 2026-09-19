@@ -923,7 +923,7 @@
       });
       h += '</div><div class="bv-camp__f">' + bidi(c.campaign.split) + '</div></div>' +
         '<div class="bv-redact"><b>&nbsp;' + esc(T('case.redacted')) + '&nbsp;</b> ' +
-        esc(c.campaign.note) + '</div></div>';
+        bidi(c.campaign.note) + '</div></div>';
     }
 
     /* the film ---------------------------------------------------------------
@@ -955,7 +955,7 @@
             '<span>' + esc(T('case.filmPlay')) + '</span>' +
           '</button>' +
         '</div>' +
-        (c.film.note ? '<p class="bv-film__note bv-dim">' + esc(c.film.note) + '</p>' : '') +
+        (c.film.note ? '<p class="bv-film__note bv-dim">' + bidi(c.film.note) + '</p>' : '') +
         '</div>';
     }
 
@@ -991,7 +991,7 @@
          So the markup is prepared here and mounted after the panel has settled;
          see mountShelf(). Nothing about the result differs, only when it costs. */
       shelfHtml = '<div class="bv-case__sec"><h3>' + esc(T('case.work', { n: c.work })) +
-        (c.workNote ? ' — ' + esc(c.workNote) : '') + '</h3>' +
+        (c.workNote ? ' — ' + bidi(c.workNote) : '') + '</h3>' +
         /* --dur is written here as a CONCRETE value, not as
            calc(var(--n) * 2.2s) in the stylesheet, because the strip driver
            reads it with parseFloat(getComputedStyle(el).getPropertyValue()) —

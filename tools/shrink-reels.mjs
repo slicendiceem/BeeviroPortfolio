@@ -11,7 +11,7 @@
  * MediaStream, and record it with MediaRecorder at a fixed bitrate. Same shape
  * as the thumbnail pipeline — the browser is the codec.
  *
- *   node tools/shrink-reels.mjs [--size 300] [--kbps 170]
+ *   node tools/shrink-reels.mjs [--size 288] [--kbps 115]
  *
  * Writes site/assets/hero/reels/small/<slug>.webm and adds them to
  * site/js/thumb-map.js, which is the same "prefer the light copy when it can be
@@ -32,8 +32,11 @@ const OUT = path.join(REELS, 'small');
 
 const args = process.argv.slice(2);
 const arg = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? Number(args[i + 1]) : d; };
-const SIZE = arg('size', 300);
-const KBPS = arg('kbps', 170);
+// 288/115 by default because that is what the six shipped reels are already
+// encoded at — the cells that play them are 92-152 CSS px wide, so 288 is
+// generous even at 2x, and a bare run should reproduce what is already committed.
+const SIZE = arg('size', 288);
+const KBPS = arg('kbps', 115);
 
 const CHROME = requireChrome();
 

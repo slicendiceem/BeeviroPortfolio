@@ -11,6 +11,7 @@
  */
 import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 
 const CANDIDATES = [
   process.env.CHROME_PATH,
@@ -68,8 +69,12 @@ export function requireChrome() {
   process.exit(1);
 }
 
-/* Run directly: report, and exit non-zero when there is nothing to drive. */
-if (import.meta.url === 'file://' + process.argv[1]) {
+/* Run directly: report, and exit non-zero when there is nothing to drive.
+   Built with pathToFileURL rather than a bare 'file://' + path concatenation —
+   that comparison is false on Windows ('file:///C:/...' vs a path that starts
+   'C:\...') and on any path needing percent-encoding, which is exactly the
+   platform gap this file exists to close for every other tool. */
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const found = findChrome();
   if (found) {
     console.log('PASS  chrome: ' + found);

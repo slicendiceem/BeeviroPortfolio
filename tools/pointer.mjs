@@ -15,13 +15,16 @@
  *   node tools/pointer.mjs
  */
 import { spawn } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { requireChrome } from './chrome.mjs';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CH = requireChrome();
 const PORT = 9682;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const c = spawn(CH, ['--headless=new', '--disable-gpu', '--hide-scrollbars',
   '--remote-debugging-port=' + PORT,
-  '--user-data-dir=C:/Users/ahmed/AppData/Local/Temp/claude/chrome-dem', 'about:blank'],
+  '--user-data-dir=' + path.join(ROOT, '.chrome-pointer'), 'about:blank'],
   { stdio: 'ignore' });
 let u;
 for (let i = 0; i < 60; i++) {

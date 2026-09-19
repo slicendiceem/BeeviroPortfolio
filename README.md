@@ -336,11 +336,12 @@ before the dossier grows out of the cell.
 | elements per turn | a new `<img>` every 2.6s | none — the face's `<img>` keeps its src slot |
 | background tab | kept turning | `visibilitychange` stops everything |
 
-The one remaining win needs an upload: cell images are **~10× oversampled** (1200px
-files rendered at ~117px). The GHL CDN is a plain object store — `?width=`, `?w=`,
-`?tr=w-` all return the identical bytes — so the only fix is generating ~44 small
-hive thumbnails and putting them in the media library. That would take the comb's
-image budget from ~4 MB to ~0.6 MB.
+That win has since shipped: the GHL CDN's `?width=`, `?w=`, `?tr=w-` all return
+identical bytes, so the fix was never a CDN parameter. `tools/make-thumbs.mjs`
+cuts a dedicated 200px WebP tier for exactly these 92–152px cells, and
+`window.BV_CELL` resolves every cell through it instead of the 1200px original.
+`tools/audit-light.mjs` counts 181 comb cells on disk, one per pool image,
+weighing **1.2 MB** against the ~28 MB the same 181 files would cost at full size.
 
 ---
 
@@ -854,7 +855,7 @@ reels are not fetched at all unless the comb is actually on screen.
 
 ### Where the 2.6 MB went
 
-**The six hero reels: 1.96 MB → 0.55 MB.** They were 420×420 at ~440 kbps and
+**The six hero reels: 1.96 MB → 0.62 MB.** They were 420×420 at ~440 kbps and
 they play inside hexagons 92–152 px wide, clipped, graded down to 72% brightness.
 `tools/shrink-reels.mjs` re-encodes them to 288×288 at 115 kbps. There is no
 ffmpeg on this machine, so Chrome is the codec: play the source into a canvas at
