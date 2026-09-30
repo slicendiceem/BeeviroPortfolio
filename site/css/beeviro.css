@@ -716,6 +716,55 @@ body.bv-lb-open .bv-reel__track { animation-play-state: paused !important; }
 .bv-svc__d { color: var(--fog); font-size: .92rem; }
 @media (max-width: 760px) { .bv-svc__row { grid-template-columns: 46px 1fr; } .bv-svc__d { grid-column: 2; } }
 
+/* Service showcase, adapted from the supplied tabbed video reference. */
+#services .bv-head { text-align:center; margin:0 auto 36px; max-width:900px; }
+#svc { border:0; }
+.bv-service-tabs { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:46px; }
+.bv-service-tab { position:relative; isolation:isolate; overflow:hidden; padding:12px 20px; border:1px solid var(--line-2); border-radius:999px; background:#0a0909; color:var(--paper); font:600 13px var(--body); cursor:pointer; transition:border-color .25s,color .25s; }
+.bv-service-tab::before { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(110deg,#ee4738,#f99821,var(--honey)); opacity:0; transition:opacity .35s; }
+.bv-service-tab:hover::before { opacity:.45; }
+.bv-service-tab[aria-selected="true"] { border-color:var(--honey); }
+.bv-service-tab[aria-selected="true"]::before { animation:svc-attention 10s ease-in-out infinite; }
+@keyframes svc-attention { 0%,25%,85%,100% {opacity:1;} 45%,65% {opacity:0;} }
+.bv-service-tab:focus-visible { outline:2px solid var(--honey); outline-offset:4px; }
+.bv-service-panel { display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,6vw,85px); align-items:center; min-height:360px; }
+.bv-service-copy { animation:svc-enter .45s ease both; }
+.bv-service-kicker { display:inline-block; padding:5px 10px; border:1px solid #ffc20240; border-radius:99px; background:#ffc20210; color:var(--honey); font:11px var(--mono); margin-bottom:20px; }
+.bv-service-title { font:400 clamp(26px,3vw,40px)/1.24 var(--display); letter-spacing:-.02em; margin:0 0 22px; color:var(--honey); background:linear-gradient(110deg,#ffc202,#ff923d,#f55454); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.bv-service-description { color:var(--fog-2); font-size:17px; line-height:1.75; max-width:48ch; margin:0; }
+.bv-service-video { aspect-ratio:16/10; width:100%; border:1px solid var(--line-2); border-radius:20px; background:#0a0909; overflow:hidden; display:grid; place-items:center; }
+.bv-service-video img,.bv-service-video video,.bv-service-video iframe { width:100%; height:100%; border:0; display:block; object-fit:contain; }
+.bv-service-video video::-webkit-media-controls { display:none !important; }
+.bv-service-placeholder { text-align:center; padding:30px; }
+.bv-service-placeholder strong { display:block; color:var(--paper); font:400 clamp(18px,2vw,25px) var(--display); margin-bottom:12px; }
+.bv-service-placeholder span { color:var(--fog); font:12px var(--mono); }
+.bv-service-controls { display:flex; justify-content:space-between; align-items:center; gap:16px; border-top:1px solid var(--line); margin-top:32px; padding-top:18px; }
+.bv-service-status { color:var(--fog); font:12px var(--mono); }
+.bv-service-pause { border:1px solid var(--line-2); border-radius:999px; padding:9px 16px; background:transparent; color:var(--paper); font:12px var(--body); cursor:pointer; }
+.bv-service-pause:disabled { opacity:.45; cursor:default; }
+#svc.is-manual .bv-service-tab[aria-selected="true"]::before { animation:none; opacity:1; }
+#svc.is-away .bv-service-tab::before { animation-play-state:paused; }
+html[dir="rtl"] .bv-service-title,html[dir="rtl"] .bv-service-placeholder strong { font-family:var(--display-ar); }
+@keyframes svc-enter { from {opacity:0;transform:translateY(8px);} to {opacity:1;transform:none;} }
+@media(max-width:760px) {
+ .bv-service-tabs { justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; padding:6px 2px 14px; margin-bottom:24px; scrollbar-width:thin; scrollbar-color:var(--honey) transparent; }
+ .bv-service-tab { flex:0 0 auto; padding:11px 16px; }
+ .bv-service-panel { grid-template-columns:1fr; gap:26px; min-height:0; }
+ .bv-service-copy { min-height:210px; }
+ .bv-service-description { font-size:15px; }
+ .bv-service-controls { align-items:flex-start; }
+ .bv-service-status { font-size:10px; line-height:1.6; }
+}
+@media(prefers-reduced-motion:reduce) { .bv-service-copy,.bv-service-tab[aria-selected="true"]::before { animation:none; } .bv-service-tab[aria-selected="true"]::before {opacity:1;} }
+
+/* No-JS fallback grid, shown until the tab builder above replaces #svc's children. */
+.bv-services-fallback { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px; }
+.bv-services-fallback p { color:var(--fog-2);margin-top:12px; }
+@media(max-width:900px) {
+ .bv-service-tabs { scroll-padding-inline:8px; }
+ .bv-services-fallback { grid-template-columns:1fr; }
+}
+
 /* ---------- work grid ----------------------------------------------------- */
 
 .bv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }

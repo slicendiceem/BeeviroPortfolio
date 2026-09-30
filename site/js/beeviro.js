@@ -423,21 +423,107 @@
     '<circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="3.6"/><path d="M12 1.4v3M12 19.6v3M1.4 12h3M19.6 12h3"/>',
   ];
 
+  // Service media: videos for all eight services.
+  // Empty URLs intentionally show the reserved video space, without a broken player.
+  window.BV_SERVICE_VIDEOS = Object.assign({
+    strategy:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6e59d5d1647127872112b.mp4',
+    branding:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab66db16407f2cbe4d1bf68.mp4',
+    mediaBuying:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6e59d3dbd5f2bbbd61608.mp4',
+    production:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab67f2e3dbd5f2bbbcb6d7e.mp4',
+    web:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6e59d1f3be2be1bb98cbc.mp4',
+    creators:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab67f2e3dbd5f2bbbcb6d88.mp4',
+    performance:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6a8dbf64e25296bd1b0000f3.mp4',
+    positioning:'https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab66de348b1d5ffbefa6f1b.mp4'
+  }, window.BV_SERVICE_VIDEOS || {});
+
   (function services() {
-    var host = document.getElementById('svc');
-    if (!host) return;
-    SVC_ICONS.forEach(function (icon, i) {
-      var n = i + 1;
-      host.appendChild(el('div', 'bv-svc__row bv-rise',
-        '<span class="bv-svc__art" aria-hidden="true">' +
-          '<span class="bv-svc__hex"></span>' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" ' +
-            'stroke-linecap="round" stroke-linejoin="round">' + icon + '</svg>' +
-        '</span>' +
-        '<div class="bv-svc__n">' + String(n).padStart(2, '0') + '</div>' +
-        '<div class="bv-svc__t">' + esc(T('svc.' + n + '.t')) + '</div>' +
-        '<div class="bv-svc__d">' + esc(T('svc.' + n + '.d')) + '</div>'));
+    var host=document.getElementById('svc');
+    if(!host)return;
+    host.replaceChildren();
+    var ar=!!window.BV_I18N.rtl;
+    // Preserve the original eight services and their existing bilingual copy.
+    var services=['strategy','branding','mediaBuying','production','web','creators','performance','positioning'].map(function(id,i){
+      var title=T('svc.'+(i+1)+'.t');
+      return {id:id, copy:[title,title,T('svc.'+(i+1)+'.d')]};
     });
+    var tabs=el('div','bv-service-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label',ar?'الخدمات':'Services');
+    var panel=el('div','bv-service-panel');panel.id='servicePanel';panel.setAttribute('role','tabpanel');panel.tabIndex=0;
+    var controls=el('div','bv-service-controls');
+    var status=el('span','bv-service-status');status.setAttribute('role','status');
+    var pause=el('button','bv-service-pause',ar?'إيقاف التبديل':'Stop autoplay');pause.type='button';
+    controls.append(status,pause);host.append(tabs,panel,controls);
+    var active=0, stopped=false, visible=false, timer=null, buttons=[];
+    var videoCache=Object.create(null), videoBank=document.createElement('div');
+    videoBank.hidden=true;videoBank.style.display='none';host.append(videoBank);
+    function serviceVideo(url){
+      if(videoCache[url])return videoCache[url];
+      var video=document.createElement('video');
+      video.controls=false;video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;
+      video.disablePictureInPicture=true;video.disableRemotePlayback=true;
+      video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('webkit-playsinline','');
+      video.preload='auto';video.src=url;videoCache[url]=video;videoBank.append(video);video.load();
+      return video;
+    }
+    // Warm each direct video once; reuse the player and its playback position on every visit.
+    services.forEach(function(service){
+      try{var url=new URL(window.BV_SERVICE_VIDEOS[service.id],location.href);
+        if(/^https?:$/.test(url.protocol)&&/\.(mp4|webm)$/i.test(url.pathname))serviceVideo(url.href);
+      }catch(error){}
+    });
+    function clear(){if(timer!==null){clearTimeout(timer);timer=null;}}
+    function syncVideo(){
+      var video=panel.querySelector('video');if(!video)return;
+      video.autoplay=visible&&!document.hidden;
+      if(!video.autoplay){video.pause();return;}
+      var playback=video.play();if(playback&&playback.catch)playback.catch(function(){/* Retry on the next section interaction or visibility change. */});
+    }
+    function schedule(){clear();if(!stopped&&visible&&!document.hidden)timer=setTimeout(function(){select((active+1)%services.length,false);},10000);}
+    function stop(){stopped=true;clear();host.classList.add('is-manual');pause.disabled=true;pause.textContent=ar?'تم إيقاف التبديل':'Autoplay stopped';status.textContent=ar?'اختر أي خدمة لاستكشافها':'Choose any service to explore';}
+    function select(index,manual){
+      if(manual)stop();active=index;
+      buttons.forEach(function(button,i){button.setAttribute('aria-selected',String(i===index));button.tabIndex=i===index?0:-1;});
+      requestAnimationFrame(function(){
+        if(tabs.scrollWidth<=tabs.clientWidth)return;
+        var tab=buttons[active].getBoundingClientRect(),rail=tabs.getBoundingClientRect();
+        tabs.scrollBy({left:tab.left+tab.width/2-rail.left-rail.width/2,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+      });
+      var oldVideo=panel.querySelector('video');if(oldVideo){oldVideo.autoplay=false;oldVideo.pause();videoBank.append(oldVideo);}
+      panel.replaceChildren();panel.setAttribute('aria-labelledby','serviceTab-'+index);
+      var service=services[index], copy=service.copy;
+      var body=el('div','bv-service-copy');
+      body.append(el('span','bv-service-kicker',(ar?'الخدمة ':'Service ')+String(index+1).padStart(2,'0')));
+      var heading=el('h3','bv-service-title');heading.textContent=copy[1];
+      var description=el('p','bv-service-description');description.textContent=copy[2];body.append(heading,description);
+      var media=el('div','bv-service-video');media.setAttribute('aria-label',copy[0]+(ar?' — فيديو':' — video'));
+      var url=window.BV_SERVICE_VIDEOS[service.id];
+      if(url){
+        try {
+          var parsed=new URL(url,location.href);
+          if(!/^https?:$/.test(parsed.protocol))throw new Error('Use an HTTP(S) video URL');
+          if(/\.(jpe?g|png|webp|avif)(?:$)/i.test(parsed.pathname)){
+            var picture=document.createElement('img');picture.src=parsed.href;picture.alt=copy[0];picture.loading='lazy';picture.decoding='async';media.setAttribute('aria-label',copy[0]);media.append(picture);
+          }else if(/(^|\.)(youtube\.com|youtube-nocookie\.com|player\.vimeo\.com)$/.test(parsed.hostname)){
+            var frame=document.createElement('iframe');frame.src=parsed.href;frame.title=copy[0];frame.allow='fullscreen; picture-in-picture';frame.allowFullscreen=true;frame.loading='lazy';media.append(frame);
+          }else{
+            media.append(serviceVideo(parsed.href));
+          }
+        }catch(error){url='';}
+      }
+      if(!url){var placeholder=el('div','bv-service-placeholder');var title=el('strong','');title.textContent=copy[0];placeholder.append(title,el('span','',ar?'الفيديو قريبًا':'Video coming soon'));media.append(placeholder);}
+      panel.append(body,media);
+      syncVideo();
+      if(!stopped)status.textContent=ar?'تتغير الخدمة كل 10 ثوانٍ · اختر خدمة لإيقاف التبديل':'Changes every 10 seconds · select a service to stop';
+      schedule();
+    }
+    services.forEach(function(service,i){var button=el('button','bv-service-tab');button.type='button';button.id='serviceTab-'+i;button.textContent=service.copy[0];button.setAttribute('role','tab');button.setAttribute('aria-controls',panel.id);button.addEventListener('click',function(){select(i,true);});buttons.push(button);tabs.append(button);});
+    tabs.addEventListener('keydown',function(e){var next=active;if(e.key==='ArrowRight')next=(active+(ar?-1:1)+services.length)%services.length;else if(e.key==='ArrowLeft')next=(active+(ar?1:-1)+services.length)%services.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=services.length-1;else return;e.preventDefault();select(next,true);buttons[next].focus();});
+    pause.addEventListener('click',stop);
+    panel.addEventListener('click',stop);
+    panel.addEventListener('focusin',stop);
+    host.addEventListener('pointerup',function(){var video=panel.querySelector('video');if(video&&video.paused)syncVideo();});
+    document.addEventListener('visibilitychange',function(){schedule();syncVideo();});
+    new IntersectionObserver(function(entries){visible=entries[0].isIntersecting;host.classList.toggle('is-away',!visible);schedule();syncVideo();},{threshold:.2}).observe(host);
+    select(0,false);
   })();
 
   /* ── work grid ────────────────────────────────────────────────────────── */
