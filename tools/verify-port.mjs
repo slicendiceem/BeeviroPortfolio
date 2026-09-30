@@ -74,6 +74,53 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
  * this file should need to change to add one.
  * ======================================================================= */
 const CHECKS = {
+  /* Task 3 registers the first real check — see the header comment above for
+     what this proves about the CDP driver itself. Confirms three things a
+     text diff cannot: the section actually renders right-to-left, the rail's
+     numbering survived the port, and Arabic mode carries no stray Latin
+     text — the testimonial durations are digits-and-colon by construction, so
+     any run of 4+ Latin letters here is English leaking through a missing
+     translation. */
+  'testimonials-arabic': async (cdp) => {
+    const r = await cdp.eval(`(() => {
+      const sec = document.getElementById('testimonials');
+      if (!sec) return { error: 'no #testimonials section in the DOM' };
+      const dir = getComputedStyle(sec).direction;
+      const labels = [...sec.querySelectorAll('.bv-testi__meta b')].map((b) => b.textContent);
+      const firstPick = sec.querySelector('.bv-testi__pick');
+      const playLabel = firstPick ? firstPick.getAttribute('aria-label') : null;
+      const walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
+      const leaks = [];
+      let n;
+      while ((n = walker.nextNode())) {
+        if (/[A-Za-z]{4,}/.test(n.nodeValue)) leaks.push(n.nodeValue.trim());
+      }
+      return { dir, labels, playLabel, leaks };
+    })()`);
+
+    if (r.error) throw new Error(r.error);
+    if (r.dir !== 'rtl') {
+      throw new Error('expected #testimonials to compute direction:rtl, saw ' + JSON.stringify(r.dir));
+    }
+    /* Reference data has grown a fourth pushed testimonial since this brief was
+       written (see task-3-report.md) — checked as a prefix, not an exact
+       length, so a real 04th tab does not make this check lie. */
+    const want = ['01', '02', '03'];
+    for (let i = 0; i < want.length; i++) {
+      if (r.labels[i] !== want[i]) {
+        throw new Error('expected rail label ' + i + ' to read ' + JSON.stringify(want[i]) +
+          ', saw ' + JSON.stringify(r.labels));
+      }
+    }
+    if (r.playLabel !== 'تشغيل الشهادة 1') {
+      throw new Error('expected the first pick aria-label to read ' +
+        JSON.stringify('تشغيل الشهادة 1') + ', saw ' + JSON.stringify(r.playLabel));
+    }
+    if (r.leaks.length) {
+      throw new Error('Latin-script leakage (4+ letters) in the Arabic testimonials section: ' +
+        JSON.stringify(r.leaks));
+    }
+  },
 };
 /* ======================================================================= */
 
