@@ -55,15 +55,26 @@ diverged, so `gen-media-map.mjs` output drops straight in.
 
 ## Part 1 — The port
 
-Each feature moves to where its kind already lives:
+Each feature moves into the module that already holds its kind, matching where
+the embed itself carries the code:
 
-- services section → `site/css/beeviro.css` + `site/js/services.js`
-- testimonials + `BV_TESTIMONIALS` → `site/css/beeviro.css` + `site/js/testimonials.js`
-- `BV_CARD_LOGOS` and the adaptive logo grading → `site/js/clients.js` for the
-  data, `beeviro.css` for the `cover`/`contain` switch
+- services section → `site/css/beeviro.css` + `site/js/beeviro.js`
+- testimonials → `BV_TESTIMONIALS` data and builder in `site/js/beeviro.js`,
+  styles in `beeviro.css`, five new keys in `site/js/i18n.js`
+- `BV_CARD_LOGOS` and the adaptive logo grading → data and grading in
+  `site/js/beeviro.js`, cell rendering in `site/js/hive.js`, the
+  `cover`/`contain` switch in `beeviro.css`
 - work filter and search → `site/js/beeviro.js`, beside the grid it filters
 - Shalaby Labs → a record in `site/js/clients.js` and `clients.ar.js`, plus its
   ten `BV_MEDIA` lines
+
+**No new modules.** `build-embed.mjs:127` inlines a hardcoded list of nine, and
+`site/index.html` names the same nine in the same order; adding files means
+editing both and taking on a load-order risk for globals like
+`BV_TESTIMONIALS`. Since the acceptance criterion is *no functional delta*,
+minimising structural change is what makes the diff meaningful — restructuring
+during a port conflates two risks. `beeviro.js` is 79KB and will grow; splitting
+it is worth doing, but as its own change against a green baseline, not here.
 
 Three smaller pieces of this session's work ride along in the same files: the
 embedded Cairo face and the `[dir="rtl"]` font-variable redefinition, the mobile
