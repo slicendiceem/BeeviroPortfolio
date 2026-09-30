@@ -376,11 +376,36 @@
     e.preventDefault();
     var next = RTL ? 'en' : 'ar';
     remember(next);
-    // Drop any ?lang= already in the URL so the stored choice is not overridden
-    // by a stale query on the very next load.
-    var url = location.pathname + location.search.replace(/([?&])lang=(ar|en)&?/i, '$1')
-      .replace(/[?&]$/, '');
-    location.replace(url + (location.hash || ''));
+
+    // Drop any lang= already in the URL — query OR fragment, since fromUrl()
+    // matches [?&#]lang= in either — so the stored choice made above is not
+    // immediately overridden by a stale value still sitting in the address
+    // bar on the very next load.
+    var search = location.search.replace(/([?&])lang=(ar|en)&?/i, '$1').replace(/[?&]$/, '');
+    var hash = location.hash.replace(/([#&])lang=(ar|en)&?/i, '$1').replace(/[#&]$/, '');
+
+    // A surviving fragment names an element (e.g. #work) rather than a
+    // language. Keep it only while that element is actually on screen —
+    // otherwise the reload would jerk the reader back to a spot they had
+    // already scrolled away from.
+    if (hash) {
+      var id = hash.slice(1);
+      var target = id ? document.getElementById(id) : null;
+      if (target) {
+        var box = target.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        if (!(box.bottom > 0 && box.top < vh)) hash = '';
+      }
+    }
+
+    // location.replace() to a URL that differs from the current one only
+    // after the # is a same-document navigation: the browser just scrolls
+    // (or does nothing at all when nothing differs), none of this file
+    // re-runs, and the language never actually changes. history.replaceState
+    // followed by an explicit reload forces a real navigation every time,
+    // regardless of whether the path above changed anything but the hash.
+    history.replaceState(null, '', location.pathname + search + hash);
+    location.reload();
   });
 
   window.BV_I18N = { lang: LANG, rtl: RTL, t: t, set: function (l) { remember(l); location.reload(); } };
