@@ -182,6 +182,92 @@ const CHECKS = {
       }
     });
   },
+
+  /* Task 5 registers the third check. #searchFilter narrows the SAME grid
+   * beeviro.js's applyOrder() already sorted to BV_ORDER — it must never
+   * re-sort it, only hide/show in place. A brand query no client name can
+   * match proves the "hide" half (zero cards, #workStatus says so, not
+   * silently); clearing that query back to '' and reading the grid's DOM
+   * order straight off BV_ORDER proves the "never re-sorts" half, which is
+   * the one a filter implementation most plausibly gets wrong by rebuilding
+   * or re-appending cards instead of toggling `hidden` on the existing ones.
+   * cdp.errors is sampled before and after so a thrown exception inside the
+   * filter (e.g. a null #workStatus) fails this check instead of passing
+   * silently. */
+  'filter-empty-result': async (cdp) => {
+    const errorsBefore = cdp.errors.length;
+    const r = await cdp.eval(`(() => {
+      var select = document.getElementById('industryFilter');
+      var search = document.getElementById('searchFilter');
+      var grid = document.getElementById('grid');
+      var status = document.getElementById('workStatus');
+      if (!select || !search || !grid || !status) {
+        return { error: 'missing #industryFilter, #searchFilter, #grid or #workStatus in the DOM' };
+      }
+      var rtl = !!(window.BV_I18N && window.BV_I18N.rtl);
+
+      function visibleSlugs() {
+        return Array.prototype.filter.call(grid.querySelectorAll('.bv-card'), function (c) {
+          return !c.hidden;
+        }).map(function (c) { return c.dataset.slug; });
+      }
+
+      select.value = '';
+      search.value = 'zzz-no-such-brand-zzz';
+      search.dispatchEvent(new Event('input'));
+      var visibleAfterQuery = visibleSlugs();
+      var statusAfterQuery = status.textContent;
+
+      search.value = '';
+      search.dispatchEvent(new Event('input'));
+      var slugsAfterClear = visibleSlugs();
+
+      return {
+        rtl: rtl,
+        visibleAfterQuery: visibleAfterQuery,
+        statusAfterQuery: statusAfterQuery,
+        slugsAfterClear: slugsAfterClear,
+        order: window.BV_ORDER || [],
+        liveCount: (window.BV_CLIENTS || []).length,
+      };
+    })()`);
+
+    if (r.error) throw new Error(r.error);
+
+    if (r.visibleAfterQuery.length !== 0) {
+      throw new Error('a brand query matching no client should render 0 cards, saw ' +
+        r.visibleAfterQuery.length + ' (' + JSON.stringify(r.visibleAfterQuery) + ')');
+    }
+
+    const wantEmptyStatus = r.rtl
+      ? 'لا توجد نتائج. جرّب بحثًا آخر.'
+      : 'No matching brands. Try another search or category.';
+    if (!r.statusAfterQuery) {
+      throw new Error('#workStatus went silent instead of announcing zero results');
+    }
+    if (r.statusAfterQuery !== wantEmptyStatus) {
+      throw new Error('expected #workStatus to read ' + JSON.stringify(wantEmptyStatus) +
+        ', saw ' + JSON.stringify(r.statusAfterQuery));
+    }
+
+    if (cdp.errors.length > errorsBefore) {
+      throw new Error('console error raised while filtering: ' +
+        JSON.stringify(cdp.errors.slice(errorsBefore)));
+    }
+
+    if (r.slugsAfterClear.length !== r.liveCount) {
+      throw new Error('clearing the query should restore all ' + r.liveCount +
+        ' cards (the live record count), saw ' + r.slugsAfterClear.length);
+    }
+    const wantOrder = r.order.filter((slug) => r.slugsAfterClear.includes(slug));
+    for (let i = 0; i < r.slugsAfterClear.length; i++) {
+      if (r.slugsAfterClear[i] !== wantOrder[i]) {
+        throw new Error('clearing the query did not restore BV_ORDER — expected slot ' + i +
+          ' to read ' + JSON.stringify(wantOrder[i]) + ', saw ' + JSON.stringify(r.slugsAfterClear[i]) +
+          ' (full order seen: ' + JSON.stringify(r.slugsAfterClear) + ')');
+      }
+    }
+  },
 };
 /* ======================================================================= */
 
