@@ -283,6 +283,7 @@
   <!-- ── work ────────────────────────────────────────────────────────────── -->
   <section class="bv-section bv-wash" id="work">
     <div class="bv-wrap">
+      <div class="bv-work-head">
       <div class="bv-head">
         <span class="bv-eyebrow" data-i18n="work.eyebrow">Selected work</span>
         <h2 class="bv-h2" data-i18n-html="work.h2">Twenty-five brands.<br>Every journey shown<br>end to end.</h2>
@@ -292,6 +293,15 @@
           Where a figure is a target rather than a delivered result, it says so.
         </p>
       </div>
+      <div class="bv-filter-bar">
+        <select id="industryFilter" aria-label="Filter by category"></select>
+        <span class="bv-filter-divider" aria-hidden="true"></span>
+        <input type="search" id="searchFilter" aria-label="Search brands" placeholder="Search by Brand Name...">
+      </div></div>
+      <!-- Without JS the select never gets its options and the search input
+           has no listener — an empty, inert control reads as broken, so hide
+           the bar and let the (also JS-built) grid stand on its own. -->
+      <noscript><style>.bv-filter-bar { display: none !important; }</style></noscript>
       <div class="bv-grid" id="grid"></div>
       <!-- Twenty-five cards at once reads as a wall rather than a portfolio.
            Six, then the rest on request. -->
@@ -302,6 +312,7 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </button>
       </div>
+      <p class="bv-work-status" id="workStatus" role="status" aria-live="polite"></p>
     </div>
   </section>
 

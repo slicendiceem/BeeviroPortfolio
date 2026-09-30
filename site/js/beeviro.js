@@ -619,6 +619,61 @@
     });
 
     var cards = Array.prototype.slice.call(host.children);
+
+    /* ── industry filter + brand search ──────────────────────────────────
+       Ported from beeviro-embed.html's work section. There the filter bar
+       sits inside a horizontally-scrolling carousel (prev/next arrows,
+       scroll-snap) — that carousel is a later reconciliation task's
+       territory, so only the bar and #workStatus are wired up here.
+       Both controls narrow this SAME `cards` array by toggling `hidden`;
+       neither ever touches `host`'s child order, which stays exactly what
+       applyOrder() produced from BV_ORDER at the top of this file — a
+       filter that re-sorted would silently undo whatever order a later
+       task gives BV_ORDER.
+       Wiring this up also takes over full-roster visibility from "six,
+       then Show More" below: the reference has no page cap at all (every
+       card is always in the DOM, narrowed only by the filter), and a
+       six-card default alongside an independent filter would fight over
+       who owns `.hidden` — paging after a search would either resurrect
+       filtered-out cards or re-hide filtered-in ones. Returning below
+       leaves `wrap` and its button permanently dormant instead. */
+    var industryFilter = document.getElementById('industryFilter');
+    var searchFilter = document.getElementById('searchFilter');
+    var workStatus = document.getElementById('workStatus');
+    if (industryFilter && searchFilter && workStatus) {
+      var rtl = !!window.BV_I18N.rtl;
+      industryFilter.add(new Option(rtl ? 'كل الفئات' : 'All categories', ''));
+      Array.from(new Set(C.map(function (c) { return c.industry; }))).sort().forEach(function (name) {
+        industryFilter.add(new Option(name, name));
+      });
+      if (rtl) {
+        searchFilter.placeholder = 'ابحث باسم العلامة التجارية...';
+        searchFilter.setAttribute('aria-label', searchFilter.placeholder);
+        industryFilter.setAttribute('aria-label', 'تصفية حسب الفئة');
+      }
+      var runFilter = function () {
+        var query = searchFilter.value.trim().toLocaleLowerCase(), matched = 0;
+        cards.forEach(function (card, i) {
+          card.hidden = !!((industryFilter.value && C[i].industry !== industryFilter.value) ||
+            (query && !C[i].name.toLocaleLowerCase().includes(query)));
+          if (!card.hidden) matched++;
+        });
+        // No "swipe or use the arrows" tail here — that instruction only
+        // means anything next to the carousel this task does not port.
+        workStatus.textContent = matched
+          ? (rtl ? matched + ' علامة تجارية' : matched + (matched === 1 ? ' brand' : ' brands'))
+          : (rtl ? 'لا توجد نتائج. جرّب بحثًا آخر.' : 'No matching brands. Try another search or category.');
+      };
+      industryFilter.addEventListener('change', runFilter);
+      searchFilter.addEventListener('input', runFilter);
+      runFilter();
+      window.BV_REVEAL_CARD = function (slug) {
+        var card = cards.find(function (c) { return c.dataset.slug === slug; });
+        if (card && card.hidden) { industryFilter.value = ''; searchFilter.value = ''; runFilter(); }
+      };
+      return;
+    }
+
     var wrap = document.getElementById('moreWrap');
     var btn = document.getElementById('moreBtn');
     var label = document.getElementById('moreLabel');

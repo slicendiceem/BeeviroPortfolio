@@ -833,6 +833,43 @@ html[dir="rtl"] .bv-service-title,html[dir="rtl"] .bv-service-placeholder strong
 .bv-kind--result { background: var(--honey); color: var(--ink); }
 .bv-kind--goal   { background: transparent; color: var(--fog); border: 1px solid var(--line-2); }
 
+/* ── filter bar: industry <select> + brand search ────────────────────────
+   Narrows the SAME `cards` array the grid above builds, by toggling
+   `hidden` — see the note above `var cards` in beeviro.js's grid() function
+   for why this can never re-sort it. In the reference this markup sits
+   inside a horizontally-scrolling carousel (prev/next arrows, scroll-snap);
+   that carousel is a later reconciliation task's territory, so only the bar
+   itself and the #workStatus live region below are styled here. */
+.bv-filter-bar { display:flex; align-items:center; gap:16px; background:rgba(18,17,16,.8); backdrop-filter:blur(20px); border:1px solid var(--line); padding:10px 24px; border-radius:99px; margin-top:0; box-shadow:0 20px 40px #0006; }
+.bv-filter-bar:focus-within { border-color:var(--honey); }
+.bv-filter-bar select,.bv-filter-bar input { width:100%; min-width:0; flex:1; background:transparent; border:0; color:var(--paper); font:inherit; font-size:14px; padding:12px 0; }
+.bv-filter-bar option { background:#111; }
+.bv-filter-divider { width:1px; height:24px; background:var(--line); }
+.bv-work-status { color:var(--fog); font-family:var(--mono); font-size:12px; margin-top:16px; }
+
+/* The head copy and the filter bar share one row on desktop. */
+.bv-work-head { display:grid; grid-template-columns:1fr minmax(320px, .85fr); gap:36px; align-items:end; margin-bottom:12px; }
+.bv-work-head .bv-head { margin-bottom:0; }
+
+@media (max-width: 900px) {
+  .bv-work-head { grid-template-columns:1fr; gap:0; margin-bottom:8px; }
+  .bv-work-head > * { min-width:0; }
+  .bv-filter-bar { margin-top:24px; }
+  /* Fixed elements elsewhere on the page already drop backdrop-filter at this
+     width for GPU cost; the bar follows the same rule. */
+  .bv-filter-bar { backdrop-filter:none; -webkit-backdrop-filter:none; }
+  /* 16px, not 14 — anything smaller makes iOS Safari zoom the page in on focus. */
+  .bv-filter-bar input,.bv-filter-bar select { font-size:16px; }
+}
+@media (max-width: 640px) {
+  .bv-filter-bar { padding:8px 16px; gap:12px; border-radius:18px; }
+}
+@media (max-width: 380px) {
+  .bv-filter-bar { flex-wrap:wrap; }
+  .bv-filter-bar select,.bv-filter-bar input { flex-basis:100%; }
+  .bv-filter-divider { display:none; }
+}
+
 /* Supplied logos stay complete and retain their original colours.
 
    The mark FILLS the card frame — no padding, no letterbox bars. Every supplied
