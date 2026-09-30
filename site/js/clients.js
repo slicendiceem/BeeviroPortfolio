@@ -685,4 +685,38 @@ window.BV_CLIENTS = [
     ],
     work: 0, logo: 'sheikh-hosney.png',
   },
+
+  /* Shalaby Medical Laboratories — the largest lab chain in Egypt's Northern
+     Region. WE DID NOT BUILD THEIR WEBSITE; shalabylabs.com is their own and is
+     deliberately not linked here. What is described below is the AI support
+     agent and the routing behind it.
+     Every figure is read off the client's own August monthly report (trailing
+     30 days to 07 Sep 2026) or off the platform's own panels — the same two
+     first-hand sources the Revenue Lab 360 case file cites. Nothing is
+     estimated, which is why each one carries its receipt in `note`. */
+  {
+    slug: 'shalaby-labs', name: 'Shalaby Labs', accent: '#38b9c6', year: '2026',
+    industry: 'Healthcare', country: 'Egypt',
+    services: ['Conversation AI', 'WhatsApp Automation', 'CRM & Routing', 'Support Ticketing'],
+    tagline: 'The same question, answered ten thousand times.',
+    summary: 'An AI support agent — named, given a personality and a job — that answers patients about test prices, preparation, results timing, branches and opening hours, then hands the conversation to the right branch team the moment it needs a human. Five months in it carries thousands of conversations a month, almost all of them on WhatsApp.',
+    journey: {
+      contact: 'A lab chain across two governorates, thirty years old, with branches in Alexandria and Beheira and a support queue that never emptied.',
+      diagnose: 'The same questions arrived thousands of times a week: what does this test cost, do I have to fast, when are my results ready, which branch is nearest, are you open Friday. Every one was a person typing the same answer again — and the patients who genuinely needed a human waited in the same queue as the ones who did not.',
+      position: 'Not a chatbot bolted onto a website. An agent with a name, an Egyptian-Arabic voice and a defined job, that knows what it may say and when it must stop.',
+      build: 'A conversation agent on GPT-4.1 with an Arabic persona and an eight-thousand-token brief, routed knowledge bases so a recruitment question never reaches the patient-facing answers, guided journeys for six comprehensive test packages, results notification over WhatsApp, support ticketing, and handover rules that clean the slate before a human sees the chat.',
+      launch: 'Rolled out branch by branch, with handover routed by governorate — Alexandria patients to Alexandria staff, Beheira to Beheira. From late July the branches began routing patients to it in earnest and volume stepped up sharply.',
+      outcome: 'Across the trailing thirty days the agent closed conversations end to end with no human in them, at an average reply time under ten seconds, and satisfied patients outnumbered dissatisfied ones by more than twenty to one.',
+    },
+    outcome: { kind: 'result', headline: '16.9K conversations · 9.86s average reply' },
+    metrics: [
+      { v: '16.9K', l: 'Conversations handled', note: 'Closed by the agent end to end, with no human in them. Agent logs, trailing 30 days to 07 Sep 2026, from the client monthly report.' },
+      { v: '9.86s', l: 'Average response time', note: 'The platform’s own measurement across 40.0K messages to 12.3K contacts. We did not time anything ourselves.' },
+      { v: '2,580', l: 'Patients satisfied', note: 'Against 113 who said otherwise — 95.8% of everyone who rated an answer at all. Read off the satisfaction panel, same 30-day window.' },
+      { v: '29,929', l: 'Clean handovers', note: 'Every time a human replied, a guardrail pulled the agent out of the conversation. Knowing when to stop is the job.' },
+    ],
+    workNote: 'the platform itself, captured from the live account',
+    work: 14,
+    workImages: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  },
 ];
