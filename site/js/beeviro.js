@@ -526,6 +526,31 @@
     select(0,false);
   })();
 
+  // Approved card logos; shared with the hero to reuse cached image requests.
+  // Eighteen entries here, not the reference's twenty — volt-ems and
+  // moamen-medhat leave the roster in a later task, so a logo for a client
+  // with no record would be dead weight.
+  window.BV_CARD_LOGOS = {
+    "block-star": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762d48b1d5ffbefb501d.jpg",
+    "speakup": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762b8256c2fa61392950.jpg",
+    "rinos-kitchen": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762bd1d912a8581560ac.jpg",
+    "cognistar": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762e7e654f1003c15036.jpg",
+    "qr-tably": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762b18bb814cf3e569e1.jpg",
+    "master-craft": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762918bb814cf3e569ac.jpg",
+    "electro-master": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab676298256c2fa613928c8.jpg",
+    "daily-box": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762918bb814cf3e569a1.jpg",
+    "freestyle": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab676297e654f1003c14f7c.jpg",
+    "kinetic-health": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab67629d1d912a85815605f.jpg",
+    "edara-plus": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762c1f3be2be1badd8e5.jpg",
+    "renda-perfumes": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6aa0c7e654f1003c6d4ee.jpeg",
+    "moaafa": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6aa0a53ee44f56b3800d1.png",
+    "eqbal": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6aa0a974a9da6eec32f61.png",
+    "rojana": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6aa0a7e654f1003c6d4a2.png",
+    "kirin": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6aa0a5d164712786c1b6e.png",
+    "izar": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6aa0a3ae3da26fb64da9c.jpg",
+    "shalaby-labs": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6a7ff81199074f5ef6c347cc.png"
+};
+
   /* ── work grid ────────────────────────────────────────────────────────── */
   /* Twenty-five cards laid out at once is a wall, not a portfolio — the reader
      stops reading around the ninth. Six are shown; the rest arrive on request,
@@ -549,9 +574,16 @@
          mark faster than by one of its posts.
          The gallery fallback is not a stopgap: logos arrive per client, and a
          client without one has to keep reading as a finished card rather than a
-         lettered placeholder. */
+         lettered placeholder.
+         BV_CARD_LOGOS holds the approved, CDN-hosted marks and outranks
+         everything below — including the older local asset in c.logo — once a
+         client's mark is approved there. */
       var lead;
-      if (c.logo) {
+      var updatedLogo=window.BV_CARD_LOGOS[c.slug];
+      if (updatedLogo) {
+        b.classList.add('bv-card--logo');
+        lead='<span class="bv-card__plate"><img loading="eager" decoding="async" width="640" height="640" src="'+esc(updatedLogo)+'" alt="'+esc(c.name)+' logo"></span>';
+      } else if (c.logo) {
         lead = '<span class="bv-card__plate"><img loading="lazy" decoding="async" src="' +
           thumb('assets/logos/' + c.logo) + '" alt="' + esc(c.name) + ' logo"></span>';
       } else if (c.work) {
@@ -577,7 +609,7 @@
         '</div>';
       // A logo plate or a lettered hex is opaque and already covers the frame,
       // so there is nothing to wait for — retire the skeleton immediately.
-      if (c.logo || !c.work) b.querySelector('.bv-card__img').classList.add('is-loaded');
+      if (updatedLogo || c.logo || !c.work) b.querySelector('.bv-card__img').classList.add('is-loaded');
       b.addEventListener('click', function () { openCase(c.slug, b); });
       host.appendChild(b);
     });
@@ -646,6 +678,33 @@
       shown = Math.min(cards.length, Math.ceil((i + 1) / PAGE) * PAGE);
       paint(false);
     };
+  })();
+
+  /* Mark the logo cards whose artwork is too far from the frame's shape to be
+     cropped into it. `cover` is right for a square mark and ruinous for a wide
+     lockup, and which one a client sends is not knowable in advance — so read
+     it off the file. FRAME_RATIO tracks .bv-card__img; MAX_CROP is the share of
+     the long edge we are willing to lose before showing the mark whole
+     instead. A square mark against this frame loses about 0.11. */
+  var FRAME_RATIO = 372 / 416;
+  var MAX_CROP = 0.25;
+  function gradeLogo(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    var card = img.closest('.bv-card--logo');
+    if (!card) return;
+    var r = img.naturalWidth / img.naturalHeight;
+    var lost = r > FRAME_RATIO ? 1 - (FRAME_RATIO / r) : 1 - (r / FRAME_RATIO);
+    card.classList.toggle('bv-card--wide', lost > MAX_CROP);
+  }
+  /* Capturing, because `load` does not bubble — the same reason the light-copy
+     swap above listens this way. Covers cards the carousel builds later. */
+  document.addEventListener('load', function (e) {
+    var n = e.target;
+    if (n && n.tagName === 'IMG' && n.closest('.bv-card--logo')) gradeLogo(n);
+  }, true);
+  (function gradeLoaded() {
+    var done = document.querySelectorAll('.bv-card--logo .bv-card__plate img');
+    for (var i = 0; i < done.length; i++) if (done[i].complete) gradeLogo(done[i]);
   })();
 
   /* ── testimonials ──────────────────────────────────────────────────────

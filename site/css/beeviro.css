@@ -833,6 +833,35 @@ html[dir="rtl"] .bv-service-title,html[dir="rtl"] .bv-service-placeholder strong
 .bv-kind--result { background: var(--honey); color: var(--ink); }
 .bv-kind--goal   { background: transparent; color: var(--fog); border: 1px solid var(--line-2); }
 
+/* Supplied logos stay complete and retain their original colours.
+
+   The mark FILLS the card frame — no padding, no letterbox bars. Every supplied
+   logo is square and the frame is close to it (about 0.89), so `cover` crops
+   roughly 5% off each side rather than the third it would take out of a wide
+   image. That is inside the margin a logo is normally exported with.
+
+   `contain` was the earlier answer and it was wrong for this page: it left
+   every mark floating in a dark plate at about 70% of the frame, so the logo
+   cards read as smaller and emptier than the photographic ones beside them.
+
+   The plate colour still matters — two of the marks are transparent PNGs and
+   sit on it; the rest carry their own background and simply cover it. */
+#grid .bv-card--logo .bv-card__plate { padding:0; background:#0a0909; place-items:stretch; }
+#grid .bv-card--logo .bv-card__plate img {
+  width:100%; height:100%; object-fit:cover; object-position:center;
+  filter:none; opacity:1;
+}
+#grid .bv-card--logo .bv-card__veil { display:none; }
+/* A LOCKUP IS NOT A SQUARE MARK. Filling the frame only works while the
+   artwork is roughly as square as the frame is — every mark here is 1:1 and
+   loses about a tenth to the crop, which nobody notices. Shalaby Labs is a
+   760x188 horizontal lockup: cover throws away 78% of it and shows three
+   enormous letters. Anything that far from the frame's shape gets contained
+   and given room instead, decided from the image's own dimensions at load
+   time rather than from a hand-kept list of exceptions. */
+#grid .bv-card--logo.bv-card--wide .bv-card__plate { padding:14% 9%; }
+#grid .bv-card--logo.bv-card--wide .bv-card__plate img { object-fit:contain; }
+
 /* ── testimonials ──────────────────────────────────────────────────────
    ONE stage, three picks. A row of three <video controls> was the obvious
    build and the wrong one: three black rectangles with nothing to look at
@@ -912,6 +941,9 @@ html[dir="rtl"] .bv-testi__pick:hover { transform: translateX(-3px); }
   .bv-testi__play, .bv-testi__hex, .bv-testi__pick { transition: none; }
   .bv-testi__pick:hover { transform: none; }
 }
+
+.bv-cellx img.bv-hero-logo { object-fit:contain; padding:15%;background:var(--logo-bg,#0a0909);filter:saturate(.95) brightness(.88); }
+.bv-cellx:hover img.bv-hero-logo,.bv-cellx.is-hot img.bv-hero-logo { filter:none; }
 
 /* ---------- infinite creative carousel ------------------------------------ */
 

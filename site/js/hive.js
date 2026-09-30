@@ -78,6 +78,15 @@
      Beeviro's own work, which is not a client record and never enters the pool.)
      Still bounded, and still cheap: the cells resolve through BV_CELL to 200px
      WebP, and nothing is fetched until the cell it lands in turns over. */
+  // Backgrounds a past review picked for the marks most likely to show a plate
+  // edge (transparent PNGs, or artwork not quite square); any other logo'd
+  // brand falls back to the same charcoal the work-grid cards plate against.
+  var LOGO_BG = {
+    'block-star': '#fff', 'kinetic-health': '#ededed', 'freestyle': '#000',
+    'speakup': '#bde300', 'rinos-kitchen': '#d8bd28', 'cognistar': '#f5f5f5',
+    'electro-master': '#f3eadd', 'daily-box': '#fff', 'master-craft': '#000',
+    'qr-tably': '#000',
+  };
   var pool = [];
   (function buildPool() {
     var withWork = C.filter(function (c) { return c.work; });
@@ -87,7 +96,15 @@
       for (var b = 0; b < withWork.length; b++) {
         var c = withWork[b];
         if (depth > c.work) continue;
-        pool.push({ src: shot(c.slug, depth), slug: c.slug });
+        // A cell prefers the brand's approved mark the first time it turns to
+        // this client; deeper depths keep cycling real gallery work so the
+        // pool stays varied rather than repeating the same plate.
+        var logoSrc = depth === 1 && (window.BV_CARD_LOGOS || {})[c.slug];
+        if (logoSrc) {
+          pool.push({ src: logoSrc, slug: c.slug, logo: true, background: LOGO_BG[c.slug] || '#0a0909' });
+        } else {
+          pool.push({ src: shot(c.slug, depth), slug: c.slug });
+        }
       }
     }
   })();
@@ -349,6 +366,7 @@
     img.decoding = 'async';
     img.alt = '';
     if (rec.src) img.src = rec.src;
+    if (rec.logo) { img.classList.add('bv-hero-logo'); img.style.setProperty('--logo-bg', rec.background); }
     return img;
   }
 
@@ -539,6 +557,8 @@
       var img = incoming.querySelector('img');
       if (!img) { img = makeMedia({ src: '' }); incoming.appendChild(img); }
       img.src = rec.src;
+      img.classList.toggle('bv-hero-logo', !!rec.logo);
+      img.style.setProperty('--logo-bg', rec.background || '#0a0909');
 
       cell.slug = rec.slug;
       cell.el.setAttribute('data-slug', rec.slug);
