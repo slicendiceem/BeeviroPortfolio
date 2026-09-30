@@ -833,6 +833,86 @@ html[dir="rtl"] .bv-service-title,html[dir="rtl"] .bv-service-placeholder strong
 .bv-kind--result { background: var(--honey); color: var(--ink); }
 .bv-kind--goal   { background: transparent; color: var(--fog); border: 1px solid var(--line-2); }
 
+/* ── testimonials ──────────────────────────────────────────────────────
+   ONE stage, three picks. A row of three <video controls> was the obvious
+   build and the wrong one: three black rectangles with nothing to look at
+   until something is pressed, and three elements each able to buffer a
+   45 MB file. The stage carries a single <video> whose src is swapped, so
+   only one clip can ever be in flight, and every tile shows a real frame
+   from its own film instead of a black box. */
+.bv-testi {
+  display: grid; gap: 22px; margin-top: 40px;
+  grid-template-columns: minmax(0, 1fr) 286px;
+  align-items: start;
+}
+.bv-testi__stage {
+  position: relative; border: 1px solid var(--line); border-radius: 18px;
+  overflow: hidden; background: #000;
+}
+.bv-testi__stage video {
+  display: block; width: 100%; aspect-ratio: 16 / 9;
+  object-fit: cover; background: #000;
+}
+/* The overlay is the resting state: it covers the poster until a reader asks
+   for the film, and gets out of the way entirely once one is running. */
+.bv-testi__play {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  border: 0; cursor: pointer; background:
+    linear-gradient(to top, rgba(10,9,9,.86) 4%, rgba(10,9,9,.30) 46%, rgba(10,9,9,.08) 100%);
+  transition: background .4s var(--ease);
+}
+.bv-testi__stage:hover .bv-testi__play { background:
+  linear-gradient(to top, rgba(10,9,9,.80) 4%, rgba(10,9,9,.18) 46%, transparent 100%); }
+.bv-testi__stage.is-playing .bv-testi__play { opacity: 0; pointer-events: none; }
+/* The hex is the site's own mark, not a generic round button. */
+.bv-testi__hex {
+  width: 74px; height: 84px; display: grid; place-items: center;
+  background: var(--honey); color: var(--ink);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  transition: transform .4s var(--ease);
+}
+.bv-testi__stage:hover .bv-testi__hex { transform: scale(1.07); }
+.bv-testi__hex svg { margin-inline-start: 4px; }
+html[dir="rtl"] .bv-testi__hex svg { transform: scaleX(-1); margin-inline-start: 0; margin-inline-end: 4px; }
+.bv-testi__bar { position: absolute; inset-inline: 0; inset-block-end: 0; height: 3px;
+  background: rgba(255,255,255,.12); opacity: 0; transition: opacity .3s; }
+.bv-testi__stage.is-playing .bv-testi__bar { opacity: 1; }
+.bv-testi__bar i { display: block; height: 100%; width: 0; background: var(--honey); }
+
+.bv-testi__rail { display: flex; flex-direction: column; gap: 12px; }
+.bv-testi__pick {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center;
+  padding: 8px; border: 1px solid var(--line); border-radius: 14px;
+  background: var(--ink-1); cursor: pointer; text-align: start;
+  transition: border-color .3s var(--ease), background .3s var(--ease), transform .3s var(--ease);
+}
+.bv-testi__pick:hover { transform: translateX(3px); border-color: var(--fog); }
+html[dir="rtl"] .bv-testi__pick:hover { transform: translateX(-3px); }
+.bv-testi__pick.is-on { border-color: var(--honey); background: var(--ink-2); }
+.bv-testi__pick img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+  border-radius: 8px; display: block; filter: saturate(.7); }
+.bv-testi__pick.is-on img { filter: none; }
+/* No one is named, so the rail counts instead. The index carries the weight
+   the name used to — it is what tells you which of the three you are on. */
+.bv-testi__meta { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bv-testi__meta b { font-family: var(--display); font-size: 1.24rem; line-height: 1;
+  color: var(--fog-2); }
+.bv-testi__pick.is-on .bv-testi__meta b { color: var(--honey); }
+.bv-testi__meta span { font-family: var(--mono); font-size: .6rem; letter-spacing: .12em;
+  color: var(--fog); }
+@media (max-width: 860px) {
+  .bv-testi { grid-template-columns: minmax(0, 1fr); }
+  .bv-testi__rail { flex-direction: row; overflow-x: auto; padding-bottom: 4px;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .bv-testi__pick { flex: 0 0 210px; grid-template-columns: minmax(0, 1fr);
+    scroll-snap-align: start; }
+  .bv-testi__pick img { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bv-testi__play, .bv-testi__hex, .bv-testi__pick { transition: none; }
+  .bv-testi__pick:hover { transform: none; }
+}
+
 /* ---------- infinite creative carousel ------------------------------------ */
 
 /* The strips run edge to edge, so both ends were a hard vertical cut through

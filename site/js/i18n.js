@@ -109,6 +109,11 @@
       'work.more': 'Show more work', 'work.less': 'Show fewer',
       'work.showing': 'Showing {a} of {b}',
 
+      'testi.eyebrow': 'In their own words',
+      'testi.h2': 'Clients, on camera.',
+      'testi.lede': 'Unscripted and unedited beyond a trim. Pick one — nothing starts on its own.',
+      'testi.play': 'Play', 'testi.n': 'testimonial {i}',
+
       'creative.eyebrow': 'The output',
       'creative.h2': 'Roughly nine hundred<br>files delivered.',
       'creative.lede': 'A sample of the design work, pulled straight from the client deliverable folders. Click any tile to open it.',
@@ -200,6 +205,11 @@
       'work.lede': 'افتح أي بطاقة لتمشي التعاون كاملًا — أول تواصل، تشخيص، تموضع، تنفيذ، إطلاق، نتيجة — بالتصاميم وأرقام الحملات مرفقة. وحين يكون الرقم هدفًا لا نتيجة محقّقة، نقول ذلك صراحة.',
       'work.more': 'اعرض أعمالًا أكثر', 'work.less': 'اعرض أقل',
       'work.showing': 'معروض {a} من {b}',
+
+      'testi.eyebrow': 'بكلماتهم هم',
+      'testi.h2': 'عملاء، أمام الكاميرا.',
+      'testi.lede': 'بدون سيناريو وبدون مونتاج غير القص. اختر واحدة — لا شيء يبدأ من تلقاء نفسه.',
+      'testi.play': 'تشغيل', 'testi.n': 'الشهادة {i}',
 
       'creative.eyebrow': 'المُخرَجات',
       'creative.h2': 'نحو تسعمائة<br>ملف مُسلَّم.',
