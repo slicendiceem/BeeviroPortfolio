@@ -121,6 +121,67 @@ const CHECKS = {
         JSON.stringify(r.leaks));
     }
   },
+
+  /* Task 4 registers the second check. revenuelab360 and tamahwour have no
+     BV_CARD_LOGOS entry, so the new lead-art branch that check looks up
+     should never touch either of their cards — they should fall straight
+     through to their existing gallery-shot fallback exactly as before this
+     port. Confirms three things a text diff cannot: the new branch does not
+     accidentally fire for a slug with nothing to look up, the card is not
+     left carrying bv-card--wide (which only means anything alongside
+     bv-card--logo), and the fallback <img> it renders instead actually
+     decodes — probed with an independent Image() rather than trusting
+     img.complete, since loading="lazy" may not have fired this image yet at
+     verify-port's fixed viewport and the card can sit off-screen. An empty
+     plate and a broken image both look like a deliberate styling choice in a
+     screenshot, which is exactly why this needs a check rather than a look. */
+  'logo-fallback': async (cdp) => {
+    const r = await cdp.eval(`(async () => {
+      var slugs = ['revenuelab360', 'tamahwour'];
+      var out = {};
+      for (var i = 0; i < slugs.length; i++) {
+        var slug = slugs[i];
+        var card = document.querySelector(".bv-card[data-slug='" + slug + "']");
+        if (!card) { out[slug] = { error: 'no .bv-card[data-slug=' + slug + '] in the DOM' }; continue; }
+        var img = card.querySelector('.bv-card__img img');
+        var naturalWidth = 0;
+        if (img) {
+          naturalWidth = await new Promise(function (resolve) {
+            var probe = new Image();
+            probe.onload = function () { resolve(probe.naturalWidth); };
+            probe.onerror = function () { resolve(0); };
+            probe.src = img.src;
+          });
+        }
+        out[slug] = {
+          hasLogo: card.classList.contains('bv-card--logo'),
+          hasWide: card.classList.contains('bv-card--wide'),
+          hasImg: !!img,
+          src: img ? img.src : null,
+          naturalWidth: naturalWidth,
+        };
+      }
+      return out;
+    })()`);
+
+    ['revenuelab360', 'tamahwour'].forEach(function (slug) {
+      var r0 = r[slug];
+      if (!r0) throw new Error('no result returned for ' + slug);
+      if (r0.error) throw new Error(r0.error);
+      if (r0.hasLogo) {
+        throw new Error(slug + ' unexpectedly carries bv-card--logo (it has no BV_CARD_LOGOS entry)');
+      }
+      if (r0.hasWide) {
+        throw new Error(slug + ' unexpectedly carries bv-card--wide (that class only means anything on a logo card)');
+      }
+      if (!r0.hasImg) {
+        throw new Error(slug + ' renders no <img> in its lead art — an empty plate reads as a styling choice, not a bug');
+      }
+      if (!r0.naturalWidth) {
+        throw new Error(slug + '\'s fallback image (' + r0.src + ') reports naturalWidth 0 — a broken image reads as a styling choice, not a bug');
+      }
+    });
+  },
 };
 /* ======================================================================= */
 
