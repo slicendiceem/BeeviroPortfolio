@@ -312,6 +312,21 @@ async function main() {
     await cdp.send('Runtime.enable');
     await cdp.send('Page.enable');
     await cdp.send('Log.enable');
+    await cdp.send('Network.enable');
+    /* --user-data-dir above is a FIXED, reused profile (necessarily — see the
+     * snap-confinement comment on killChrome), so its on-disk HTTP cache
+     * persists across separate invocations of this script even though each
+     * one spawns a brand-new Chrome process. A check can then be served a
+     * cached pre-edit site/ response instead of the one just written to
+     * disk, and PASS on bytes that no longer exist — a false pass indistin-
+     * guishable from a real one until someone happens to `rm -rf
+     * .chrome-verify-port` and watches the result change. Task 4's report
+     * hit exactly this while proving logo-fallback discriminates. Disabling
+     * the cache for the life of this CDP session (rather than, say, wiping
+     * the profile directory here) is the least invasive fix: no extra flags,
+     * no profile churn between runs, and it cannot mask a stale response
+     * with a fresh one the way a half-applied fix could. */
+    await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
     await cdp.send('Emulation.setDeviceMetricsOverride',
       { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
     await cdp.send('Page.navigate', { url: BASE + '?lang=' + LANG });
