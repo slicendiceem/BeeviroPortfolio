@@ -1,0 +1,235 @@
+{
+  "source": "تعديلات مهمة .pdf",
+  "received": "2026-09-28",
+  "mapping": "Positional. Chip counts read off the two pages sum to 27, matching the annotation table exactly; three folders were opened to confirm their titles match the position assigned.",
+  "totalLinks": 27,
+  "liveLinks": 26,
+  "clientsInScope": 14,
+  "clients": [
+    {
+      "slug": "revenuelab360",
+      "inScope": true,
+      "note": "designs repeat; better material exists — two reel sets (Walid, Sherief)",
+      "folders": [
+        {
+          "id": "1zCV9Y7Ne69e4g9frbhZZOkGQaQ9tsMTS",
+          "url": "https://drive.google.com/drive/folders/1zCV9Y7Ne69e4g9frbhZZOkGQaQ9tsMTS?usp=sharing"
+        },
+        {
+          "id": "1yLm9CLB9oNz5M_ClW0bzpCE-P2BBcYlD",
+          "url": "https://drive.google.com/drive/folders/1yLm9CLB9oNz5M_ClW0bzpCE-P2BBcYlD?usp=drive_link"
+        },
+        {
+          "id": "16iT7LIeJbz3GdCMYgpyJ7LUgL-WwHcPK",
+          "url": "https://drive.google.com/drive/folders/16iT7LIeJbz3GdCMYgpyJ7LUgL-WwHcPK?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "cognistar",
+      "inScope": true,
+      "note": "collage the teacher posts together; stop repeating images",
+      "folders": [
+        {
+          "id": "1shESg6K-XIsmDyp52338BcBU86CkrC4X",
+          "url": "https://drive.google.com/drive/folders/1shESg6K-XIsmDyp52338BcBU86CkrC4X?usp=drive_link"
+        },
+        {
+          "id": "1vKh75HPha84tifdfqpWIA9IckhAp4V9X",
+          "url": "https://drive.google.com/drive/folders/1vKh75HPha84tifdfqpWIA9IckhAp4V9X?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "master-craft",
+      "inScope": true,
+      "note": "the designs are not the best available; good videos to use",
+      "folders": [
+        {
+          "id": "1Kbub0ABoqokPYeWRkLTH8CXUSujep72n",
+          "url": "https://drive.google.com/drive/folders/1Kbub0ABoqokPYeWRkLTH8CXUSujep72n?usp=drive_link"
+        },
+        {
+          "id": "1vs2wmJKsaVTN9Hr6AKTyPEbuqO3t8BDs",
+          "url": "https://drive.google.com/drive/folders/1vs2wmJKsaVTN9Hr6AKTyPEbuqO3t8BDs?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "tamahwour",
+      "inScope": false,
+      "note": "material is thin and the type is unreadable — NO ASSETS SUPPLIED",
+      "folders": []
+    },
+    {
+      "slug": "speakup",
+      "inScope": true,
+      "note": "near-duplicate designs in the file; better ones exist",
+      "folders": [
+        {
+          "id": "1g4rF6wDDPYUln7JCXwbfLDzSnoHpuT9W",
+          "url": "https://drive.google.com/drive/folders/1g4rF6wDDPYUln7JCXwbfLDzSnoHpuT9W?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "izar",
+      "inScope": true,
+      "note": "collage similar designs; good videos to add",
+      "folders": [
+        {
+          "id": "1e5rItFI5wHPmU6OoLvAMyHcRmOK3BZ42",
+          "url": "https://drive.google.com/drive/folders/1e5rItFI5wHPmU6OoLvAMyHcRmOK3BZ42?usp=sharing"
+        },
+        {
+          "id": "14LNPIgtxk4TFyi71YdJAE_eqNgw5aLsO",
+          "url": "https://drive.google.com/drive/folders/14LNPIgtxk4TFyi71YdJAE_eqNgw5aLsO?usp=sharing"
+        }
+      ]
+    },
+    {
+      "slug": "kinetic-health",
+      "inScope": true,
+      "note": "carousel has strong video and many unused designs",
+      "folders": [
+        {
+          "id": "1NU1bxbLMDsWpDPoz-Dre42vkqPioohU_",
+          "url": "https://drive.google.com/drive/folders/1NU1bxbLMDsWpDPoz-Dre42vkqPioohU_?usp=sharing"
+        },
+        {
+          "id": "1J5Sfu2W2iLjazZliWJYUXKRs8p77ILkg",
+          "url": "https://drive.google.com/drive/folders/1J5Sfu2W2iLjazZliWJYUXKRs8p77ILkg?usp=drive_link"
+        },
+        {
+          "id": "1FQyNUO-e3vI9nBLTjgx_mbO5Cf0ltpII",
+          "url": "https://drive.google.com/drive/folders/1FQyNUO-e3vI9nBLTjgx_mbO5Cf0ltpII?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "qr-tably",
+      "inScope": true,
+      "note": "fine as is, just wants clean videos",
+      "folders": [
+        {
+          "id": "1NdSncTBrmSbRgSpTV-k-qP9HlM_abs2l",
+          "url": "https://drive.google.com/drive/folders/1NdSncTBrmSbRgSpTV-k-qP9HlM_abs2l?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "block-star",
+      "inScope": true,
+      "note": "no laid-out material at all; videos are good",
+      "folders": [
+        {
+          "id": "1VJ3G6f2R_y1MzCyt6WF_1gEjObyHdGcZ",
+          "url": "https://drive.google.com/drive/folders/1VJ3G6f2R_y1MzCyt6WF_1gEjObyHdGcZ?usp=drive_link"
+        },
+        {
+          "id": "1zMk9InzmHqb560m9UWTCouP2WaXAVq7S",
+          "url": "https://drive.google.com/drive/folders/1zMk9InzmHqb560m9UWTCouP2WaXAVq7S?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "daily-box",
+      "inScope": true,
+      "note": "very large library, wants it all — it is a big project",
+      "folders": [
+        {
+          "id": "1_4NqAehHbbQA1xbRlF_bjuiFmuSzcGSp",
+          "url": "https://drive.google.com/drive/folders/1_4NqAehHbbQA1xbRlF_bjuiFmuSzcGSp?usp=drive_link"
+        },
+        {
+          "id": "188rPUuF0SA91HyHcim7WhNFzVwuhJdAh",
+          "url": "https://drive.google.com/drive/folders/188rPUuF0SA91HyHcim7WhNFzVwuhJdAh?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "edara-plus",
+      "inScope": false,
+      "note": "fine; more designs to follow — NO ASSETS SUPPLIED",
+      "folders": []
+    },
+    {
+      "slug": "eqbal",
+      "inScope": true,
+      "note": "collage without repeats; PNG version does not work; one good video",
+      "folders": [
+        {
+          "id": "1gyxbeQ1BrPOmT7FV-5Cztv660cv_XYfE",
+          "url": "https://drive.google.com/drive/folders/1gyxbeQ1BrPOmT7FV-5Cztv660cv_XYfE?usp=drive_link"
+        },
+        {
+          "id": "1qYMURDWiztWkgiDaEPsRyldIJV5qvjJR",
+          "url": "https://drive.google.com/drive/folders/1qYMURDWiztWkgiDaEPsRyldIJV5qvjJR?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "moaafa",
+      "inScope": true,
+      "note": "drop the gallery shots; use the social designs; app is on Google Play and App Store",
+      "folders": [
+        {
+          "id": "1YdQemminTqktgiUoWZsmJy_7gV2RB6Kb",
+          "url": "https://drive.google.com/drive/folders/1YdQemminTqktgiUoWZsmJy_7gV2RB6Kb?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "renda-perfumes",
+      "inScope": true,
+      "note": "collage; credit the Renda El Beheiry video above it",
+      "folders": [
+        {
+          "id": "1bUhFKnEvT4BlDuViCv90lHEvECCddS5Y",
+          "url": "https://drive.google.com/drive/folders/1bUhFKnEvT4BlDuViCv90lHEvECCddS5Y?usp=drive_link"
+        },
+        {
+          "id": "1D-c348pmFRNqA425XB0Kft64R6z9MGAP",
+          "url": "https://drive.google.com/drive/folders/1D-c348pmFRNqA425XB0Kft64R6z9MGAP?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "rinos-kitchen",
+      "inScope": true,
+      "note": "clean up the designs; use the \"after\" cuts",
+      "folders": [
+        {
+          "id": "1O2VBwZ0govXfhLpgn5Fj4ck4RYSueXAa",
+          "url": "https://drive.google.com/drive/folders/1O2VBwZ0govXfhLpgn5Fj4ck4RYSueXAa?usp=drive_link"
+        },
+        {
+          "id": "12eQolcdS_OBbWZ5TrzOUIGYaOuHkEnv3",
+          "url": "https://drive.google.com/drive/folders/12eQolcdS_OBbWZ5TrzOUIGYaOuHkEnv3?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "electro-master",
+      "inScope": true,
+      "note": "add the rest of the designs",
+      "folders": [
+        {
+          "id": "1AfpWpwXTXxBI2-3xaOszO87vpAIUI8UU",
+          "url": "https://drive.google.com/drive/folders/1AfpWpwXTXxBI2-3xaOszO87vpAIUI8UU?usp=drive_link"
+        }
+      ]
+    },
+    {
+      "slug": "dar-al-hadith",
+      "inScope": false,
+      "note": "REMOVED FROM ROSTER — folder not used",
+      "folders": [
+        {
+          "id": "102OQbV7jA8uoTAXd_vedG_JfXjDMBHQy",
+          "url": "https://drive.google.com/drive/folders/102OQbV7jA8uoTAXd_vedG_JfXjDMBHQy?usp=drive_link"
+        }
+      ]
+    }
+  ]
+}
