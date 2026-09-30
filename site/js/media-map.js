@@ -84,6 +84,12 @@ window.BV_MEDIA = {
   'assets/work/cognistar/06.jpg':                  '6a88ce178de0ce2c606c72e2.jpg',
   'assets/work/cognistar/07.jpg':                  '6a88ce173556614796084e0b.jpg',
   'assets/work/cognistar/08.jpg':                  '6a88ce19f35596efebc3eea6.jpg',
+  'assets/work/cognistar/09.jpg':                  '6a7ca28515b3ec9c0d3e16fd.png',
+  'assets/work/cognistar/10.jpg':                  '6a7ca285f6ac3438f833a1dc.png',
+  'assets/work/cognistar/11.jpg':                  '6a7ca285668bb7e058e76c65.png',
+  'assets/work/cognistar/12.jpg':                  '6ab6f51f974a9da6eeca8534.png',
+  'assets/work/cognistar/13.jpg':                  '6ab6f51f974a9da6eeca8529.png',
+  'assets/work/cognistar/14.jpg':                  '6ab6f51f70380726a95fe290.png',
   'assets/work/cognistar/cell/01.webp':            '6a92cd5f0914f112150346e8.webp',
   'assets/work/cognistar/cell/02.webp':            '6a92cd60a90361de8b3516ff.webp',
   'assets/work/cognistar/cell/03.webp':            '6a92cd60934a62aec878ef9c.webp',
@@ -511,6 +517,21 @@ window.BV_MEDIA = {
   'assets/work/rojana/thumb/04.webp':              '6a92cdb003b6820c461a7ee2.webp',
   'assets/work/rojana/thumb/05.webp':              '6a92cdb10914f1121503504a.webp',
   'assets/work/rojana/thumb/06.webp':              '6a92cdb103b6820c461a7efe.webp',
+  'assets/work/shalaby-labs/01.jpg':               '6a7ff92899074f5ef6c9555c.png',
+  'assets/work/shalaby-labs/02.jpg':               '6a7ff928255b571c8e2b5c44.png',
+  'assets/work/shalaby-labs/03.jpg':               '6a7ff928a6a03cda06baa387.png',
+  'assets/work/shalaby-labs/04.jpg':               '6a7ff928fe4291bd1082deeb.png',
+  'assets/work/shalaby-labs/05.jpg':               '6a7ff9280ab9032503c21cb1.png',
+  'assets/work/shalaby-labs/06.jpg':               '6a7ff92899074f5ef6c95561.png',
+  'assets/work/shalaby-labs/07.jpg':               '6a7ff92acf50f900f28dc8b0.png',
+  'assets/work/shalaby-labs/08.jpg':               '6a7ff814cf50f900f2882d0f.png',
+  'assets/work/shalaby-labs/09.jpg':               '6a88cb278de0ce2c6067cbb1.png',
+  'assets/work/shalaby-labs/10.jpg':               '6a88cb2767ecc8731dcb9dc5.png',
+  'assets/work/shalaby-labs/11.jpg':               '6ab6f27b7e654f1003cddfd0.jpeg',
+  'assets/work/shalaby-labs/12.jpg':               '6ab6f27b3ae3da26fb6bf2b6.jpeg',
+  'assets/work/shalaby-labs/13.jpg':               '6ab6f27b3ae3da26fb6bf2ac.jpeg',
+  'assets/work/shalaby-labs/14.jpg':               '6ab6f27b1f3be2be1bba9fb0.jpeg',
+  'assets/work/shalaby-labs/15.jpg':               '6ab6f27b6407f2cbe4df6539.png',
   'assets/work/speakup/01.jpg':                    '6a88ce64e6501a95187ba79a.jpg',
   'assets/work/speakup/02.jpg':                    '6a88ce66e6501a95187ba7a8.jpg',
   'assets/work/speakup/03.jpg':                    '6a88ce66653b27678e01280d.jpg',
@@ -587,3 +608,16 @@ window.BV_MEDIA = {
   'assets/work/volt-ems/thumb/04.webp':            '6a92cdb60914f112150350ca.webp',
   'assets/work/volt-ems/thumb/05.webp':            '6a92cdb6a90361de8b352216.webp',
 };
+
+/* NOT YET UPLOADED (10):
+     assets/hero/reels/black-star.webm  (bv-reel-black-star.webm)
+     assets/hero/reels/cognistar.webm  (bv-reel-cognistar.webm)
+     assets/hero/reels/dar-al-hadith.webm  (bv-reel-dar-al-hadith.webm)
+     assets/hero/reels/electro-master.webm  (bv-reel-electro-master.webm)
+     assets/hero/reels/hadeel-maqlad.webm  (bv-reel-hadeel-maqlad.webm)
+     assets/hero/reels/izar.webm  (bv-reel-izar.webm)
+     assets/hero/reels/master-craft.webm  (bv-reel-master-craft.webm)
+     assets/hero/reels/qr-tably.webm  (bv-reel-qr-tably.webm)
+     assets/hero/reels/volt-ems.webm  (bv-reel-volt-ems.webm)
+     assets/hero/reels/poster/dar-al-hadith.webp  (bv-reel-poster-dar-al-hadith.webp)
+*/

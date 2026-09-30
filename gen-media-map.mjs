@@ -20,8 +20,24 @@ const manifest = JSON.parse(fs.readFileSync(path.join(STAGE, '_manifest.json'), 
 /* Every path on the command line is merged, later files winning. The library is
    harvested in batches — the original 196 in one session, the 378 light copies
    in another — and re-harvesting everything to add one file would be silly.
-   `tools/harvest-media-ids.js` is what produces these. */
-const sources = process.argv.slice(2).filter((a) => !a.startsWith('-'));
+   `tools/harvest-media-ids.js` is what produces these.
+
+   `--pairs <file>` is a separate, third kind of source: a flat sitePath ->
+   ghlId JSON map, merged straight into the OUTPUT after the manifest+ids join
+   below (see PAIRS_PATH), not into `ids`. The manifest/ids join only works for
+   assets that were staged locally under upload-staging/ and got a uploadName
+   — every ordinary asset. A `--pairs` entry is for a sitePath that has no
+   local staging entry at all (there is no upload-staging row and, for some,
+   no file on disk either) but does have a real id already sitting in the same
+   GHL library, because it was uploaded by hand outside this pipeline. */
+const rawArgs = process.argv.slice(2);
+let PAIRS_PATH = null;
+const sources = [];
+for (let i = 0; i < rawArgs.length; i++) {
+  const a = rawArgs[i];
+  if (a === '--pairs') { PAIRS_PATH = rawArgs[++i]; continue; }
+  if (!a.startsWith('-')) sources.push(a);
+}
 const ids = {};
 for (const src of sources.length ? sources : [IDS]) {
   if (!fs.existsSync(src)) { console.warn('  (no such ids file: ' + src + ')'); continue; }
@@ -46,6 +62,31 @@ for (const m of manifest) {
   const id = ids[m.uploadName];
   if (id) map[m.sitePath] = id;
   else missing.push(m.sitePath + '  (' + m.uploadName + ')');
+}
+
+/* Merge in the direct sitePath -> ghlId pairs, if given. These bypass the
+   manifest entirely (see the comment above `sources`), so they are applied
+   straight to the output map rather than joined through `ids`. A pair whose
+   sitePath happens to already be resolved above wins over the manifest's
+   version — last writer wins, same rule the ids sources already follow. A
+   pair also clears that sitePath out of `missing`, in case it was ever staged
+   without an id: it is not actually missing any more once `--pairs` supplies it. */
+let pairsCount = 0;
+if (PAIRS_PATH) {
+  if (!fs.existsSync(PAIRS_PATH)) {
+    console.error('No such pairs file: ' + PAIRS_PATH);
+    process.exit(1);
+  }
+  const pairs = JSON.parse(fs.readFileSync(PAIRS_PATH, 'utf8'));
+  for (const [sitePath, id] of Object.entries(pairs)) {
+    map[sitePath] = id;
+    pairsCount++;
+  }
+  if (pairsCount) {
+    const stillMissing = missing.filter((m) => !pairs[m.split('  (')[0]]);
+    missing.length = 0;
+    missing.push(...stillMissing);
+  }
 }
 
 const keys = Object.keys(map).sort();
@@ -74,6 +115,9 @@ ${missing.length ? '\n/* NOT YET UPLOADED (' + missing.length + '):\n' +
 
 console.log('wrote ' + OUT);
 console.log('  mapped :', keys.length, '/', manifest.length);
+if (PAIRS_PATH) {
+  console.log('  pairs  :', pairsCount, 'from', PAIRS_PATH, '(sitePaths outside the manifest)');
+}
 if (missing.length) {
   console.log('  MISSING:', missing.length);
   missing.slice(0, 10).forEach(m => console.log('    ' + m));
