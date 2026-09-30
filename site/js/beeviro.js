@@ -530,8 +530,12 @@
   // Eighteen entries here, not the reference's twenty — volt-ems and
   // moamen-medhat leave the roster in a later task, so a logo for a client
   // with no record would be dead weight.
+  // Keyed black-star, not the reference's block-star: the embed's own roster
+  // shares that same stale spelling (it 404s this client's dossier images in
+  // the hosted build), while site/js/clients.js and site/assets/work/ have
+  // always used black-star.
   window.BV_CARD_LOGOS = {
-    "block-star": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762d48b1d5ffbefb501d.jpg",
+    "black-star": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762d48b1d5ffbefb501d.jpg",
     "speakup": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762b8256c2fa61392950.jpg",
     "rinos-kitchen": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762bd1d912a8581560ac.jpg",
     "cognistar": "https://assets.cdn.filesafe.space/PWyhncZ0y766gD1TL1PO/media/6ab6762e7e654f1003c15036.jpg",

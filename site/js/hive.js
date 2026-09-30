@@ -78,11 +78,19 @@
      Beeviro's own work, which is not a client record and never enters the pool.)
      Still bounded, and still cheap: the cells resolve through BV_CELL to 200px
      WebP, and nothing is fetched until the cell it lands in turns over. */
-  // Backgrounds a past review picked for the marks most likely to show a plate
-  // edge (transparent PNGs, or artwork not quite square); any other logo'd
-  // brand falls back to the same charcoal the work-grid cards plate against.
+  // The reference's hero comb shows a brand mark for only a hand-picked
+  // 10-slug list — "Keep the strongest marks and use artwork for the rest"
+  // (beeviro-embed.html:7619-7622) — not every client BV_CARD_LOGOS knows
+  // about; everyone else's cells still show real gallery photos here, same
+  // as before this port, and only pick up the mark on their work-grid card.
+  // This map is now both that scope gate (its own keys ARE the 10 slugs) and
+  // their plate colour, picked for the marks most likely to show a plate
+  // edge (transparent PNGs, or artwork not quite square).
+  // Keyed black-star, not the reference's block-star — see the matching note
+  // on BV_CARD_LOGOS in beeviro.js; the two maps have to agree on the spelling
+  // or the gate below never matches a real roster record for this client.
   var LOGO_BG = {
-    'block-star': '#fff', 'kinetic-health': '#ededed', 'freestyle': '#000',
+    'black-star': '#fff', 'kinetic-health': '#ededed', 'freestyle': '#000',
     'speakup': '#bde300', 'rinos-kitchen': '#d8bd28', 'cognistar': '#f5f5f5',
     'electro-master': '#f3eadd', 'daily-box': '#fff', 'master-craft': '#000',
     'qr-tably': '#000',
@@ -97,11 +105,12 @@
         var c = withWork[b];
         if (depth > c.work) continue;
         // A cell prefers the brand's approved mark the first time it turns to
-        // this client; deeper depths keep cycling real gallery work so the
-        // pool stays varied rather than repeating the same plate.
-        var logoSrc = depth === 1 && (window.BV_CARD_LOGOS || {})[c.slug];
+        // this client, but only for the 10 slugs LOGO_BG knows about — see
+        // the comment above. Deeper depths, and every other client, keep
+        // cycling real gallery work so the pool stays varied.
+        var logoSrc = depth === 1 && LOGO_BG.hasOwnProperty(c.slug) && (window.BV_CARD_LOGOS || {})[c.slug];
         if (logoSrc) {
-          pool.push({ src: logoSrc, slug: c.slug, logo: true, background: LOGO_BG[c.slug] || '#0a0909' });
+          pool.push({ src: logoSrc, slug: c.slug, logo: true, background: LOGO_BG[c.slug] });
         } else {
           pool.push({ src: shot(c.slug, depth), slug: c.slug });
         }
