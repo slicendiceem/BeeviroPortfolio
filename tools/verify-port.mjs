@@ -268,6 +268,173 @@ const CHECKS = {
       }
     }
   },
+
+  /* Task 7 registers the fourth check. The toggle used to call
+   * location.replace() at a URL that, in every shape below except the plain
+   * ?lang= query, differed from the current one only after the '#' — which
+   * HTML defines as a same-document navigation: the browser scrolls (or does
+   * nothing) and no script re-runs, so document.documentElement.lang never
+   * actually flips even though localStorage was updated correctly. A text
+   * diff cannot see this; it can only see that *a* handler is registered.
+   * This drives six real clicks, each from a different starting URL, and
+   * asserts the one thing a same-document navigation cannot fake: that `lang`
+   * on <html> reads differently after the click than before it. Three of the
+   * six also assert what the resulting address bar has to look like (a stale
+   * lang= surviving the reload would silently re-win on the very next load),
+   * and the last pair isolates the "keep #work vs drop it" branch, which
+   * turns on nothing but scroll position at click time. A seventh, non-click
+   * case guards fromUrl() itself: a fresh #lang=ar share-link load, with
+   * storage empty, still has to resolve to Arabic, or the fragment-stripping
+   * half of this same fix would have broken the feature it was ported
+   * alongside. */
+  'lang-toggle-shapes': async (cdp) => {
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function evalRetry(expr, tries, gap) {
+      let lastErr;
+      for (let i = 0; i < (tries || 5); i++) {
+        try { return await cdp.eval(expr); }
+        catch (e) { lastErr = e; await sleep(gap || 300); }
+      }
+      throw lastErr;
+    }
+
+    async function goto(suffix) {
+      // Bounce through about:blank first. Page.navigate straight from one
+      // case's ending URL to the next is exactly the hazard this whole check
+      // exists to catch: when the two differ only after the '#' (e.g. ending
+      // bare and starting the next case at #lang=ar), that is a same-document
+      // navigation — lang.js never re-runs and this harness would read the
+      // PREVIOUS case's stale <html lang> instead of a fresh resolution of
+      // this one. about:blank shares nothing with the target URL, so the
+      // navigation after it is never fragment-only.
+      await cdp.send('Page.navigate', { url: 'about:blank' });
+      await sleep(150);
+      await cdp.send('Page.navigate', { url: cdp.base + suffix });
+      await sleep(2200);
+    }
+
+    async function readState() {
+      return evalRetry(`({
+        lang: document.documentElement.lang,
+        hash: location.hash,
+        search: location.search,
+        scrollY: window.scrollY,
+      })`);
+    }
+
+    async function clickToggle() {
+      await evalRetry(`(function () {
+        var b = document.querySelector('[data-lang-toggle]');
+        if (!b) throw new Error('no [data-lang-toggle] button in the DOM');
+        b.click();
+        return true;
+      })()`, 2, 200);
+      // The click forces a real reload (that is the fix) — give it as long
+      // as the harness's own initial Page.navigate gets, not less.
+      await sleep(2600);
+    }
+
+    const scrollTop = `window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); true`;
+    const scrollToWork = `(function () {
+      var el = document.getElementById('work');
+      if (!el) throw new Error('no #work section in the DOM');
+      el.scrollIntoView({ block: 'start', behavior: 'instant' });
+      return true;
+    })()`;
+
+    const CASES = [
+      {
+        name: 'clean URL',
+        suffix: '',
+        check: (before, after) => {
+          if (after.lang === before.lang) throw new Error('lang stayed ' + before.lang + ' — the click did not flip it');
+          if (after.hash || after.search) {
+            throw new Error('a clean start should reload to a clean URL, saw search=' +
+              JSON.stringify(after.search) + ' hash=' + JSON.stringify(after.hash));
+          }
+        },
+      },
+      {
+        name: '#work',
+        suffix: '#work',
+        check: (before, after) => {
+          if (after.lang === before.lang) throw new Error('lang stayed ' + before.lang + ' — the click did not flip it');
+          if (after.hash !== '#work') throw new Error('expected #work to survive, saw ' + JSON.stringify(after.hash));
+        },
+      },
+      {
+        name: '?lang=ar',
+        suffix: '?lang=ar',
+        check: (before, after) => {
+          if (before.lang !== 'ar') throw new Error('the ?lang=ar load itself should start Arabic, saw lang=' + JSON.stringify(before.lang));
+          if (after.lang === before.lang) throw new Error('lang stayed ' + before.lang + ' — the click did not flip it');
+          if (after.search) throw new Error('expected the ?lang= query to be stripped, saw ' + JSON.stringify(after.search));
+        },
+      },
+      {
+        name: '#lang=ar',
+        suffix: '#lang=ar',
+        check: (before, after) => {
+          if (before.lang !== 'ar') throw new Error('the #lang=ar load itself should start Arabic, saw lang=' + JSON.stringify(before.lang));
+          if (after.lang === before.lang) throw new Error('lang stayed ' + before.lang + ' — the click did not flip it');
+          if (after.hash) throw new Error('expected the #lang= fragment to be stripped, saw ' + JSON.stringify(after.hash));
+        },
+      },
+      {
+        name: '#work, scrolled to top',
+        suffix: '#work',
+        prep: scrollTop,
+        check: (before, after) => {
+          if (after.lang === before.lang) throw new Error('lang stayed ' + before.lang + ' — the click did not flip it');
+          if (after.hash) throw new Error('expected #work to be dropped (off screen at click time), saw ' + JSON.stringify(after.hash));
+          if (after.scrollY > 40) throw new Error('expected the reload to stay at the top, saw scrollY=' + after.scrollY);
+        },
+      },
+      {
+        name: '#work, scrolled to the work section',
+        suffix: '#work',
+        prep: scrollToWork,
+        check: (before, after) => {
+          if (after.lang === before.lang) throw new Error('lang stayed ' + before.lang + ' — the click did not flip it');
+          if (after.hash !== '#work') throw new Error('expected #work to survive (on screen at click time), saw ' + JSON.stringify(after.hash));
+        },
+      },
+    ];
+
+    for (const c of CASES) {
+      await goto(c.suffix);
+      if (c.prep) { await evalRetry(c.prep); await sleep(400); }
+      const before = await readState();
+      await clickToggle();
+      const after = await readState();
+      try {
+        c.check(before, after);
+      } catch (e) {
+        throw new Error('[' + c.name + '] ' + e.message);
+      }
+    }
+
+    // The non-toggle case: fromUrl() alone, no click. A share link carrying
+    // #lang=ar has to win on a completely fresh load — proving the fragment
+    // now gets *stripped after the toggle* without also breaking the
+    // *reading* of that same fragment on the load this fix does not touch.
+    // Storage is cleared here, on the real origin left by the last case,
+    // before bouncing through about:blank — "empty storage" is the point of
+    // this case, not an accident of whatever the six clicks above left behind.
+    await evalRetry('localStorage.clear(); true');
+    await goto('#lang=ar');
+    const shared = await readState();
+    if (shared.lang !== 'ar') {
+      throw new Error('a fresh #lang=ar load with empty storage should resolve to Arabic, saw lang=' +
+        JSON.stringify(shared.lang));
+    }
+
+    // Leave the page the way the harness found it, in case a future check
+    // ever runs after this one.
+    await cdp.send('Page.navigate', { url: cdp.base + '?lang=' + cdp.lang });
+    await sleep(2200);
+  },
 };
 /* ======================================================================= */
 
