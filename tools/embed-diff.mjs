@@ -121,10 +121,24 @@ function countMediaEntries(text) {
 }
 
 function extractClientSlugs(text) {
+  /* Scoped to the window.BV_CLIENTS array body, the same way countMediaEntries
+   * above is scoped to BV_MEDIA's — an unscoped scan of the whole file also
+   * matches hive.js's unrelated `slug: 'beeviro'` (the hero comb's own
+   * self-promo reel cell, not a client record; see hive.js's SELF object),
+   * inflating every count by exactly one. That one-off collision is invisible
+   * until something actually asserts an exact number — which --expect-clients
+   * is for — so it surfaced only once a task needed that assertion to be
+   * trustworthy rather than illustrative. */
+  const openNeedle = 'BV_CLIENTS = [';
+  const open = text.indexOf(openNeedle);
+  if (open < 0) return new Set();
+  const bodyStart = open + openNeedle.length;
+  const close = text.indexOf('];', bodyStart);
+  const body = close < 0 ? text.slice(bodyStart) : text.slice(bodyStart, close);
   const re = /slug:\s*'([a-z0-9-]+)'/g;
   const slugs = new Set();
   let m;
-  while ((m = re.exec(text))) slugs.add(m[1]);
+  while ((m = re.exec(body))) slugs.add(m[1]);
   return slugs;
 }
 
