@@ -104,7 +104,7 @@
       'svc.8.t': 'Positioning', 'svc.8.d': 'The one claim a brand can own and defend — usually the hardest part of the job.',
 
       'work.eyebrow': 'Selected work',
-      'work.h2': 'Twenty-five brands.<br>Every journey shown<br>end to end.',
+      'work.h2': 'Twenty brands.<br>Every journey shown<br>end to end.',
       'work.lede': 'Open a card to walk the whole engagement — first contact, diagnosis, positioning, build, launch, outcome — with the designs and the campaign numbers attached. Where a figure is a target rather than a delivered result, it says so.',
       'work.more': 'Show more work', 'work.less': 'Show fewer',
       'work.showing': 'Showing {a} of {b}',
@@ -201,7 +201,7 @@
       'svc.8.t': 'التموضع', 'svc.8.d': 'الادّعاء الواحد الذي تستطيع العلامة امتلاكه والدفاع عنه — وهو غالبًا أصعب جزء في العمل.',
 
       'work.eyebrow': 'أعمال مختارة',
-      'work.h2': 'خمس وعشرون علامة.<br>كل رحلة معروضة<br>من أولها لآخرها.',
+      'work.h2': 'عشرون علامة.<br>كل رحلة معروضة<br>من أولها لآخرها.',
       'work.lede': 'افتح أي بطاقة لتمشي التعاون كاملًا — أول تواصل، تشخيص، تموضع، تنفيذ، إطلاق، نتيجة — بالتصاميم وأرقام الحملات مرفقة. وحين يكون الرقم هدفًا لا نتيجة محقّقة، نقول ذلك صراحة.',
       'work.more': 'اعرض أعمالًا أكثر', 'work.less': 'اعرض أقل',
       'work.showing': 'معروض {a} من {b}',

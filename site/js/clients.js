@@ -24,7 +24,7 @@ window.BV_STAGES = [
  *
  * The work grid shows six cards before "Show more work", so the first six here
  * are the whole of what a visitor sees without scrolling — which is why the
- * client specifies them and not the other nineteen. Revenue Lab 360 leads on
+ * client specifies them and not the other fourteen. Revenue Lab 360 leads on
  * their instruction: a prospect who opens it by chance sees the work that went
  * into it.
  *
@@ -33,11 +33,10 @@ window.BV_STAGES = [
  * everything listed, keeping its relative position, so adding a client without
  * touching this list still works. */
 window.BV_ORDER = [
-  'revenuelab360', 'cognistar', 'master-craft', 'tamahwour', 'speakup', 'kinetic-health',
-  'izar', 'freestyle', 'qr-tably', 'kirin', 'volt-ems', 'dr-eman', 'rojana',
-  'black-star', 'daily-box', 'edara-plus', 'eqbal', 'moaafa', 'renda-perfumes',
-  'rinos-kitchen', 'electro-master', 'moamen-medhat', 'hadeel-maqlad',
-  'dar-al-hadith', 'sheikh-hosney',
+  'revenuelab360', 'cognistar', 'master-craft', 'kinetic-health', 'tamahwour',
+  'qr-tably', 'daily-box', 'edara-plus', 'moaafa', 'electro-master',
+  'eqbal', 'black-star', 'speakup', 'izar', 'renda-perfumes',
+  'rojana', 'rinos-kitchen', 'freestyle', 'kirin', 'shalaby-labs',
 ];
 
 window.BV_CLIENTS = [
@@ -276,57 +275,6 @@ window.BV_CLIENTS = [
       { v: '3', l: 'Content tiers', note: 'Interactive, engagement and sales content, each with a distinct job.' },
     ],
     work: 7, logo: 'kirin.png',
-  },
-
-  {
-    slug: 'volt-ems', name: 'Volt EMS', accent: '#ffea00', year: '2025',
-    industry: 'Fitness', country: 'Egypt',
-    services: ['Strategy & SWOT', 'Content Production', 'Influencer Partnerships', 'BTS'],
-    tagline: 'EMS, gym and nutrition in one measurable offer.',
-    summary: 'An EMS training studio in New Cairo combining electro-stimulation training, personalised workouts and nutrition. We built the strategy that made that combination the point.',
-    journey: {
-      contact: 'A fitness business with a genuinely differentiated service in a category where everyone advertises the same transformation photos.',
-      diagnose: 'Market, competitor and audience analysis focused on health-conscious individuals, busy professionals and students, and residents of New Cairo — people short on time rather than short on motivation.',
-      position: 'The efficient, modern option: EMS plus gym training plus nutrition, with InBody measurement making progress objective.',
-      build: 'A content and creative programme — reels, behind-the-scenes shoots and targeted advertising creative — plus influencer partnerships.',
-      launch: 'Facebook, Instagram and TikTok, with digital marketing, targeted advertising and creator collaboration running together.',
-      outcome: 'The strategy targeted a stronger digital presence, increased reach and customer acquisition, and a scalable foundation for expansion.',
-    },
-    outcome: { kind: 'goal', headline: 'A growth system built on a measurable differentiator' },
-    metrics: [
-      { v: '3', l: 'Service pillars', note: 'EMS training, gym training and nutrition, sold as one offer.' },
-      { v: '4', l: 'Audience segments', note: 'Health-conscious individuals, busy professionals, students and New Cairo residents.' },
-      { v: '17', l: 'Video assets', note: 'Reels and behind-the-scenes material produced.' },
-      { v: 'InBody', l: 'Proof mechanism', note: 'Body-composition measurement used to make client progress objective.' },
-    ],
-    // Video-only deliverables — the gallery is poster frames off the finished reels.
-    // Now the reel itself plays above them, which is what workNote was apologising for.
-    film: { src: 'assets/hero/reels/volt-ems.webm', note: "The finished reel the gallery below could only show frames of." },
-    work: 5, workNote: 'Frames from the finished reels — Volt’s deliverables were video, not static design.',
-  },
-
-  {
-    slug: 'dr-eman', name: 'Dr. Eman Khamis', accent: '#b39ddb', year: '2025',
-    industry: 'Healthcare / Personal Brand', country: 'Egypt',
-    services: ['Brand Identity', 'Strategy & SWOT', 'Business Card', 'Digital Strategy'],
-    tagline: 'A personal brand built on trust, handled carefully.',
-    summary: 'Positioning a psychologist as a trusted provider of online consultations for Arab and expatriate audiences — in a category where tone is the whole product.',
-    journey: {
-      contact: 'A practising psychologist with clinical credibility and no digital presence to carry it.',
-      diagnose: 'Audience segmentation into adolescents and young adults, families and couples, and individuals seeking specialised therapeutic services — each needing a different level of directness.',
-      position: 'Professional, transparent and culturally appropriate. In this category the wrong tone does more damage than no marketing at all.',
-      build: 'A logo and identity, a business card, and a multi-platform content approach built around her actual differentiators: flexible online and in-clinic consultations, follow-up support, and specialised therapeutic services.',
-      launch: 'A multi-platform digital strategy aimed at visibility, engagement and online bookings, with improvements to the booking experience itself.',
-      outcome: 'The strategy targeted a strong, trusted personal brand, wider reach among the target audience, and booking growth through a more professional digital presence.',
-    },
-    outcome: { kind: 'goal', headline: 'A trusted personal brand, built tone-first' },
-    metrics: [
-      { v: '3', l: 'Audience segments', note: 'Adolescents and young adults, families and couples, and individuals seeking specialised care.' },
-      { v: '2', l: 'Consultation modes', note: 'Online and in-clinic, positioned as flexibility rather than compromise.' },
-      { v: '3', l: 'Logo variants', note: 'Black, white and primary lockups delivered.' },
-      { v: '2', l: 'Audiences by geography', note: 'Arab and expatriate audiences, addressed in the same system.' },
-    ],
-    work: 0, logo: 'dr-eman.png',
   },
 
   {
@@ -579,111 +527,6 @@ window.BV_CLIENTS = [
     ],
     film: { src: 'assets/hero/reels/electro-master.webm', note: "The before-and-after format the whole content plan is anchored on." },
     work: 6,
-  },
-
-  {
-    slug: 'moamen-medhat', name: 'Moamen Medhat', accent: '#9db8d8', year: '2025',
-    industry: 'Legal', country: 'Egypt',
-    services: ['Personal Brand', 'Social Design', 'Educational Video', 'Daily Stories'],
-    tagline: 'Make the law legible.',
-    summary: 'A lawyer specialising in company incorporation, given a digital presence built on explaining rather than advertising.',
-    journey: {
-      contact: 'A specialist lawyer with expertise and no digital footprint.',
-      diagnose: 'Legal services are bought on trust, and trust in this category is built by being useful in public before anyone pays you.',
-      position: 'The lawyer who explains it clearly — authority demonstrated through teaching.',
-      build: 'A professional digital identity, engaging designs, and educational videos simplifying legal topics for a non-specialist audience.',
-      launch: 'A daily Stories strategy to maintain consistent contact with the audience, build engagement, and establish credibility around the personal brand.',
-      outcome: 'The approach gave the practice a strong social launch and a digital foundation designed to attract clients seeking company incorporation and legal establishment services.',
-    },
-    outcome: { kind: 'goal', headline: 'Authority built by teaching in public' },
-    metrics: [
-      { v: 'Daily', l: 'Stories cadence', note: 'A daily Stories strategy to hold consistent audience contact.' },
-      { v: '4', l: 'Designs', note: 'Identity and social creative delivered.' },
-      { v: 'Explainer', l: 'Content format', note: 'Educational video simplifying legal topics.' },
-      { v: 'Incorporation', l: 'Specialism', note: 'Legal establishment of companies and corporations.' },
-    ],
-    work: 4,
-  },
-
-  {
-    slug: 'hadeel-maqlad', name: 'Hadeel Maqlad', accent: '#e0a3b8', year: '2024',
-    industry: 'Fashion Design', country: 'Egypt',
-    services: ['Signature Logo', 'Social Design', 'Lookbooks', 'Reels'],
-    tagline: 'A designer’s name as the mark.',
-    summary: 'A fashion designer given a signature identity and a set of lookbooks to carry the collections.',
-    journey: {
-      contact: 'A designer with collections to present and no consistent visual identity around them.',
-      diagnose: 'In designer fashion the name is the brand. The mark had to read as a signature, not a logo.',
-      position: 'The signature as identity — personal, hand-drawn, applied consistently.',
-      build: 'A signature logo in multiple weights, a large social design set, and per-collection lookbooks delivered as documents.',
-      launch: 'Social channels, with reels carrying the collections in motion.',
-      outcome: 'A complete identity and content set: signature marks, 23 designs, per-collection lookbooks and 8 reels.',
-    },
-    outcome: { kind: 'result', headline: 'Signature identity · 23 designs · 8 reels' },
-    metrics: [
-      { v: '4', l: 'Signature marks', note: 'Signature logo variants delivered.' },
-      { v: '23', l: 'Designs', note: 'Social and campaign creative.' },
-      { v: '8', l: 'Reels', note: 'Collection films produced.' },
-      { v: 'Per-collection', l: 'Lookbooks', note: 'Delivered as documents alongside the social set.' },
-    ],
-    film: { src: 'assets/hero/reels/hadeel-maqlad.webm', note: "One of the eight collection reels — the pieces in motion rather than laid flat." },
-    work: 7, logo: 'hadeel-maqlad.png',
-  },
-
-  {
-    slug: 'dar-al-hadith', name: 'Dar El Hadith', accent: '#66bb6a', year: '2025',
-    industry: 'Education', country: 'Egypt',
-    services: ['Promotional Video', 'Content Production'],
-    tagline: 'Explaining Al-Azhar to the world.',
-    summary: 'An academy providing educational courses for international students of Al-Azhar in Egypt.',
-    journey: {
-      contact: 'An academy with a specific, valuable offer and an audience scattered across other countries.',
-      diagnose: 'The audience is international and researching from a distance — video carries this better than static posts.',
-      position: 'Clear, credible, welcoming — services explained rather than advertised.',
-      build: 'Promotional video content designed to communicate the academy’s services clearly and show the value of its programmes.',
-      launch: 'Social channels, targeting international students interested in studying at Al-Azhar.',
-      outcome: 'The video content helped the academy present its services more professionally, strengthen its social presence, and reach a wider audience of potential students.',
-    },
-    outcome: { kind: 'goal', headline: 'Services made legible to an international audience' },
-    metrics: [
-      { v: '4', l: 'Videos', note: 'Promotional films produced for the academy.' },
-      { v: 'International', l: 'Audience', note: 'Overseas students of Al-Azhar.' },
-      { v: 'Video-led', l: 'Format', note: 'Chosen over static content for a distant, researching audience.' },
-      { v: 'Al-Azhar', l: 'Context', note: 'Courses for international students at Al-Azhar in Egypt.' },
-    ],
-    /* work: 0 — the whole engagement was four films, so this dossier had nothing
-       to show at all until now. It also has no gallery to borrow a poster from,
-       which is why this is the one record that carries its own. */
-    film: {
-      src: 'assets/hero/reels/dar-al-hadith.webm',
-      poster: 'assets/hero/reels/poster/dar-al-hadith.webp',
-      note: "One of the four promotional films — which is the entire engagement.",
-    },
-    work: 0,
-  },
-
-  {
-    slug: 'sheikh-hosney', name: 'Sheikh Hosney', accent: '#a1887f', year: '2025',
-    industry: 'Brand Identity', country: 'Egypt',
-    services: ['Logo Design'],
-    tagline: 'A mark, delivered properly.',
-    summary: 'A focused identity engagement: a logo, delivered in full with source artwork and print-ready files.',
-    journey: {
-      contact: 'A brand needing a mark, with no wider marketing engagement attached.',
-      diagnose: 'A small scope done properly is worth more than a large one done loosely.',
-      position: 'One mark, built to work everywhere it would be used.',
-      build: 'A logo delivered in multiple formats — raster, transparent and print-ready PDF — with source files.',
-      launch: 'Handed over as a complete asset set for the client to deploy.',
-      outcome: 'A complete logo package delivered in five files covering screen and print use.',
-    },
-    outcome: { kind: 'result', headline: 'Complete logo package, screen and print' },
-    metrics: [
-      { v: '5', l: 'Files delivered', note: 'Raster, transparent and print-ready formats plus source.' },
-      { v: '1', l: 'Scope', note: 'A focused identity engagement, no wider retainer.' },
-      { v: 'Print + screen', l: 'Coverage', note: 'Formats supplied for both output paths.' },
-      { v: 'Source', l: 'Included', note: 'Editable artwork handed over with the finals.' },
-    ],
-    work: 0, logo: 'sheikh-hosney.png',
   },
 
   /* Shalaby Medical Laboratories — the largest lab chain in Egypt's Northern
