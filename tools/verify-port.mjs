@@ -38,6 +38,15 @@
  *   cdp.eval(expr)            Runtime.evaluate in the page, awaited, by value
  *   cdp.send(method, params)  any raw CDP command
  *   cdp.errors                console.error / uncaught-exception text seen so far
+ *   cdp.network               every request seen so far: {url, method, status,
+ *                             failed} — status is null until the response (or
+ *                             failure) arrives; failed is true only on a
+ *                             network-level failure (DNS, connection refused —
+ *                             not an HTTP error status, which lands in
+ *                             `status` instead). Grows for the life of the CDP
+ *                             session, across every Page.navigate a check
+ *                             sends, so slice from its current .length before
+ *                             an action to see only what that action caused.
  *   cdp.close()                close the socket early, if a check needs to
  *   cdp.base, cdp.lang         the --url / --lang this run started with
  *
@@ -51,6 +60,22 @@
  * language) is free to send another Page.navigate — just leave the page in a
  * state the next check can still make sense of, since checks are not
  * isolated from each other.
+ *
+ * A check that only means anything under one language — Arabic-only markup,
+ * or an assertion that would just see the English fallback otherwise — can
+ * declare that instead of registering a bare function:
+ *
+ *   'my-ar-only-check': {
+ *     lang: 'ar',
+ *     run: async (cdp) => { ...throw on failure... },
+ *   },
+ *
+ * Run under any other --lang, the runner reports it SKIP without calling
+ * `run` at all, and a skip never counts against the pass/fail total — it is
+ * not a silent no-op standing in for a pass, it is simply not evidence of
+ * anything under a language the check was never written to exercise. Every
+ * check registered as a plain function (the form used above this one) runs
+ * exactly as before, regardless of --lang.
  * ===========================================================================
  */
 import { spawn } from 'node:child_process';
@@ -81,45 +106,54 @@ const CHECKS = {
      text — the testimonial durations are digits-and-colon by construction, so
      any run of 4+ Latin letters here is English leaking through a missing
      translation. */
-  'testimonials-arabic': async (cdp) => {
-    const r = await cdp.eval(`(() => {
-      const sec = document.getElementById('testimonials');
-      if (!sec) return { error: 'no #testimonials section in the DOM' };
-      const dir = getComputedStyle(sec).direction;
-      const labels = [...sec.querySelectorAll('.bv-testi__meta b')].map((b) => b.textContent);
-      const firstPick = sec.querySelector('.bv-testi__pick');
-      const playLabel = firstPick ? firstPick.getAttribute('aria-label') : null;
-      const walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
-      const leaks = [];
-      let n;
-      while ((n = walker.nextNode())) {
-        if (/[A-Za-z]{4,}/.test(n.nodeValue)) leaks.push(n.nodeValue.trim());
-      }
-      return { dir, labels, playLabel, leaks };
-    })()`);
+  'testimonials-arabic': {
+    /* Arabic-only by construction — the assertions below (direction:rtl, an
+       Arabic aria-label, zero Latin-script leakage) can never hold under the
+       English build, so running this against --lang en was never catching a
+       regression; it was just a permanent red that trained everyone to
+       ignore the suite. See the lang-gate mechanism documented at the top of
+       this file. */
+    lang: 'ar',
+    run: async (cdp) => {
+      const r = await cdp.eval(`(() => {
+        const sec = document.getElementById('testimonials');
+        if (!sec) return { error: 'no #testimonials section in the DOM' };
+        const dir = getComputedStyle(sec).direction;
+        const labels = [...sec.querySelectorAll('.bv-testi__meta b')].map((b) => b.textContent);
+        const firstPick = sec.querySelector('.bv-testi__pick');
+        const playLabel = firstPick ? firstPick.getAttribute('aria-label') : null;
+        const walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
+        const leaks = [];
+        let n;
+        while ((n = walker.nextNode())) {
+          if (/[A-Za-z]{4,}/.test(n.nodeValue)) leaks.push(n.nodeValue.trim());
+        }
+        return { dir, labels, playLabel, leaks };
+      })()`);
 
-    if (r.error) throw new Error(r.error);
-    if (r.dir !== 'rtl') {
-      throw new Error('expected #testimonials to compute direction:rtl, saw ' + JSON.stringify(r.dir));
-    }
-    /* Reference data has grown a fourth pushed testimonial since this brief was
-       written (see task-3-report.md) — checked as a prefix, not an exact
-       length, so a real 04th tab does not make this check lie. */
-    const want = ['01', '02', '03'];
-    for (let i = 0; i < want.length; i++) {
-      if (r.labels[i] !== want[i]) {
-        throw new Error('expected rail label ' + i + ' to read ' + JSON.stringify(want[i]) +
-          ', saw ' + JSON.stringify(r.labels));
+      if (r.error) throw new Error(r.error);
+      if (r.dir !== 'rtl') {
+        throw new Error('expected #testimonials to compute direction:rtl, saw ' + JSON.stringify(r.dir));
       }
-    }
-    if (r.playLabel !== 'تشغيل الشهادة 1') {
-      throw new Error('expected the first pick aria-label to read ' +
-        JSON.stringify('تشغيل الشهادة 1') + ', saw ' + JSON.stringify(r.playLabel));
-    }
-    if (r.leaks.length) {
-      throw new Error('Latin-script leakage (4+ letters) in the Arabic testimonials section: ' +
-        JSON.stringify(r.leaks));
-    }
+      /* Reference data has grown a fourth pushed testimonial since this brief was
+         written (see task-3-report.md) — checked as a prefix, not an exact
+         length, so a real 04th tab does not make this check lie. */
+      const want = ['01', '02', '03'];
+      for (let i = 0; i < want.length; i++) {
+        if (r.labels[i] !== want[i]) {
+          throw new Error('expected rail label ' + i + ' to read ' + JSON.stringify(want[i]) +
+            ', saw ' + JSON.stringify(r.labels));
+        }
+      }
+      if (r.playLabel !== 'تشغيل الشهادة 1') {
+        throw new Error('expected the first pick aria-label to read ' +
+          JSON.stringify('تشغيل الشهادة 1') + ', saw ' + JSON.stringify(r.playLabel));
+      }
+      if (r.leaks.length) {
+        throw new Error('Latin-script leakage (4+ letters) in the Arabic testimonials section: ' +
+          JSON.stringify(r.leaks));
+      }
+    },
   },
 
   /* Task 4 registers the second check. revenuelab360 and tamahwour have no
@@ -259,11 +293,38 @@ const CHECKS = {
       throw new Error('clearing the query should restore all ' + r.liveCount +
         ' cards (the live record count), saw ' + r.slugsAfterClear.length);
     }
-    const wantOrder = r.order.filter((slug) => r.slugsAfterClear.includes(slug));
-    for (let i = 0; i < r.slugsAfterClear.length; i++) {
-      if (r.slugsAfterClear[i] !== wantOrder[i]) {
-        throw new Error('clearing the query did not restore BV_ORDER — expected slot ' + i +
-          ' to read ' + JSON.stringify(wantOrder[i]) + ', saw ' + JSON.stringify(r.slugsAfterClear[i]) +
+
+    /* NOT DOM equality with BV_ORDER. A record BV_ORDER does not name is
+     * documented, correct behaviour — applyOrder() in beeviro.js sorts it
+     * after everything named, keeping its relative position (see the
+     * order-unknown-slug check) — not a bug this filter check should catch.
+     * Task 6 shipped exactly that shape for one release (shalaby-labs live,
+     * unnamed), which is what made the old DOM-equality version of this
+     * assertion fail on correct output. What the clear-filter handler is
+     * actually required to preserve is narrower and survives that shape:
+     * every BV_ORDER-named slug keeps BV_ORDER's relative order, and no
+     * unnamed slug is ever sorted ahead of a named one. Checked structurally
+     * rather than by comparing two full arrays, so it holds whether or not
+     * "named" and "live" happen to be the same set today. */
+    const named = [];
+    let sawUnnamed = false;
+    for (const slug of r.slugsAfterClear) {
+      if (r.order.includes(slug)) {
+        if (sawUnnamed) {
+          throw new Error('clearing the query sorted a BV_ORDER-named slug (' + slug +
+            ') after an unnamed one — unnamed records must sort last, saw ' +
+            JSON.stringify(r.slugsAfterClear));
+        }
+        named.push(slug);
+      } else {
+        sawUnnamed = true;
+      }
+    }
+    const wantNamed = r.order.filter((slug) => named.includes(slug));
+    for (let i = 0; i < named.length; i++) {
+      if (named[i] !== wantNamed[i]) {
+        throw new Error('clearing the query did not preserve BV_ORDER\'s relative order — expected ' +
+          'named slot ' + i + ' to read ' + JSON.stringify(wantNamed[i]) + ', saw ' + JSON.stringify(named[i]) +
           ' (full order seen: ' + JSON.stringify(r.slugsAfterClear) + ')');
       }
     }
@@ -435,6 +496,148 @@ const CHECKS = {
     await cdp.send('Page.navigate', { url: cdp.base + '?lang=' + cdp.lang });
     await sleep(2200);
   },
+
+  /* Task 8 registers the fifth check. This task's own roster trim touches
+   * BV_ORDER and BV_CLIENTS in two separate edits — delete six records here,
+   * drop the matching six names there — which is exactly the kind of change
+   * where it is easy to update one and forget the other. A record with no
+   * BV_ORDER entry (the OTHER mismatch direction) is documented, correct
+   * behaviour and already covered by filter-empty-result's rewritten
+   * assertion: it sorts after everything named, keeping its relative
+   * position. This check exercises the direction that one does not: a
+   * BV_ORDER entry with no backing record, as would be left behind by
+   * trimming BV_CLIENTS without also trimming BV_ORDER. applyOrder()
+   * (beeviro.js) only ever walks BV_CLIENTS and looks up each record's own
+   * rank — it never iterates BV_ORDER itself — so a name in BV_ORDER that no
+   * record carries should be completely inert: not a crash, not a phantom
+   * card, not a dropped one.
+   *
+   * Proven by intercepting the assignment TO `window.BV_ORDER` before
+   * clients.js runs, rather than setting window.BV_ORDER directly — clients.js
+   * reassigns the global outright on load, so anything set before it would
+   * just be overwritten — then reloading and counting cards fresh. */
+  'order-unknown-slug': async (cdp) => {
+    const PHANTOM = 'zzz-order-unknown-slug-has-no-record';
+    const errorsBefore = cdp.errors.length;
+
+    const added = await cdp.send('Page.addScriptToEvaluateOnNewDocument', {
+      source: '(function () {' +
+        'var real;' +
+        'Object.defineProperty(window, "BV_ORDER", {' +
+        'configurable: true,' +
+        'get: function () { return real; },' +
+        'set: function (v) { real = v.concat(["' + PHANTOM + '"]); }' +
+        '});' +
+        '})();',
+    });
+
+    try {
+      await cdp.send('Page.navigate', { url: cdp.base + '?lang=' + cdp.lang });
+      await sleep(2800);
+
+      const r = await cdp.eval(`(() => {
+        var grid = document.getElementById('grid');
+        if (!grid) return { error: 'no #grid in the DOM' };
+        return {
+          count: grid.querySelectorAll('.bv-card').length,
+          hasPhantomCard: !!grid.querySelector('.bv-card[data-slug="${PHANTOM}"]'),
+          order: window.BV_ORDER || [],
+        };
+      })()`);
+
+      if (r.error) throw new Error(r.error);
+      if (!r.order.includes(PHANTOM)) {
+        throw new Error('the BV_ORDER interceptor did not take (saw ' + JSON.stringify(r.order) +
+          ') — the harness is broken, not necessarily the page');
+      }
+      if (r.hasPhantomCard) {
+        throw new Error('a BV_ORDER entry with no backing record rendered a card for it — card ' +
+          'building must iterate BV_CLIENTS, never BV_ORDER');
+      }
+      if (r.count !== 20) {
+        throw new Error('expected 20 cards with an extra unknown slug sitting in BV_ORDER, saw ' + r.count);
+      }
+      if (cdp.errors.length > errorsBefore) {
+        throw new Error('console error raised while an unknown slug sat in BV_ORDER: ' +
+          JSON.stringify(cdp.errors.slice(errorsBefore)));
+      }
+    } finally {
+      await cdp.send('Page.removeScriptToEvaluateOnNewDocument', { identifier: added.identifier });
+      // Leave the page the way the harness found it, same courtesy
+      // lang-toggle-shapes pays whatever runs after it.
+      await cdp.send('Page.navigate', { url: cdp.base + '?lang=' + cdp.lang });
+      await sleep(2200);
+    }
+  },
+
+  /* Task 8 registers the sixth check. volt-ems.webm and dar-al-hadith.webm
+   * stay on disk — deleting files, not just records, is out of scope — but
+   * both clients leave the roster this task ships. Three things a text diff
+   * of clients.js cannot see: that neither reel is ever requested once its
+   * record is gone (hive.js's REELS constant at hive.js:54 is hardcoded
+   * independently of BV_CLIENTS, so nothing guarantees that by construction,
+   * only by review, and a careless future edit could re-add either slug
+   * there without touching clients.js at all); that the hero lattice — 19
+   * cells, ROWS = [3, 4, 5, 4, 3] in hive.js, a fixed geometry constant never
+   * tied to the client count — still fills completely with no cell left
+   * blank now that the pool it draws stills from has six fewer clients in
+   * it; and that nothing in a fresh load's network trace came back failing. */
+  'no-orphan-reels': async (cdp) => {
+    const ORPHANS = [/volt-ems\.webm/, /dar-al-hadith\.webm/];
+    const netBefore = cdp.network.length;
+
+    // A clean reload isolates this check's own network trace from whatever
+    // earlier checks (lang-toggle-shapes alone reloads six times) already
+    // fetched.
+    await cdp.send('Page.navigate', { url: cdp.base + '?lang=' + cdp.lang });
+    await sleep(2800);
+
+    const r = await cdp.eval(`(async () => {
+      function state() {
+        var cells = Array.prototype.slice.call(document.querySelectorAll('#lattice .bv-cellx'));
+        return cells.map(function (btn) {
+          var face = btn.querySelector('.bv-cellx__a');
+          var media = face ? face.firstElementChild : null;
+          var kind = media ? media.tagName.toLowerCase() : null;
+          var src = null;
+          if (media) src = kind === 'video' ? (media.currentSrc || media.src) : media.getAttribute('src');
+          return { slug: btn.getAttribute('data-slug'), kind: kind, src: src || '' };
+        });
+      }
+      if (!document.getElementById('lattice')) return { error: 'no #lattice in the DOM' };
+      var cells = state();
+      // A reel cell's <video>.src is filled asynchronously — hive.js queues a
+      // blob fetch behind an is-booted gate — so poll rather than trust the
+      // very first read already caught up.
+      for (var tries = 0; tries < 20 && cells.some(function (c) { return c.kind === 'video' && !c.src; }); tries++) {
+        await new Promise(function (res) { setTimeout(res, 300); });
+        cells = state();
+      }
+      return { cells: cells };
+    })()`);
+
+    if (r.error) throw new Error(r.error);
+    if (r.cells.length !== 19) {
+      throw new Error('expected the 19-cell hero lattice (ROWS = [3,4,5,4,3] in hive.js), saw ' +
+        r.cells.length);
+    }
+    const empty = r.cells.filter((c) => !c.kind || !c.src);
+    if (empty.length) {
+      throw new Error('cell(s) rendered with no media (an empty hexagon): ' + JSON.stringify(empty));
+    }
+
+    const seen = cdp.network.slice(netBefore);
+    const orphanHits = seen.filter((n) => ORPHANS.some((re) => re.test(n.url)));
+    if (orphanHits.length) {
+      throw new Error('a removed client\'s reel was still requested: ' +
+        JSON.stringify(orphanHits.map((n) => n.url)));
+    }
+    const failing = seen.filter((n) => n.failed || (n.status != null && n.status >= 400));
+    if (failing.length) {
+      throw new Error('a request in the trace came back failing: ' +
+        JSON.stringify(failing.map((n) => n.url + ' -> ' + (n.failed ? 'network error' : n.status))));
+    }
+  },
 };
 /* ======================================================================= */
 
@@ -500,10 +703,53 @@ function connect(url) {
     let id = 0;
     const waiting = new Map();
     const errors = [];
+    // Keyed by CDP requestId so a response/failure updates the SAME entry
+    // `network` already holds, rather than guessing by URL — two reloads of
+    // the same page request the same URLs, and requestId is the only thing
+    // CDP guarantees is unique per request.
+    const network = [];
+    const byRequestId = new Map();
     ws.addEventListener('message', (ev) => {
       const m = JSON.parse(ev.data);
       if (m.method === 'Log.entryAdded' && m.params.entry.level === 'error') {
         errors.push(m.params.entry.text);
+        return;
+      }
+      /* Log.entryAdded alone is not enough: in this Chrome/headless build it
+       * does not fire for a page's own console.error() calls or for an
+       * uncaught exception — verified empirically while building the
+       * order-unknown-slug check below, which needs genuine console-error
+       * detection to discriminate at all. Runtime.enable (already on, see
+       * main()) is what actually reports both, over two different events,
+       * so both are listened for here and folded into the same `errors`
+       * array every check already reads — no check written against
+       * `cdp.errors` before this needs to change. */
+      if (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error') {
+        const text = (m.params.args || [])
+          .map((a) => (a.value !== undefined ? String(a.value) : (a.description || a.type)))
+          .join(' ');
+        errors.push(text);
+        return;
+      }
+      if (m.method === 'Runtime.exceptionThrown') {
+        const d = m.params.exceptionDetails || {};
+        errors.push(d.text + ' ' + ((d.exception || {}).description || ''));
+        return;
+      }
+      if (m.method === 'Network.requestWillBeSent') {
+        const entry = { url: m.params.request.url, method: m.params.request.method, status: null, failed: false };
+        byRequestId.set(m.params.requestId, entry);
+        network.push(entry);
+        return;
+      }
+      if (m.method === 'Network.responseReceived') {
+        const entry = byRequestId.get(m.params.requestId);
+        if (entry) entry.status = m.params.response.status;
+        return;
+      }
+      if (m.method === 'Network.loadingFailed') {
+        const entry = byRequestId.get(m.params.requestId);
+        if (entry) entry.failed = true;
         return;
       }
       if (m.method) return;
@@ -515,6 +761,7 @@ function connect(url) {
     ws.addEventListener('error', reject);
     ws.addEventListener('open', () => resolve({
       errors,
+      network,
       base: BASE,
       lang: LANG,
       send(method, params) {
@@ -539,9 +786,25 @@ function connect(url) {
   });
 }
 
-async function runCheck(cdp, name, fn) {
+// A registered check is either a bare async function, or { lang, run } when
+// it only applies under one --lang (see the header comment for why). Either
+// shape lives at CHECKS[name]; these two helpers are the only places that
+// need to know there are two shapes.
+function langGateOf(entry) {
+  return (entry && typeof entry === 'object' && typeof entry.run === 'function') ? entry.lang : null;
+}
+function runnerOf(entry) {
+  return (entry && typeof entry === 'object' && typeof entry.run === 'function') ? entry.run : entry;
+}
+
+async function runCheck(cdp, name, entry) {
+  const wantLang = langGateOf(entry);
+  if (wantLang && wantLang !== LANG) {
+    console.log('  SKIP  ' + name + '  — only runs under --lang ' + wantLang + ' (this run is --lang ' + LANG + ')');
+    return { name, pass: true, skip: true };
+  }
   try {
-    await fn(cdp);
+    await runnerOf(entry)(cdp);
     console.log('  PASS  ' + name);
     return { name, pass: true };
   } catch (e) {
@@ -590,8 +853,11 @@ async function main() {
     const results = [];
     for (const name of selected) results.push(await runCheck(cdp, name, CHECKS[name]));
 
-    const failed = results.filter((r) => !r.pass);
-    console.log('\n' + (results.length - failed.length) + '/' + results.length + ' passed');
+    const skipped = results.filter((r) => r.skip);
+    const ran = results.filter((r) => !r.skip);
+    const failed = ran.filter((r) => !r.pass);
+    console.log('\n' + (ran.length - failed.length) + '/' + ran.length + ' passed' +
+      (skipped.length ? '  (' + skipped.length + ' skipped)' : ''));
     exitCode = failed.length ? 1 : 0;
     cdp.close();
   } catch (e) {
