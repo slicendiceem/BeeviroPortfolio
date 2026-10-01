@@ -57,6 +57,11 @@
 
   <a class="bv-cta bv-mast__cta" href="#contact" data-i18n="nav.cta">Start a project</a>
 
+  <!-- .bv-tools (above) disappears entirely under 900px, taking the only
+       masthead language switch with it. This compact one survives that
+       breakpoint; data-lang-short keeps its text to "AR"/"EN" instead of the
+       full word (see i18n.js's paintStatic). -->
+  <button class="bv-tool bv-tool--lang bv-tool--mobile-lang" type="button" data-lang-toggle data-lang-short lang="ar" aria-label="اعرض الموقع بالعربية">AR</button>
   <!-- Under 900px the nav above is hidden; this is the way in. -->
   <button class="bv-burger" id="burger" aria-expanded="false" aria-controls="menu"
           data-i18n-attr="aria-label:nav.open">
@@ -187,23 +192,39 @@
         <span class="bv-eyebrow" data-i18n="svc.eyebrow">Services</span>
         <h2 class="bv-h2" data-i18n-html="svc.h2">What we actually<br>do all day.</h2>
       </div>
-      <div class="bv-svc" id="svc"></div>
+      <div class="bv-svc" id="svc"><div class="bv-services-fallback"><article><h3>Strategy &amp; SWOT</h3><p>Market, competitor and audience analysis, written down before anything is designed.</p></article><article><h3>Brand Identity</h3><p>Logo systems, colour, type and guidelines — built bilingual where the market needs it.</p></article><article><h3>Media Buying</h3><p>Meta, TikTok and Google, structured by funnel stage and consolidated into what works.</p></article><article><h3>Content Production</h3><p>Designs, reels, photoshoots and behind-the-scenes, produced at campaign volume.</p></article><article><h3>Funnels &amp; Web</h3><p>Conversion-focused sites, landing pages and sales funnels with qualifying built in.</p></article><article><h3>UGC &amp; Creators</h3><p>Creator-style and celebrity content where borrowed trust beats brand voice.</p></article><article><h3>Performance Analysis</h3><p>Campaign reporting against KPIs, with budget moved to the winners monthly.</p></article><article><h3>Positioning</h3><p>The one claim a brand can own and defend — usually the hardest part of the job.</p></article></div></div>
     </div>
   </section>
 
   <!-- ── work ────────────────────────────────────────────────────────────── -->
   <section class="bv-section bv-wash" id="work">
     <div class="bv-wrap">
+      <div class="bv-work-head">
       <div class="bv-head">
         <span class="bv-eyebrow" data-i18n="work.eyebrow">Selected work</span>
-        <h2 class="bv-h2" data-i18n-html="work.h2">Twenty-five brands.<br>Every journey shown<br>end to end.</h2>
+        <h2 class="bv-h2" data-i18n-html="work.h2">Twenty brands.<br>Every journey shown<br>end to end.</h2>
         <p class="bv-lede" style="margin-top:22px" data-i18n="work.lede">
           Open a card to walk the whole engagement — first contact, diagnosis, positioning,
           build, launch, outcome — with the designs and the campaign numbers attached.
           Where a figure is a target rather than a delivered result, it says so.
         </p>
       </div>
-      <div class="bv-grid" id="grid"></div>
+      <div class="bv-filter-bar">
+        <select id="industryFilter" aria-label="Filter by category"></select>
+        <span class="bv-filter-divider" aria-hidden="true"></span>
+        <input type="search" id="searchFilter" aria-label="Search brands" placeholder="Search by Brand Name...">
+      </div></div>
+      <!-- Without JS the select never gets its options and the search input
+           has no listener — an empty, inert control reads as broken, so hide
+           the bar and let the (also JS-built) grid stand on its own. The
+           arrows are the same story: dead buttons that can't scroll anything
+           until grid() wires them up. -->
+      <noscript><style>.bv-filter-bar, .bv-work-arrow { display: none !important; }</style></noscript>
+      <div class="bv-work-carousel" role="region" aria-label="Selected work carousel">
+        <button class="bv-work-arrow bv-work-arrow--prev" id="workPrev" aria-label="Previous projects">‹</button>
+        <div class="bv-grid" id="grid" tabindex="0" aria-label="Projects"></div>
+        <button class="bv-work-arrow bv-work-arrow--next" id="workNext" aria-label="Next projects">›</button>
+      </div>
       <!-- Twenty-five cards at once reads as a wall rather than a portfolio.
            Six, then the rest on request. -->
       <div class="bv-more" id="moreWrap" hidden>
@@ -213,6 +234,24 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </button>
       </div>
+      <p class="bv-work-status" id="workStatus" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- ── testimonials ─────────────────────────────────────────────────────
+       Real client footage, straight after the cases they are talking about.
+       Nothing preloads and nothing autoplays: these are 15-51 MB files, and a
+       reader who never presses play must never pay for them. -->
+  <section class="bv-section" id="testimonials">
+    <div class="bv-wrap">
+      <div class="bv-head">
+        <span class="bv-eyebrow" data-i18n="testi.eyebrow">In their own words</span>
+        <h2 class="bv-h2" data-i18n-html="testi.h2">Clients, on camera.</h2>
+        <p class="bv-lede" style="margin-top:22px" data-i18n="testi.lede">
+          Unscripted and unedited beyond a trim. Press play — nothing starts on its own.
+        </p>
+      </div>
+      <div class="bv-testi" id="testi"></div>
     </div>
   </section>
 
@@ -327,6 +366,7 @@
         <ul class="bv-case__steps" id="caseSteps"></ul>
       </div>
       <dl class="bv-case__facts" id="caseFacts"></dl>
+      <p class="bv-swipe-hint" id="caseSwipeHint">← Swipe left for next · right for previous →</p>
       <div class="bv-case__railfoot">
         <button class="bv-cta bv-cta--ghost" id="casePrev" data-i18n="case.prev">← Previous client</button>
         <button class="bv-cta bv-cta--ghost" id="caseNext" data-i18n="case.next">Next client →</button>
