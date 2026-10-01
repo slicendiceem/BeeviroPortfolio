@@ -670,3 +670,94 @@
     }, 260);
   });
 })();
+
+/* ── image fallback, the method section's dynamic unpin, and pausing any
+   decorative strip the reader has not scrolled to ───────────────────────────
+   Three small, independent page-wide behaviours that do not belong to any
+   one section, so — same as in the reference — they get their own IIFE
+   rather than being folded into the comb-building one above. Kept in this
+   file because fitMethod() measures #method's own "hive" (the id on the
+   method-section comb is literally `hive`), and because this script runs
+   after beeviro.js has built every card, tile and reel these three reach
+   into. */
+(function () {
+  /* The webp->original fallback in beeviro.js covers a wrong PATH; this
+     covers a wrong SHAPE. A creative-reel tile (.bv-tile--work) that fails
+     to load becomes a text label instead of a blank frame — a 232px gap in
+     a strip of forty is a hole, not a placeholder. Anything else (a card
+     image, a gallery tile) just gets marked unavailable so its skeleton
+     shimmer stops rather than running forever. Capturing, because `error`
+     does not bubble. */
+  function failImage(e) {
+    var img = e.target;
+    if (!img || img.tagName !== 'IMG') return;
+    var tile = img.closest('.bv-tile--work');
+    if (tile) {
+      // Retain identical tile widths in both loop copies even if the CDN is unavailable.
+      var label = document.createElement('span');
+      label.textContent = tile.getAttribute('data-c') || 'Beeviro';
+      tile.replaceChildren(label);
+      tile.classList.add('is-loaded', 'bv-tile--unavailable');
+      tile.removeAttribute('data-src');
+      tile.removeAttribute('data-cursor');
+      return;
+    }
+    img.classList.add('is-media-unavailable');
+    var frame = img.closest('.bv-card__img,.bv-gal__t');
+    if (frame) frame.classList.add('is-loaded');
+  }
+  document.addEventListener('error', failImage, true);
+
+  /* #method pins via position:sticky across a tall .bv-pin__rail, scrubbed by
+     scroll (js/motion.js's scrubPin). That only works if the section's own
+     content is shorter than whatever viewport it is sticking inside — true
+     on an ordinary phone or desktop, false on a landscape phone or a short
+     desktop window, where the max-width:900px breakpoint above does not
+     catch it because the window may still be plenty WIDE. methodViewport is
+     a hidden 100svh probe standing in for "the viewport .bv-pin__stage
+     actually gets"; comparing the section's needed height against it is what
+     bv-method-unpinned is for, and BV_METHOD_HEIGHT hands the same number to
+     motion.js's scrubPin so the two never disagree about how tall "the
+     viewport" is. */
+  var method = document.getElementById('method');
+  var methodWrap = method && method.querySelector('.bv-wrap');
+  var methodViewport = document.createElement('div');
+  methodViewport.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;width:0;height:100vh;height:100svh;top:0;';
+  document.body.append(methodViewport);
+  function fitMethod() {
+    if (!methodWrap) return;
+    var stage = methodWrap.parentElement, style = getComputedStyle(stage);
+    var needed = methodWrap.offsetHeight + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    var available = methodViewport.offsetHeight;
+    window.BV_METHOD_HEIGHT = available;
+    method.classList.toggle('bv-method-unpinned', needed > available + 1);
+  }
+  addEventListener('resize', fitMethod, { passive: true });
+  if (window.ResizeObserver && methodWrap) new ResizeObserver(fitMethod).observe(methodWrap);
+  fitMethod();
+
+  /* Pause invisible CSS strips, and all decorative animations while a dialog
+     is open. A running `bv-marquee`/`bv-reel` animation still costs a
+     compositor tick every frame whether or not anything it draws is on
+     screen — scrolled past, off in a tab the reader switched away from, or
+     sitting behind an open case file (the same `bv:cover` signal the hero
+     comb above already listens for). `seen` tracks which strips have been
+     scrolled into view at least once, so a strip nobody has reached yet
+     starts paused rather than animating, unseen, from the moment it loads. */
+  var strips = Array.prototype.slice.call(document.querySelectorAll('.bv-marquee,.bv-reel'));
+  var seen = new WeakSet();
+  function paint() {
+    strips.forEach(function (el) {
+      el.classList.toggle('bv-motion-paused', document.hidden || document.body.classList.contains('bv-locked') || !seen.has(el));
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target); });
+      paint();
+    }, { rootMargin: '120px' });
+    strips.forEach(function (el) { io.observe(el); });
+  }
+  document.addEventListener('visibilitychange', paint);
+  document.addEventListener('bv:cover', paint);
+})();

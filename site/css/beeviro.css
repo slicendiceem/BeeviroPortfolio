@@ -864,15 +864,49 @@ html[dir="rtl"] .bv-service-title,html[dir="rtl"] .bv-service-placeholder strong
    Narrows the SAME `cards` array the grid above builds, by toggling
    `hidden` — see the note above `var cards` in beeviro.js's grid() function
    for why this can never re-sort it. In the reference this markup sits
-   inside a horizontally-scrolling carousel (prev/next arrows, scroll-snap);
-   that carousel is a later reconciliation task's territory, so only the bar
-   itself and the #workStatus live region below are styled here. */
+   inside a horizontally-scrolling carousel (prev/next arrows, scroll-snap;
+   ported below), and the bar itself plus the #workStatus live region are
+   styled here either way. */
 .bv-filter-bar { display:flex; align-items:center; gap:16px; background:rgba(18,17,16,.8); backdrop-filter:blur(20px); border:1px solid var(--line); padding:10px 24px; border-radius:99px; margin-top:0; box-shadow:0 20px 40px #0006; }
 .bv-filter-bar:focus-within { border-color:var(--honey); }
 .bv-filter-bar select,.bv-filter-bar input { width:100%; min-width:0; flex:1; background:transparent; border:0; color:var(--paper); font:inherit; font-size:14px; padding:12px 0; }
 .bv-filter-bar option { background:#111; }
 .bv-filter-divider { width:1px; height:24px; background:var(--line); }
 .bv-work-status { color:var(--fog); font-family:var(--mono); font-size:12px; margin-top:16px; }
+
+/* ── work carousel: horizontal scroll-snap replacing "six, then Show More" ──
+   The client's "very crowded" complaint (see the NOTE near .bv-more further
+   down) is answered here instead: every card stays in the DOM — the filter
+   above still narrows by `hidden`, never by removing cards — and the grid
+   scrolls sideways three-up (then two, then one) rather than stacking all of
+   them vertically. #grid keeps the `.bv-grid` class (and its base rules
+   below) for when JS never runs; the id selector's higher specificity is
+   what turns it into a scroller once the carousel markup is there. */
+.bv-work-carousel { position:relative; }
+#grid { display:grid; grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:calc((100% - 40px)/3); gap:20px; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scrollbar-width:none; padding:12px 0; }
+#grid::-webkit-scrollbar { display:none; }
+#grid .bv-card { scroll-snap-align:start; border-radius:28px; opacity:1; transform:none; height:100%; }
+#grid .bv-card[hidden] { display:none; }
+#grid .bv-card__img { margin:14px 14px 0; border-radius:20px; aspect-ratio:1 / 1.12; }
+#grid .bv-card:hover { border-color:var(--a); }
+.bv-work-arrow { position:absolute; top:40%; z-index:3; width:54px; height:54px; border:1px solid var(--line-2); border-radius:50%; background:#050505; color:white; font-size:30px; cursor:pointer; }
+.bv-work-arrow:disabled { opacity:.3; cursor:default; }
+.bv-work-arrow--prev { left:-22px; }
+.bv-work-arrow--next { right:-22px; }
+/* .bv-swipe-hint belongs to the CASE FILE dossier (#caseSwipeHint, further
+   down), not this carousel — the reference just happens to keep both in the
+   same stretch of the stylesheet, so this does too. Hidden by default; the
+   dossier's own touch-swipe is a mobile-only affordance. */
+.bv-swipe-hint { display:none; }
+@media (max-width: 900px) {
+  .bv-swipe-hint { display:block; color:var(--honey); font-size:12px; padding:8px; }
+}
+@media (max-width: 640px) {
+  .bv-work-arrow { width:42px; height:42px; }
+  .bv-work-arrow--prev { left:-12px; }
+  .bv-work-arrow--next { right:-12px; }
+  .bv-swipe-hint { display:block; color:var(--honey); font-size:12px; text-align:center; padding:8px; }
+}
 
 /* The head copy and the filter bar share one row on desktop. */
 .bv-work-head { display:grid; grid-template-columns:1fr minmax(320px, .85fr); gap:36px; align-items:end; margin-bottom:12px; }
@@ -887,9 +921,12 @@ html[dir="rtl"] .bv-service-title,html[dir="rtl"] .bv-service-placeholder strong
   .bv-filter-bar { backdrop-filter:none; -webkit-backdrop-filter:none; }
   /* 16px, not 14 — anything smaller makes iOS Safari zoom the page in on focus. */
   .bv-filter-bar input,.bv-filter-bar select { font-size:16px; }
+  #grid { grid-auto-columns:calc((100% - 20px)/2); }
 }
 @media (max-width: 640px) {
   .bv-filter-bar { padding:8px 16px; gap:12px; border-radius:18px; }
+  #grid { grid-auto-columns:100%; gap:16px; padding-inline:6%; scroll-padding-inline:6%; }
+  #grid .bv-card { scroll-snap-align:center; }
 }
 @media (max-width: 380px) {
   .bv-filter-bar { flex-wrap:wrap; }
@@ -1047,6 +1084,9 @@ html[dir="rtl"] .bv-testi__pick:hover { transform: translateX(-3px); }
   position: relative; cursor: zoom-in;
 }
 .bv-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.bv-tile--work { aspect-ratio:4 / 5; }
+.bv-tile--work img { object-fit:contain; }
+.bv-tile--unavailable { display:grid; place-items:center; padding:20px; text-align:center; color:var(--honey); cursor:default; }
 
 /* ---------- loading skeleton ---------------------------------------------- */
 /* Lazy tiles used to sit as flat grey rectangles until their image decoded —
@@ -1140,6 +1180,7 @@ html.bv-js .bv-tile img.is-loaded { opacity: 1; }
 /* Never the first one: it is on screen at open, and skipping then un-skipping it
    inside the transition is the jitter this is meant to remove. */
 .bv-case__sec:first-of-type { content-visibility: visible; }
+.bv-case__sec--journey { content-visibility: visible; }
 .bv-case.is-ready .bv-case__mast,
 .bv-case.is-ready .bv-case__sec { opacity: 1; transform: none; }
 
@@ -1815,6 +1856,18 @@ html.bv-cursor-on [contenteditable="true"] { cursor: text !important; }
 }
 .bv-tool:hover { color: var(--paper); border-color: var(--honey); background: rgba(255, 194, 2, .08); }
 .bv-tool--lang { font-family: var(--mono); letter-spacing: .06em; }
+/* The full-word toggle above lives in .bv-tools, which disappears entirely
+   under 900px (below) — leaving mobile with no masthead way to switch
+   language short of opening the burger menu. This compact "AR"/"EN" button
+   sits outside .bv-tools, beside the burger, so it survives that breakpoint;
+   data-lang-short (see i18n.js's paintStatic) is what keeps it short instead
+   of being overwritten with the full word like its sibling toggles. */
+.bv-tool--mobile-lang { display:none; }
+@media (max-width: 900px) {
+  .bv-mast { column-gap:10px; }
+  .bv-tool--mobile-lang { display:inline-flex; order:2; margin-inline-start:auto; min-width:44px; height:44px; flex-shrink:0; }
+  .bv-mast .bv-burger { margin-left:0; margin-inline-start:0; flex-shrink:0; }
+}
 /* Pressed = full motion. Lite is the notable state, so lite is what changes
    colour — an unlit bolt reads as "effects are off" without needing a legend. */
 .bv-tool--perf { color: var(--honey); border-color: rgba(255, 194, 2, .35); }
@@ -1891,7 +1944,16 @@ html[dir="rtl"] .bv-svc__row.is-in { transform: none; }
 
 /* ---------- 3. six cards, then the rest on request ------------------------- */
 /* NOTE: "The WORK/PROJECTS section is very crowded, it must only show 6 max and
-   put a SHOW MORE button." */
+   put a SHOW MORE button."
+   That request is real and it is met — just not by the rules below. The
+   reference answers it with a horizontal scroll-snap carousel instead
+   (.bv-work-carousel / #grid / .bv-work-arrow, ported above): every card
+   stays in the DOM, narrowed to three-then-two-then-one visible at a time by
+   scrolling sideways, rather than twenty-five stacked in one vertical wall.
+   beeviro.js's grid() wires the carousel and returns before it ever reaches
+   the "six, then Show More" code below, so .bv-more stays permanently
+   dormant — left in place, not deleted, in case a future redesign wants
+   pagination back over the carousel. */
 
 .bv-more {
   display: flex; align-items: center; justify-content: center; gap: 18px;
@@ -2469,3 +2531,48 @@ html[dir="rtl"] .bv-film__play { font-family: var(--body-ar); letter-spacing: no
   min-height: 460px;
 }
 @media (max-width: 900px) { .bv-shelf-slot { contain-intrinsic-size: auto 320px; min-height: 320px; } }
+
+/* ── Task 7a reconciliation ──────────────────────────────────────────────
+   A handful of small, page-wide rules the reference keeps in its own
+   trailing patch area rather than inside any one feature's section — kept
+   together here for the same reason, instead of being scattered to match. */
+
+/* Touch targets and overflow guards Task 2 correctly declined to port: they
+   name classes (.bv-work-arrow, .bv-work-head, .bv-case__x, .bv-menu-btn)
+   that belonged to tasks which had not run yet. Task 2's own 51 of 58
+   bv-service- occurrences are untouched; these are the remaining 7. */
+@media (max-width: 900px) {
+  .bv-case__steps button,.bv-service-tab,.bv-service-pause,.bv-work-arrow,.bv-case__x,.bv-menu-btn { min-height:44px;min-width:44px; }
+  .bv-service-panel,.bv-service-copy,.bv-work-head > * { min-width:0; }
+  .bv-service-title,.bv-card__t { overflow-wrap:anywhere; }
+}
+@supports not ((background-clip:text) or (-webkit-background-clip:text)) {
+  #voices .bv-amber,.bv-service-title { color:var(--honey); -webkit-text-fill-color:var(--honey); background:none; }
+}
+
+/* The pinned method section measures itself against a hidden 100svh probe
+   (js/hive.js) and drops the sticky pin when its own content would not fit
+   that probe — a landscape phone or a short desktop window, which the
+   max-width:900px collapse above does not catch since it never checks
+   height. */
+#method.bv-method-unpinned .bv-pin__rail { height:auto; }
+#method.bv-method-unpinned .bv-pin__stage { position:static; min-height:0; }
+
+/* The word-reveal stagger (js/motion.js's splitWords) normally wraps each
+   word of a heading in its own .bv-w span. An amber gradient phrase has to
+   stay ONE span instead — background-clip:text paints the gradient across
+   whatever box holds it, so splitting "loyal customers" into per-word spans
+   would cut the gradient into visibly separate pieces. */
+.bv-loyal-reveal { display:inline-block; vertical-align:baseline; }
+@media (prefers-reduced-motion: reduce) { .bv-loyal-reveal { opacity:1; transform:none; transition:none; } }
+
+/* js/hive.js pauses any .bv-marquee/.bv-reel strip the reader has not yet
+   scrolled to, plus every strip while the tab is hidden or a case file
+   covers the page — an off-screen CSS animation still costs a compositor
+   tick for nothing on screen to show for it. */
+.bv-motion-paused .bv-marquee__track,.bv-motion-paused .bv-reel__track { animation-play-state:paused !important; }
+
+/* No pointer to lead means no pointer-tracking torch, and the hero's 3D
+   lattice spin is a decoration a touch scroll cannot pause by hovering away
+   from it the way a mouse can. */
+@media (pointer: coarse) { .bv-hero__torch,.bv-hero__comb { display:none; } .bv-hive3d__lattice { animation:none !important; } }

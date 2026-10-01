@@ -620,27 +620,28 @@
 
     var cards = Array.prototype.slice.call(host.children);
 
-    /* ── industry filter + brand search ──────────────────────────────────
-       Ported from beeviro-embed.html's work section. There the filter bar
-       sits inside a horizontally-scrolling carousel (prev/next arrows,
-       scroll-snap) — that carousel is a later reconciliation task's
-       territory, so only the bar and #workStatus are wired up here.
-       Both controls narrow this SAME `cards` array by toggling `hidden`;
-       neither ever touches `host`'s child order, which stays exactly what
-       applyOrder() produced from BV_ORDER at the top of this file — a
-       filter that re-sorted would silently undo whatever order a later
-       task gives BV_ORDER.
-       Wiring this up also takes over full-roster visibility from "six,
-       then Show More" below: the reference has no page cap at all (every
-       card is always in the DOM, narrowed only by the filter), and a
-       six-card default alongside an independent filter would fight over
-       who owns `.hidden` — paging after a search would either resurrect
-       filtered-out cards or re-hide filtered-in ones. Returning below
-       leaves `wrap` and its button permanently dormant instead. */
+    /* ── industry filter + brand search + the carousel that holds both ────
+       Ported from beeviro-embed.html's work section, carousel included: a
+       horizontally-scrolling #grid (scroll-snap, grid-auto-flow:column — see
+       site/css/beeviro.css) with prev/next arrows, replacing "six, then Show
+       More" below. The reference has no page cap at all — every card is
+       always in the DOM, narrowed only by the filter — so wiring this up
+       also takes over full-roster visibility: a six-card default alongside
+       an independent filter would fight over who owns `.hidden`, paging
+       after a search either resurrecting filtered-out cards or re-hiding
+       filtered-in ones. Returning below leaves `wrap` and its button
+       permanently dormant instead (see the NOTE at the top of that section).
+       Filter and carousel share one `cards` array and both narrow it by
+       toggling `hidden`; neither ever touches `host`'s child order, which
+       stays exactly what applyOrder() produced from BV_ORDER at the top of
+       this file — a filter that re-sorted would silently undo whatever order
+       a later task gives BV_ORDER. */
     var industryFilter = document.getElementById('industryFilter');
     var searchFilter = document.getElementById('searchFilter');
     var workStatus = document.getElementById('workStatus');
-    if (industryFilter && searchFilter && workStatus) {
+    var workPrev = document.getElementById('workPrev');
+    var workNext = document.getElementById('workNext');
+    if (industryFilter && searchFilter && workStatus && workPrev && workNext) {
       var rtl = !!window.BV_I18N.rtl;
       industryFilter.add(new Option(rtl ? 'كل الفئات' : 'All categories', ''));
       Array.from(new Set(C.map(function (c) { return c.industry; }))).sort().forEach(function (name) {
@@ -650,6 +651,22 @@
         searchFilter.placeholder = 'ابحث باسم العلامة التجارية...';
         searchFilter.setAttribute('aria-label', searchFilter.placeholder);
         industryFilter.setAttribute('aria-label', 'تصفية حسب الفئة');
+        // Mirrored, not just relabelled: RTL reads right-to-left, so "next"
+        // is the arrow pointing left and physically sits where "prev" was.
+        workPrev.setAttribute('aria-label', 'الأعمال السابقة');
+        workNext.setAttribute('aria-label', 'الأعمال التالية');
+        workPrev.textContent = '›';
+        workNext.textContent = '‹';
+        workPrev.style.left = 'auto'; workPrev.style.right = '-12px';
+        workNext.style.right = 'auto'; workNext.style.left = '-12px';
+      }
+      // Disabled at either scroll extreme, not merely re-enabled at the
+      // other — a 1-2px rounding wobble at the exact end should not flip an
+      // arrow back on and off on every scroll tick.
+      function arrows() {
+        var pos = Math.abs(host.scrollLeft);
+        workPrev.disabled = pos < 3;
+        workNext.disabled = pos >= host.scrollWidth - host.clientWidth - 3;
       }
       var runFilter = function () {
         var query = searchFilter.value.trim().toLocaleLowerCase(), matched = 0;
@@ -658,12 +675,42 @@
             (query && !C[i].name.toLocaleLowerCase().includes(query)));
           if (!card.hidden) matched++;
         });
-        // No "swipe or use the arrows" tail here — that instruction only
-        // means anything next to the carousel this task does not port.
+        // Back to the start on every filter change — a result sitting mid-
+        // scroll from a previous search would otherwise read as "no match"
+        // against whatever happens to be in the viewport.
+        host.scrollLeft = 0;
         workStatus.textContent = matched
-          ? (rtl ? matched + ' علامة تجارية' : matched + (matched === 1 ? ' brand' : ' brands'))
+          ? (rtl
+            ? matched + ' علامة تجارية — اسحب أو استخدم الأسهم'
+            : matched + (matched === 1 ? ' brand' : ' brands') + ' — swipe or use the arrows')
           : (rtl ? 'لا توجد نتائج. جرّب بحثًا آخر.' : 'No matching brands. Try another search or category.');
+        arrows();
       };
+      // One card-width-plus-gap per press, not a fixed pixel count — a card
+      // is narrower under the 900px/640px breakpoints (site/css), and a
+      // fixed amount would under- or over-shoot the next snap point there.
+      function move(d) {
+        var card = cards.find(function (c) { return !c.hidden; });
+        if (!card) return;
+        host.scrollBy({
+          left: d * (rtl ? -1 : 1) * (card.getBoundingClientRect().width + parseFloat(getComputedStyle(host).columnGap)),
+          behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        });
+      }
+      workPrev.addEventListener('click', function () { move(-1); });
+      workNext.addEventListener('click', function () { move(1); });
+      // The grid itself is the tabindex="0" target (see site/index.html) so
+      // the arrow keys work with no visible arrow button in reach at all —
+      // RTL flips which physical direction "next" scrolls, same as the
+      // click handlers above.
+      host.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          move((e.key === 'ArrowRight' ? 1 : -1) * (rtl ? -1 : 1));
+        }
+      });
+      host.addEventListener('scroll', arrows, { passive: true });
+      window.addEventListener('resize', arrows);
       industryFilter.addEventListener('change', runFilter);
       searchFilter.addEventListener('input', runFilter);
       runFilter();
@@ -965,7 +1012,7 @@
       // opens the full file. data-src stays the FULL path so it still keys the
       // lightbox list correctly.
       var html = list.map(function (t) {
-        return '<div class="bv-tile" data-cursor="' + esc(T('cursor.view')) + '" data-src="' + t.src +
+        return '<div class="bv-tile bv-tile--work" data-cursor="' + esc(T('cursor.view')) + '" data-src="' + t.src +
           '" data-c="' + esc(t.name) + '">' +
           '<img loading="lazy" decoding="async" src="' + t.thumb + '" alt="' + esc(t.name) + ' creative"></div>';
       }).join('');
@@ -1248,7 +1295,7 @@
     }
 
     /* the journey */
-    h += '<div class="bv-case__sec"><h3>' + esc(T('case.journey')) + '</h3><div class="bv-journey">';
+    h += '<div class="bv-case__sec bv-case__sec--journey"><h3>' + esc(T('case.journey')) + '</h3><div class="bv-journey">';
     STAGES.forEach(function (s, i) {
       var body = (c.journey && c.journey[s.key]) || '';
       if (!body) return;

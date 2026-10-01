@@ -15,6 +15,7 @@
  *   node tools/embed-diff.mjs <ref.html> <cand.html>
  *   node tools/embed-diff.mjs <ref.html> <cand.html> --expect-clients 20
  *   node tools/embed-diff.mjs <ref.html> <cand.html> --json
+ *   node tools/embed-diff.mjs <ref.html> <cand.html> --tokens
  *
  * Exit 0  no tracked dimension regressed.
  * Exit 1  at least one did — the regressed names are printed (and listed
@@ -26,6 +27,20 @@
  * with an exact assertion on the candidate alone instead, for the one task in
  * this plan (Task 8) where the candidate is supposed to have fewer clients
  * than the reference — a deliberate drop, not a regression.
+ *
+ * --tokens is a DIFFERENT kind of check, and opt-in: the nine FEATURE_MARKERS
+ * above were the features one planning pass happened to notice. A token-level
+ * sweep of the reference found dozens more `bv-*`/`BV_*` identifiers a fresh
+ * build does not produce. Most of that gap is explained by a frozen snapshot
+ * of generated output sitting in the reference's #grid (~81 pre-rendered
+ * .bv-card elements, the exact DOM beeviro.js's grid() builds at runtime) —
+ * porting that snapshot as static markup would commit generated output as
+ * source, so counting it as a regression would fail forever on CORRECT
+ * output. --tokens therefore tests ABSENCE, not count: it fails only on a
+ * token the reference has at least once and the candidate has exactly zero
+ * of. A token the candidate merely has fewer of is not reported. Left off by
+ * default so Tasks 2-7, written against the nine-marker signal, keep the
+ * exact behaviour they were authored against.
  */
 import { readFileSync } from 'node:fs';
 
@@ -50,17 +65,19 @@ const FEATURE_MARKERS = [
 
 function usage(msg) {
   if (msg) console.error('embed-diff: ' + msg);
-  console.error('usage: node tools/embed-diff.mjs <ref.html> <cand.html> [--expect-clients N] [--json]');
+  console.error('usage: node tools/embed-diff.mjs <ref.html> <cand.html> [--expect-clients N] [--json] [--tokens]');
   process.exit(2);
 }
 
 const args = process.argv.slice(2);
 let JSON_MODE = false;
+let TOKENS_MODE = false;
 let EXPECT_CLIENTS = null;
 const positional = [];
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
   if (a === '--json') { JSON_MODE = true; continue; }
+  if (a === '--tokens') { TOKENS_MODE = true; continue; }
   if (a === '--expect-clients') {
     const v = args[++i];
     EXPECT_CLIENTS = Number(v);
@@ -146,6 +163,33 @@ function countI18nKeys(text) {
   return { en: countDictKeys(enBody), ar: countDictKeys(arBody) };
 }
 
+/* `bv-foo-bar`, `bv-foo__bar`, `bv-foo--bar`, or a `BV_SHOUTING_CASE` global —
+   every hook this codebase uses to wire CSS, JS and markup together. Counted
+   with a plain global match, same spirit as countOccurrences above: this is a
+   token sweep, not a parser, and a literal \b-bounded match is enough to tell
+   "zero" from "at least one" without caring where each hit sits. */
+const TOKEN_RE = /\b(?:bv-[a-z0-9_-]{2,}|BV_[A-Z0-9_]+)\b/g;
+
+function countTokens(text) {
+  const counts = new Map();
+  const matches = text.match(TOKEN_RE) || [];
+  for (const tok of matches) counts.set(tok, (counts.get(tok) || 0) + 1);
+  return counts;
+}
+
+/* Absence, not count — see the --tokens note in the file header for why. */
+function buildTokenReport(refText, candText) {
+  const refCounts = countTokens(refText);
+  const candCounts = countTokens(candText);
+  const absent = [];
+  for (const [name, ref] of refCounts) {
+    const cand = candCounts.get(name) || 0;
+    if (cand === 0) absent.push({ name, ref });
+  }
+  absent.sort((a, b) => b.ref - a.ref || a.name.localeCompare(b.name));
+  return { totalRefTokens: refCounts.size, absent, regressed: absent.length > 0 };
+}
+
 /* Every module in `small` has to show up in `big`, in the same relative
    order. Extra modules inserted between are fine; one missing, or two
    swapped, is not. */
@@ -207,7 +251,9 @@ function buildReport() {
     ar: { ref: refI18n.ar, cand: candI18n.ar, regressed: candI18n.ar < refI18n.ar },
   };
 
-  return { featureMarkers, mediaEntries, clientSlugs, modules, i18n };
+  const tokens = TOKENS_MODE ? buildTokenReport(refText, candText) : null;
+
+  return { featureMarkers, mediaEntries, clientSlugs, modules, i18n, tokens };
 }
 
 function regressedNames(report) {
@@ -217,6 +263,7 @@ function regressedNames(report) {
   if (report.modules.regressed) names.push('modules');
   if (report.i18n.en.regressed) names.push('i18n:en');
   if (report.i18n.ar.regressed) names.push('i18n:ar');
+  if (report.tokens && report.tokens.regressed) names.push('tokens');
   return names;
 }
 
@@ -268,6 +315,15 @@ if (JSON_MODE) {
     'ref=' + report.i18n.en.ref + '  cand=' + report.i18n.en.cand);
   row('i18n:ar', !report.i18n.ar.regressed,
     'ref=' + report.i18n.ar.ref + '  cand=' + report.i18n.ar.cand);
+
+  if (report.tokens) {
+    console.log('\ntokens (bv-*/BV_*, absence only)');
+    row('tokens', !report.tokens.regressed,
+      'ref has ' + report.tokens.totalRefTokens + ' distinct token(s)  absent-from-candidate=' + report.tokens.absent.length);
+    if (report.tokens.absent.length) {
+      for (const t of report.tokens.absent) console.log('        0 in candidate: ' + t.name + ' (ref=' + t.ref + ')');
+    }
+  }
 
   console.log();
   if (pass) {

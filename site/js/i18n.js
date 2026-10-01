@@ -356,7 +356,10 @@
     if (DICT['meta.title']) document.title = t('meta.title');
     var sw = document.querySelectorAll('[data-lang-toggle]');
     Array.prototype.forEach.call(sw, function (b) {
-      b.textContent = t('lang.switch');
+      // The masthead's compact mobile button (.bv-tool--mobile-lang) opts
+      // into a fixed "AR"/"EN" instead of the full word every other toggle
+      // gets — it has room for two letters, not a whole label.
+      b.textContent = b.hasAttribute('data-lang-short') ? (RTL ? 'EN' : 'AR') : t('lang.switch');
       b.setAttribute('aria-label', t('lang.label'));
       b.setAttribute('lang', RTL ? 'en' : 'ar');
     });

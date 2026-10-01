@@ -146,6 +146,11 @@
 
   <a class="bv-cta bv-mast__cta" href="#contact" data-i18n="nav.cta">Start a project</a>
 
+  <!-- .bv-tools (above) disappears entirely under 900px, taking the only
+       masthead language switch with it. This compact one survives that
+       breakpoint; data-lang-short keeps its text to "AR"/"EN" instead of the
+       full word (see i18n.js's paintStatic). -->
+  <button class="bv-tool bv-tool--lang bv-tool--mobile-lang" type="button" data-lang-toggle data-lang-short lang="ar" aria-label="اعرض الموقع بالعربية">AR</button>
   <!-- Under 900px the nav above is hidden; this is the way in. -->
   <button class="bv-burger" id="burger" aria-expanded="false" aria-controls="menu"
           data-i18n-attr="aria-label:nav.open">
@@ -300,9 +305,15 @@
       </div></div>
       <!-- Without JS the select never gets its options and the search input
            has no listener — an empty, inert control reads as broken, so hide
-           the bar and let the (also JS-built) grid stand on its own. -->
-      <noscript><style>.bv-filter-bar { display: none !important; }</style></noscript>
-      <div class="bv-grid" id="grid"></div>
+           the bar and let the (also JS-built) grid stand on its own. The
+           arrows are the same story: dead buttons that can't scroll anything
+           until grid() wires them up. -->
+      <noscript><style>.bv-filter-bar, .bv-work-arrow { display: none !important; }</style></noscript>
+      <div class="bv-work-carousel" role="region" aria-label="Selected work carousel">
+        <button class="bv-work-arrow bv-work-arrow--prev" id="workPrev" aria-label="Previous projects">‹</button>
+        <div class="bv-grid" id="grid" tabindex="0" aria-label="Projects"></div>
+        <button class="bv-work-arrow bv-work-arrow--next" id="workNext" aria-label="Next projects">›</button>
+      </div>
       <!-- Twenty-five cards at once reads as a wall rather than a portfolio.
            Six, then the rest on request. -->
       <div class="bv-more" id="moreWrap" hidden>
@@ -444,6 +455,7 @@
         <ul class="bv-case__steps" id="caseSteps"></ul>
       </div>
       <dl class="bv-case__facts" id="caseFacts"></dl>
+      <p class="bv-swipe-hint" id="caseSwipeHint">← Swipe left for next · right for previous →</p>
       <div class="bv-case__railfoot">
         <button class="bv-cta bv-cta--ghost" id="casePrev" data-i18n="case.prev">← Previous client</button>
         <button class="bv-cta bv-cta--ghost" id="caseNext" data-i18n="case.next">Next client →</button>

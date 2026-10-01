@@ -318,6 +318,20 @@
             dst.appendChild(w);
           });
         } else if (n.nodeType === 1) {
+          // An amber gradient phrase ("loyal customers") has to stay ONE
+          // span: background-clip:text paints the gradient across whatever
+          // box holds it, so splitting it into per-word .bv-w spans like
+          // ordinary text would cut the gradient into separate pieces, one
+          // per word. Clone it whole into its own reveal unit instead —
+          // still staggered with the rest via .bv-w, just never recursed
+          // into any further.
+          if (n.classList.contains('bv-amber')) {
+            var reveal = document.createElement('span');
+            reveal.className = 'bv-w bv-loyal-reveal';
+            reveal.appendChild(n.cloneNode(true));
+            dst.appendChild(reveal);
+            return;
+          }
           if (n.tagName === 'BR') { dst.appendChild(n.cloneNode()); return; }
           var el = n.cloneNode(false);
           dst.appendChild(el);
@@ -420,10 +434,19 @@
   function scrubPin() {
     if (!pinRail || !combCells.length) return;
     var n = combCells.length;
+    // The method section's own measured viewport (js/hive.js's fitMethod),
+    // not the raw window — BV_METHOD_HEIGHT is what decides bv-method-unpinned
+    // in the first place, so the scrub math has to travel against the same
+    // number or the two would disagree about how much rail is left to scroll.
+    var viewport = window.BV_METHOD_HEIGHT || innerHeight;
 
-    // Below the breakpoint the rail collapses to auto height and there is no
-    // pin — fill everything and let the ordinary observers handle reveal.
-    if (pinRail.offsetHeight < innerHeight * 1.5) {
+    // No pin to scrub: either under the max-width:900px breakpoint (CSS
+    // collapses the rail there) or bv-method-unpinned has done the same job
+    // from JS for a viewport that is short rather than narrow. Either way
+    // .bv-pin__stage stops being sticky, which is the one signal true in
+    // both cases — fill everything and let the ordinary observers handle
+    // reveal.
+    if (getComputedStyle(pinRail.querySelector('.bv-pin__stage')).position !== 'sticky') {
       combCells.forEach(function (c) {
         c.classList.add('is-on', 'is-in', 'is-filled');
         c.querySelector('.bv-cell__fill').style.setProperty('--f', 1);
@@ -434,7 +457,7 @@
     }
 
     var b = pinRail.getBoundingClientRect();
-    var travel = b.height - innerHeight;
+    var travel = b.height - viewport;
     var p = clamp(-b.top / (travel || 1), 0, 1);
     if (pinFill) pinFill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
 
@@ -457,8 +480,18 @@
   window.BV_PIN = {
     goTo: function (i) {
       if (!pinRail) return;
-      var travel = pinRail.offsetHeight - innerHeight;
-      if (travel <= 0) return;
+      var travel = pinRail.offsetHeight - (window.BV_METHOD_HEIGHT || innerHeight);
+      // Unpinned: there is no scroll-driven rail to land on, so jump the
+      // stage panel and cell classes straight to `i` instead of computing a
+      // scroll distance against a rail that is no longer sticky.
+      if (getComputedStyle(pinRail.querySelector('.bv-pin__stage')).position !== 'sticky') {
+        showStage(i);
+        combCells.forEach(function (c, j) {
+          c.classList.toggle('is-on', j === i);
+          c.classList.toggle('is-filled', j <= i);
+        });
+        return;
+      }
       var top = pinRail.getBoundingClientRect().top + scrollY;
       var frac = ((i + 0.5) / combCells.length) * 0.88;
       scrollTo({ top: Math.round(top + travel * frac), behavior: REDUCED ? 'auto' : 'smooth' });
